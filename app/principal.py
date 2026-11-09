@@ -10,6 +10,7 @@ from app.nucleo.configuracoes import obter_configuracoes
 from app.nucleo.logging import configurar_logging, obter_logger
 from app.nucleo.excecoes import ErroAplicacao
 from app.rotas.saude import roteador as roteador_saude
+from app.rotas.anomalias import roteador as roteador_anomalias
 
 configurar_logging()
 logger = obter_logger(__name__)
@@ -25,7 +26,7 @@ app = FastAPI(
     title="AgroConnect AI",
     description=(
         "API independente de análise do AgroConnect. Nesta fase, disponibiliza "
-        "health checks e a estrutura de configuração; integrações de negócio "
+        "health checks, demonstração de anomalias e estrutura de configuração; integrações de negócio "
         "serão adicionadas após confirmação dos contratos do Backend C#."
     ),
     version="0.1.0",
@@ -35,6 +36,7 @@ app = FastAPI(
     lifespan=ciclo_vida,
 )
 app.include_router(roteador_saude)
+app.include_router(roteador_anomalias)
 
 @app.exception_handler(ErroAplicacao)
 async def tratar_erro_aplicacao(_: Request, erro: ErroAplicacao) -> JSONResponse:

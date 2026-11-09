@@ -1,0 +1,17 @@
+{
+  "metadados": {"origem": "SIMULADO_TESTE", "somenteTeste": true, "naoUsarEmProducao": true},
+  "acessos": [{"idUsuario": "usuario-teste-01", "idTalhao": "00000000-0000-4000-8000-000000000001", "idDispositivo": "00000000-0000-4000-8000-000000000002", "permitido": true}],
+  "contexto": {
+    "propriedade": {"identificadorLogico": "propriedade-teste-01"},
+    "talhao": {"idTalhao": "00000000-0000-4000-8000-000000000001"},
+    "plantio": {"identificadorLogico": "plantio-teste-01", "fase": "NAO_INFORMADA"},
+    "cultura": {"nome": "Cultura de teste"},
+    "semente": {"variedade": "Variedade de teste"},
+    "solo": {"tipo": "Solo de teste"},
+    "parametrosAgronomicos": []
+  },
+  "dispositivo": {"idDispositivo": "00000000-0000-4000-8000-000000000002", "codigoExterno": "DISPOSITIVO-TESTE-01"},
+  "sensores": [],
+  "leituras": [{"idDispositivo": "00000000-0000-4000-8000-000000000002", "registradoEm": "2026-01-01T12:00:00Z", "valores": {}, "qualidade": "NAO_AVALIADA", "origem": "SIMULADO_TESTE"}],
+  "eventos": []
+}

@@ -1,10 +1,10 @@
 # AgroConnect AI
 
-API independente do AgroConnect para análise de contexto agrícola e geração futura de recomendações. Esta entrega cobre a **Fase 1**: estrutura, configuração, health checks e preparação das integrações. Ainda não consulta dados de negócio nem implementa Machine Learning, RAG ou geração de recomendações.
+API independente do AgroConnect para análise de contexto agrícola e geração futura de recomendações. O projeto contém a estrutura FastAPI e a demonstração da **Fase 3** com Isolation Forest. O modelo usa dados sintéticos somente em desenvolvimento/teste; a API ainda não consulta dados de negócio nem implementa RAG ou geração de recomendações.
 
 ## Requisitos
 
-- Python 3.12 ou superior, preferencialmente 64 bits. Foi encontrado Python 3.13.7 de 32 bits nesta máquina e Python 3.11.9; ambos são instalações globais e não foram alteradas.
+- Ambiente usado e validado na Fase 3: Python 3.11.9 de 64 bits em `.venv-311-x64`. A imagem Docker preserva Python 3.12 slim.
 - Docker para executar a imagem preparada para publicação no Render.
 
 ### Ambiente local isolado no Windows
@@ -17,7 +17,7 @@ Para não remover nem substituir o ambiente atual antes de validar o novo, crie 
 py -3.12-64 -m venv .venv-312-x64
 .\.venv-312-x64\Scripts\python.exe -m pip install --upgrade pip
 .\.venv-312-x64\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv-312-x64\Scripts\python.exe -m pytest -q
+.\.venv-312-x64\Scripts\python.exe -m .\.venv-311-x64\Scripts\python.exe -m pytest -q
 ```
 
 Após confirmar os testes, use esse ambiente como o ambiente de desenvolvimento 64-bit. O ambiente `.venv` existente foi criado com Python 3.13 de 32 bits e permanece preservado. Em uma máquina que já tenha Python 3.12+ x64, crie diretamente `.venv` com `py -3.12-64 -m venv .venv`.
@@ -27,7 +27,7 @@ As dependências foram resolvidas em modo `pip --dry-run` para CPython 3.12 x64/
 ## Executar
 
 ```powershell
-.\.venv\Scripts\Activate.ps1
+.\.venv-311-x64\Scripts\Activate.ps1
 uvicorn app.principal:app --reload
 ```
 
@@ -57,7 +57,7 @@ Copie `.env.example` para `.env`. Variáveis nesta fase:
 ## Testes
 
 ```powershell
-pytest -q
+.\.venv-311-x64\Scripts\python.exe -m pytest -q
 ```
 
 ## Docker e Render
@@ -81,3 +81,18 @@ Configure variáveis e credenciais no painel do serviço, nunca na imagem ou no 
 
 
 Consulte [`documentacao/INTEGRACAO_BACKEND_CSHARP.md`](documentacao/INTEGRACAO_BACKEND_CSHARP.md) para o checklist e as informações pendentes do Backend C#.
+
+## Acesso a dados e integração pendente
+
+Os contratos lógicos e o adaptador de consultas estão em `app/repositorios/`. O adaptador só aceita `SELECT` configurado externamente, usa parâmetros vinculados e falha quando não há mapeamento. Nenhuma consulta de negócio é carregada por padrão; o schema do Backend C# precisa ser aprovado antes de configurar consultas reais. Fixtures simuladas ficam exclusivamente em `tests/fixtures/` e não são carregadas pela API. Consulte `documentacao/INTEGRACAO_BACKEND_CSHARP.md` e `documentacao/acesso_dados_fase2.md`.
+
+## Machine Learning (demonstração)
+
+O modelo é treinado manualmente por script, não no startup nem em requisições:
+
+```powershell
+.\.venv-311-x64\Scripts\python.exe scripts\treinar_modelo.py
+.\.venv-311-x64\Scripts\python.exe scripts\avaliar_modelo.py
+```
+
+O endpoint `POST /api/v1/anomalias/analisar-demo` é exclusivo de desenvolvimento/teste e aceita apenas dados `SIMULADO_TESTE`. A implementação, o contrato e as limitações estão em [`documentacao/aprendizado_maquina.md`](documentacao/aprendizado_maquina.md). O escore não é probabilidade nem diagnóstico agronômico.

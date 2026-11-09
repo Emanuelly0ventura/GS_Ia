@@ -12,3 +12,9 @@ htmlcov/
 *.log
 .DS_Store
 Thumbs.db
+
+# Artefatos de modelos locais; gere-os pelo script de treinamento.
+modelos_treinados/*.joblib
+
+# Diretorios temporarios de testes
+.tmp*/

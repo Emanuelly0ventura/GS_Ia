@@ -1,0 +1,5 @@
+{
+  "metadados": {"origem": "SIMULADO_TESTE", "somenteTeste": true, "naoUsarEmProducao": true},
+  "acessos": [{"idUsuario": "outro-usuario-teste", "idTalhao": "00000000-0000-4000-8000-000000000001", "idDispositivo": "00000000-0000-4000-8000-000000000002", "permitido": true}],
+  "leituras": []
+}
