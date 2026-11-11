@@ -16,5 +16,9 @@ Thumbs.db
 # Artefatos de modelos locais; gere-os pelo script de treinamento.
 modelos_treinados/*.joblib
 
+# Modelos locais e índices são reconstruíveis; mantenha as fontes documentais versionadas.
+modelos_embeddings/
+base_conhecimento/indice/
+
 # Diretorios temporarios de testes
 .tmp*/

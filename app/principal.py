@@ -7,10 +7,12 @@ from starlette.requests import Request
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 
 from app.nucleo.configuracoes import obter_configuracoes
+from app.nucleo.limites_http import LimiteCorpoHttpMiddleware
 from app.nucleo.logging import configurar_logging, obter_logger
 from app.nucleo.excecoes import ErroAplicacao
 from app.rotas.saude import roteador as roteador_saude
 from app.rotas.anomalias import roteador as roteador_anomalias
+from app.rotas.conhecimento import roteador as roteador_conhecimento
 
 configurar_logging()
 logger = obter_logger(__name__)
@@ -26,8 +28,8 @@ app = FastAPI(
     title="AgroConnect AI",
     description=(
         "API independente de análise do AgroConnect. Nesta fase, disponibiliza "
-        "health checks, demonstração de anomalias e estrutura de configuração; integrações de negócio "
-        "serão adicionadas após confirmação dos contratos do Backend C#."
+        "health checks, demonstração estatística de anomalias e análise documental RAG local. "
+        "A aplicação não consulta dados de negócio nem substitui os contratos do Backend C#."
     ),
     version="0.1.0",
     openapi_url="/openapi.json",
@@ -35,8 +37,13 @@ app = FastAPI(
     redoc_url="/redoc",
     lifespan=ciclo_vida,
 )
+app.add_middleware(
+    LimiteCorpoHttpMiddleware,
+    limite_bytes=configuracoes.api_limite_corpo_http_bytes,
+)
 app.include_router(roteador_saude)
 app.include_router(roteador_anomalias)
+app.include_router(roteador_conhecimento)
 
 @app.exception_handler(ErroAplicacao)
 async def tratar_erro_aplicacao(_: Request, erro: ErroAplicacao) -> JSONResponse:
