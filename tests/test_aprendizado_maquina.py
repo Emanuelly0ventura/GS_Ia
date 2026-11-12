@@ -37,7 +37,7 @@ def test_preparacao_produz_matriz_numerica_e_rastreia_descartes():
     incompleta = criar_leitura("faltante", valores={nome: 0.0 for nome in VARIAVEIS_MODELO[:-1]})
     invalida = criar_leitura("qualidade", qualidade="INVALIDA")
     conjunto = preparar_leituras([completa, incompleta, invalida])
-    assert conjunto.matriz.shape == (1, 4)
+    assert conjunto.matriz.shape == (1, 3)
     assert np.isfinite(conjunto.matriz).all()
     assert len(conjunto.descartadas) == 2
 
@@ -96,6 +96,13 @@ def test_persistencia_carrega_modelo_e_preserva_resultado(tmp_path):
     assert carregado.versao_modelo == detector.versao_modelo
     assert carregado.predizer(leitura).classificada_como_anomalia == detector.predizer(leitura).classificada_como_anomalia
 
+def test_carregador_rejeita_artefato_legado_de_quatro_variaveis(tmp_path):
+    import joblib
+    legado=tmp_path / "modelo-v1.joblib"
+    joblib.dump({"formato_artefato":1,"variaveis":["umidadeSolo","temperaturaAr","umidadeAr","luminosidade"]},legado)
+    with pytest.raises(ValueError, match="Formato ou versão"):
+        DetectorAnomalias.carregar(legado)
+
 def test_carregamento_trata_arquivo_inexistente_e_corrompido(tmp_path):
     with pytest.raises(FileNotFoundError):
         DetectorAnomalias.carregar(tmp_path / "nao-existe.joblib")
@@ -120,7 +127,7 @@ def test_pontuacao_nao_e_rotulada_como_probabilidade():
     resposta = resultado.model_dump(by_alias=True)
     assert "pontuacaoAnomalia" in resposta
     assert "probabilidade" not in resposta
-    assert resposta["versaoModelo"] == "isolation-forest-v1"
+    assert resposta["versaoModelo"] == "isolation-forest-v2"
 
 
 def test_treinamento_reproduzivel_com_semente_fixa():

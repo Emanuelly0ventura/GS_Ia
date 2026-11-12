@@ -1,2293 +1,2057 @@
 {
   "metadados": {
     "origem": "SIMULADO_TESTE",
-    "versao": "isolation-forest-demo-v1",
+    "versao": "iforest-sintetico-3-variaveis-v2",
     "sementeGeracao": 20261109,
     "unidades": {
-      "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-      "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-      "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-      "luminosidade": "indice_sintetico_sem_unidade_fisica"
+      "temperaturaAr": "°C",
+      "umidadeAr": "%",
+      "luminosidade": "ADC"
     },
-    "nota": "Índices numéricos sintéticos sem unidade física; não representam medições nem limites agrícolas."
+    "nota": "Dados inteiramente sintéticos gerados com faixas apenas demonstrativas; não representam observações reais nem limites agrícolas.",
+    "variaveis": [
+      "temperaturaAr",
+      "umidadeAr",
+      "luminosidade"
+    ]
   },
   "treinamento": [
     {
-      "idObservacao": "treino-normal-001",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:01:00Z",
+      "idObservacao": "sintetico-000",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.632657,
-        "temperaturaAr": -0.02038,
-        "umidadeAr": 0.238199,
-        "luminosidade": -0.151689
+        "temperaturaAr": 26.785,
+        "umidadeAr": 74.73,
+        "luminosidade": 1453.436
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-002",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:02:00Z",
+      "idObservacao": "sintetico-001",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.635289,
-        "temperaturaAr": 0.740704,
-        "umidadeAr": 0.753759,
-        "luminosidade": 0.987517
+        "temperaturaAr": 22.284,
+        "umidadeAr": 72.002,
+        "luminosidade": 2968.076
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-003",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:03:00Z",
+      "idObservacao": "sintetico-002",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.589803,
-        "temperaturaAr": -0.572382,
-        "umidadeAr": 0.951083,
-        "luminosidade": -0.677333
+        "temperaturaAr": 33.662,
+        "umidadeAr": 35.284,
+        "luminosidade": 2011.999
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-004",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:04:00Z",
+      "idObservacao": "sintetico-003",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.30311,
-        "temperaturaAr": 0.683916,
-        "umidadeAr": -0.394998,
-        "luminosidade": 0.838886
+        "temperaturaAr": 27.532,
+        "umidadeAr": 69.034,
+        "luminosidade": 1847.335
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-005",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:05:00Z",
+      "idObservacao": "sintetico-004",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.258864,
-        "temperaturaAr": -0.200024,
-        "umidadeAr": 0.157896,
-        "luminosidade": -0.161603
+        "temperaturaAr": 20.767,
+        "umidadeAr": 43.22,
+        "luminosidade": 1478.322
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-006",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:06:00Z",
+      "idObservacao": "sintetico-005",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.401132,
-        "temperaturaAr": 0.942372,
-        "umidadeAr": -0.624698,
-        "luminosidade": 0.394524
+        "temperaturaAr": 33.069,
+        "umidadeAr": 53.666,
+        "luminosidade": 2325.911
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-007",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:07:00Z",
+      "idObservacao": "sintetico-006",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.682118,
-        "temperaturaAr": 0.691094,
-        "umidadeAr": -0.733936,
-        "luminosidade": -0.367061
+        "temperaturaAr": 21.516,
+        "umidadeAr": 56.046,
+        "luminosidade": 1427.863
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-008",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:08:00Z",
+      "idObservacao": "sintetico-007",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.266589,
-        "temperaturaAr": 0.532552,
-        "umidadeAr": -0.077903,
-        "luminosidade": 0.10459
+        "temperaturaAr": 15.363,
+        "umidadeAr": 69.083,
+        "luminosidade": 2728.691
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-009",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:09:00Z",
+      "idObservacao": "sintetico-008",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.623961,
-        "temperaturaAr": 0.913083,
-        "umidadeAr": -0.840231,
-        "luminosidade": -0.710442
+        "temperaturaAr": 28.977,
+        "umidadeAr": 81.5,
+        "luminosidade": 2239.26
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-010",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:10:00Z",
+      "idObservacao": "sintetico-009",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.224919,
-        "temperaturaAr": 0.373548,
-        "umidadeAr": -0.88156,
-        "luminosidade": -0.484843
+        "temperaturaAr": 27.459,
+        "umidadeAr": 48.305,
+        "luminosidade": 1165.24
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-011",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:11:00Z",
+      "idObservacao": "sintetico-010",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.641981,
-        "temperaturaAr": 0.745251,
-        "umidadeAr": 0.908343,
-        "luminosidade": 0.231327
+        "temperaturaAr": 20.326,
+        "umidadeAr": 65.686,
+        "luminosidade": 2451.479
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-012",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:12:00Z",
+      "idObservacao": "sintetico-011",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.311513,
-        "temperaturaAr": 0.367449,
-        "umidadeAr": 0.383661,
-        "luminosidade": 0.465113
+        "temperaturaAr": 33.804,
+        "umidadeAr": 67.884,
+        "luminosidade": 2056.065
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-013",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:13:00Z",
+      "idObservacao": "sintetico-012",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.515658,
-        "temperaturaAr": -0.016721,
-        "umidadeAr": 0.81722,
-        "luminosidade": -0.100931
+        "temperaturaAr": 20.596,
+        "umidadeAr": 50.129,
+        "luminosidade": 2317.012
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-014",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:14:00Z",
+      "idObservacao": "sintetico-013",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.63153,
-        "temperaturaAr": -0.503871,
-        "umidadeAr": 0.677379,
-        "luminosidade": -0.909439
+        "temperaturaAr": 26.066,
+        "umidadeAr": 72.509,
+        "luminosidade": 837.752
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-015",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:15:00Z",
+      "idObservacao": "sintetico-014",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.920403,
-        "temperaturaAr": -0.766108,
-        "umidadeAr": -0.194113,
-        "luminosidade": -0.864167
+        "temperaturaAr": 30.039,
+        "umidadeAr": 57.287,
+        "luminosidade": 1408.803
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-016",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:16:00Z",
+      "idObservacao": "sintetico-015",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.779321,
-        "temperaturaAr": -0.611164,
-        "umidadeAr": -0.404596,
-        "luminosidade": 0.571236
+        "temperaturaAr": 20.216,
+        "umidadeAr": 55.034,
+        "luminosidade": 1020.242
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-017",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:17:00Z",
+      "idObservacao": "sintetico-016",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.036284,
-        "temperaturaAr": -0.280812,
-        "umidadeAr": 0.203443,
-        "luminosidade": 0.312274
+        "temperaturaAr": 25.217,
+        "umidadeAr": 48.058,
+        "luminosidade": 2432.117
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-018",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:18:00Z",
+      "idObservacao": "sintetico-017",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.525935,
-        "temperaturaAr": 0.736497,
-        "umidadeAr": -0.496347,
-        "luminosidade": -0.465671
+        "temperaturaAr": 22.745,
+        "umidadeAr": 65.639,
+        "luminosidade": 2301.109
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-019",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:19:00Z",
+      "idObservacao": "sintetico-018",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.003093,
-        "temperaturaAr": 0.212172,
-        "umidadeAr": 0.911113,
-        "luminosidade": -0.675566
+        "temperaturaAr": 25.612,
+        "umidadeAr": 58.9,
+        "luminosidade": 2180.27
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-020",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:20:00Z",
+      "idObservacao": "sintetico-019",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.69962,
-        "temperaturaAr": -0.333776,
-        "umidadeAr": -0.932314,
-        "luminosidade": 0.369211
+        "temperaturaAr": 24.531,
+        "umidadeAr": 58.311,
+        "luminosidade": 2024.585
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-021",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:21:00Z",
+      "idObservacao": "sintetico-020",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.489837,
-        "temperaturaAr": 0.609761,
-        "umidadeAr": -0.42274,
-        "luminosidade": -0.261657
+        "temperaturaAr": 26.922,
+        "umidadeAr": 67.043,
+        "luminosidade": 1599.465
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-022",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:22:00Z",
+      "idObservacao": "sintetico-021",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.29662,
-        "temperaturaAr": -0.253587,
-        "umidadeAr": 0.45385,
-        "luminosidade": 0.692521
+        "temperaturaAr": 31.372,
+        "umidadeAr": 50.744,
+        "luminosidade": 1962.283
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-023",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:23:00Z",
+      "idObservacao": "sintetico-022",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.833366,
-        "temperaturaAr": -0.288793,
-        "umidadeAr": 0.762452,
-        "luminosidade": 0.793865
+        "temperaturaAr": 20.544,
+        "umidadeAr": 51.541,
+        "luminosidade": 1995.04
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-024",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:24:00Z",
+      "idObservacao": "sintetico-023",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.591813,
-        "temperaturaAr": -0.892099,
-        "umidadeAr": -0.051777,
-        "luminosidade": 0.930788
+        "temperaturaAr": 17.375,
+        "umidadeAr": 61.891,
+        "luminosidade": 2357.276
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-025",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:25:00Z",
+      "idObservacao": "sintetico-024",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.963006,
-        "temperaturaAr": 0.711101,
-        "umidadeAr": -0.86135,
-        "luminosidade": 0.106998
+        "temperaturaAr": 19.813,
+        "umidadeAr": 61.841,
+        "luminosidade": 2231.717
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-026",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:26:00Z",
+      "idObservacao": "sintetico-025",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.877758,
-        "temperaturaAr": 0.575639,
-        "umidadeAr": 0.886523,
-        "luminosidade": 0.143582
+        "temperaturaAr": 24.377,
+        "umidadeAr": 68.339,
+        "luminosidade": 1477.258
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-027",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:27:00Z",
+      "idObservacao": "sintetico-026",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.671042,
-        "temperaturaAr": 0.878804,
-        "umidadeAr": -0.225874,
-        "luminosidade": 0.919412
+        "temperaturaAr": 30.643,
+        "umidadeAr": 65.847,
+        "luminosidade": 1866.527
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-028",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:28:00Z",
+      "idObservacao": "sintetico-027",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.299545,
-        "temperaturaAr": -0.257878,
-        "umidadeAr": 0.366413,
-        "luminosidade": 0.984213
+        "temperaturaAr": 18.134,
+        "umidadeAr": 59.231,
+        "luminosidade": 2440.433
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-029",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:29:00Z",
+      "idObservacao": "sintetico-028",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.525261,
-        "temperaturaAr": -0.552411,
-        "umidadeAr": 0.100635,
-        "luminosidade": -0.515454
+        "temperaturaAr": 22.81,
+        "umidadeAr": 52.689,
+        "luminosidade": 1737.838
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-030",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:30:00Z",
+      "idObservacao": "sintetico-029",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.259908,
-        "temperaturaAr": -0.500024,
-        "umidadeAr": -0.014593,
-        "luminosidade": 0.5067
+        "temperaturaAr": 17.723,
+        "umidadeAr": 71.743,
+        "luminosidade": 2171.822
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-031",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:31:00Z",
+      "idObservacao": "sintetico-030",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.972845,
-        "temperaturaAr": 0.016938,
-        "umidadeAr": 0.103886,
-        "luminosidade": -0.107011
+        "temperaturaAr": 30.948,
+        "umidadeAr": 44.632,
+        "luminosidade": 1954.948
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-032",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:32:00Z",
+      "idObservacao": "sintetico-031",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.225407,
-        "temperaturaAr": -0.360523,
-        "umidadeAr": 0.095826,
-        "luminosidade": 0.237646
+        "temperaturaAr": 26.213,
+        "umidadeAr": 31.286,
+        "luminosidade": 2143.623
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-033",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:33:00Z",
+      "idObservacao": "sintetico-032",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.587881,
-        "temperaturaAr": 0.707442,
-        "umidadeAr": 0.261601,
-        "luminosidade": 0.407286
+        "temperaturaAr": 32.425,
+        "umidadeAr": 64.737,
+        "luminosidade": 2567.763
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-034",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:34:00Z",
+      "idObservacao": "sintetico-033",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.742624,
-        "temperaturaAr": -0.812202,
-        "umidadeAr": 0.271734,
-        "luminosidade": 0.334921
+        "temperaturaAr": 27.036,
+        "umidadeAr": 81.591,
+        "luminosidade": 1517.356
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-035",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:35:00Z",
+      "idObservacao": "sintetico-034",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.363271,
-        "temperaturaAr": -0.580545,
-        "umidadeAr": 0.848767,
-        "luminosidade": -0.745677
+        "temperaturaAr": 29.638,
+        "umidadeAr": 56.546,
+        "luminosidade": 2602.976
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-036",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:36:00Z",
+      "idObservacao": "sintetico-035",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.729577,
-        "temperaturaAr": 0.153391,
-        "umidadeAr": -0.201944,
-        "luminosidade": 0.363899
+        "temperaturaAr": 32.73,
+        "umidadeAr": 38.928,
+        "luminosidade": 2857.716
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-037",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:37:00Z",
+      "idObservacao": "sintetico-036",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.201604,
-        "temperaturaAr": -0.300235,
-        "umidadeAr": -0.411996,
-        "luminosidade": 0.706337
+        "temperaturaAr": 22.845,
+        "umidadeAr": 71.34,
+        "luminosidade": 1164.585
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-038",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:38:00Z",
+      "idObservacao": "sintetico-037",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.659256,
-        "temperaturaAr": -0.126853,
-        "umidadeAr": -0.143593,
-        "luminosidade": -0.314401
+        "temperaturaAr": 14.201,
+        "umidadeAr": 62.677,
+        "luminosidade": 2311.552
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-039",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:39:00Z",
+      "idObservacao": "sintetico-038",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.032357,
-        "temperaturaAr": 0.648317,
-        "umidadeAr": 0.797001,
-        "luminosidade": 0.619951
+        "temperaturaAr": 22.31,
+        "umidadeAr": 59.221,
+        "luminosidade": 1598.752
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-040",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:40:00Z",
+      "idObservacao": "sintetico-039",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.694201,
-        "temperaturaAr": 0.481047,
-        "umidadeAr": -0.022723,
-        "luminosidade": 0.063488
+        "temperaturaAr": 22.899,
+        "umidadeAr": 41.943,
+        "luminosidade": 1944.476
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-041",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:41:00Z",
+      "idObservacao": "sintetico-040",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.998313,
-        "temperaturaAr": -0.306958,
-        "umidadeAr": -0.338447,
-        "luminosidade": 0.966285
+        "temperaturaAr": 29.512,
+        "umidadeAr": 60.781,
+        "luminosidade": 1302.467
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-042",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:42:00Z",
+      "idObservacao": "sintetico-041",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.455969,
-        "temperaturaAr": -0.111524,
-        "umidadeAr": 0.046279,
-        "luminosidade": -0.691288
+        "temperaturaAr": 23.675,
+        "umidadeAr": 53.999,
+        "luminosidade": 1568.851
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-043",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:43:00Z",
+      "idObservacao": "sintetico-042",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.971105,
-        "temperaturaAr": -0.760886,
-        "umidadeAr": 0.807371,
-        "luminosidade": 0.589284
+        "temperaturaAr": 19.96,
+        "umidadeAr": 57.058,
+        "luminosidade": 2210.0
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-044",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:44:00Z",
+      "idObservacao": "sintetico-043",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.777825,
-        "temperaturaAr": -0.565111,
-        "umidadeAr": -0.833575,
-        "luminosidade": 0.843995
+        "temperaturaAr": 17.831,
+        "umidadeAr": 49.257,
+        "luminosidade": 1237.489
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-045",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:45:00Z",
+      "idObservacao": "sintetico-044",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.725458,
-        "temperaturaAr": 0.046475,
-        "umidadeAr": -0.017941,
-        "luminosidade": 0.591119
+        "temperaturaAr": 26.165,
+        "umidadeAr": 58.146,
+        "luminosidade": 1334.355
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-046",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:46:00Z",
+      "idObservacao": "sintetico-045",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.705056,
-        "temperaturaAr": 0.983878,
-        "umidadeAr": 0.390143,
-        "luminosidade": -0.217474
+        "temperaturaAr": 20.75,
+        "umidadeAr": 58.571,
+        "luminosidade": 2261.795
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-047",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:47:00Z",
+      "idObservacao": "sintetico-046",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.11786,
-        "temperaturaAr": 0.86098,
-        "umidadeAr": 0.959251,
-        "luminosidade": 0.824681
+        "temperaturaAr": 26.762,
+        "umidadeAr": 59.137,
+        "luminosidade": 2402.179
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-048",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:48:00Z",
+      "idObservacao": "sintetico-047",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.491021,
-        "temperaturaAr": -0.933275,
-        "umidadeAr": -0.640762,
-        "luminosidade": 0.004444
+        "temperaturaAr": 21.258,
+        "umidadeAr": 47.371,
+        "luminosidade": 2420.35
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-049",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:49:00Z",
+      "idObservacao": "sintetico-048",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.566283,
-        "temperaturaAr": -0.789147,
-        "umidadeAr": -0.659629,
-        "luminosidade": -0.023426
+        "temperaturaAr": 22.158,
+        "umidadeAr": 55.409,
+        "luminosidade": 1589.882
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-050",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:50:00Z",
+      "idObservacao": "sintetico-049",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.9575,
-        "temperaturaAr": -0.19636,
-        "umidadeAr": 0.739111,
-        "luminosidade": 0.127542
+        "temperaturaAr": 32.161,
+        "umidadeAr": 68.166,
+        "luminosidade": 1354.863
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-051",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:51:00Z",
+      "idObservacao": "sintetico-050",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.555186,
-        "temperaturaAr": 0.6398,
-        "umidadeAr": 0.945515,
-        "luminosidade": 0.799596
+        "temperaturaAr": 21.867,
+        "umidadeAr": 66.793,
+        "luminosidade": 824.175
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-052",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:52:00Z",
+      "idObservacao": "sintetico-051",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.899145,
-        "temperaturaAr": 0.249469,
-        "umidadeAr": -0.236191,
-        "luminosidade": -0.159868
+        "temperaturaAr": 25.719,
+        "umidadeAr": 79.57,
+        "luminosidade": 1270.68
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-053",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:53:00Z",
+      "idObservacao": "sintetico-052",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.23559,
-        "temperaturaAr": 0.06725,
-        "umidadeAr": -0.166816,
-        "luminosidade": -0.988821
+        "temperaturaAr": 28.576,
+        "umidadeAr": 78.155,
+        "luminosidade": 1187.341
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-054",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:54:00Z",
+      "idObservacao": "sintetico-053",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.247333,
-        "temperaturaAr": -0.363876,
-        "umidadeAr": 0.479428,
-        "luminosidade": 0.29435
+        "temperaturaAr": 25.334,
+        "umidadeAr": 73.069,
+        "luminosidade": 1897.165
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-055",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:55:00Z",
+      "idObservacao": "sintetico-054",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.759901,
-        "temperaturaAr": -0.10703,
-        "umidadeAr": -0.630568,
-        "luminosidade": 0.609456
+        "temperaturaAr": 19.722,
+        "umidadeAr": 91.969,
+        "luminosidade": 1813.317
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-056",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:56:00Z",
+      "idObservacao": "sintetico-055",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.192997,
-        "temperaturaAr": 0.352106,
-        "umidadeAr": -0.55171,
-        "luminosidade": 0.75992
+        "temperaturaAr": 20.921,
+        "umidadeAr": 55.125,
+        "luminosidade": 1851.341
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-057",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:57:00Z",
+      "idObservacao": "sintetico-056",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.611136,
-        "temperaturaAr": -0.719066,
-        "umidadeAr": 0.257323,
-        "luminosidade": 0.943207
+        "temperaturaAr": 26.91,
+        "umidadeAr": 62.549,
+        "luminosidade": 2748.734
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-058",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:58:00Z",
+      "idObservacao": "sintetico-057",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.7485,
-        "temperaturaAr": 0.423631,
-        "umidadeAr": -0.994314,
-        "luminosidade": 0.384814
+        "temperaturaAr": 21.153,
+        "umidadeAr": 68.438,
+        "luminosidade": 2161.027
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-059",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T00:59:00Z",
+      "idObservacao": "sintetico-058",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.46206,
-        "temperaturaAr": 0.877515,
-        "umidadeAr": 0.023367,
-        "luminosidade": 0.725451
+        "temperaturaAr": 32.437,
+        "umidadeAr": 75.535,
+        "luminosidade": 2359.25
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-060",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:00:00Z",
+      "idObservacao": "sintetico-059",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.181854,
-        "temperaturaAr": 0.684814,
-        "umidadeAr": -0.250267,
-        "luminosidade": 0.924435
+        "temperaturaAr": 28.513,
+        "umidadeAr": 40.652,
+        "luminosidade": 1958.218
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-061",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:01:00Z",
+      "idObservacao": "sintetico-060",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.666581,
-        "temperaturaAr": 0.079125,
-        "umidadeAr": -0.957223,
-        "luminosidade": -0.342119
+        "temperaturaAr": 32.086,
+        "umidadeAr": 91.793,
+        "luminosidade": 1704.491
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-062",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:02:00Z",
+      "idObservacao": "sintetico-061",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.279942,
-        "temperaturaAr": -0.26534,
-        "umidadeAr": -0.737956,
-        "luminosidade": -0.30865
+        "temperaturaAr": 21.437,
+        "umidadeAr": 36.167,
+        "luminosidade": 2384.666
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-063",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:03:00Z",
+      "idObservacao": "sintetico-062",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.968062,
-        "temperaturaAr": -0.357797,
-        "umidadeAr": -0.564696,
-        "luminosidade": -0.600192
+        "temperaturaAr": 33.316,
+        "umidadeAr": 58.62,
+        "luminosidade": 1895.738
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-064",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:04:00Z",
+      "idObservacao": "sintetico-063",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.730183,
-        "temperaturaAr": -0.535823,
-        "umidadeAr": -0.88347,
-        "luminosidade": -0.28715
+        "temperaturaAr": 25.99,
+        "umidadeAr": 68.066,
+        "luminosidade": 2519.186
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-065",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:05:00Z",
+      "idObservacao": "sintetico-064",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.175086,
-        "temperaturaAr": -0.262027,
-        "umidadeAr": -0.114549,
-        "luminosidade": -0.738268
+        "temperaturaAr": 25.371,
+        "umidadeAr": 67.542,
+        "luminosidade": 2222.76
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-066",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:06:00Z",
+      "idObservacao": "sintetico-065",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.542146,
-        "temperaturaAr": -0.929838,
-        "umidadeAr": -0.229685,
-        "luminosidade": -0.955814
+        "temperaturaAr": 28.857,
+        "umidadeAr": 74.057,
+        "luminosidade": 1978.274
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-067",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:07:00Z",
+      "idObservacao": "sintetico-066",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.566108,
-        "temperaturaAr": 0.521516,
-        "umidadeAr": -0.125445,
-        "luminosidade": -0.377654
+        "temperaturaAr": 28.341,
+        "umidadeAr": 50.703,
+        "luminosidade": 2085.26
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-068",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:08:00Z",
+      "idObservacao": "sintetico-067",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.709184,
-        "temperaturaAr": -0.316146,
-        "umidadeAr": -0.1075,
-        "luminosidade": 0.27338
+        "temperaturaAr": 31.931,
+        "umidadeAr": 87.364,
+        "luminosidade": 1688.082
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-069",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:09:00Z",
+      "idObservacao": "sintetico-068",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.584047,
-        "temperaturaAr": -0.743169,
-        "umidadeAr": 0.076758,
-        "luminosidade": -0.342261
+        "temperaturaAr": 30.055,
+        "umidadeAr": 56.765,
+        "luminosidade": 1453.719
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-070",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:10:00Z",
+      "idObservacao": "sintetico-069",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.573698,
-        "temperaturaAr": 0.829162,
-        "umidadeAr": -0.894091,
-        "luminosidade": -0.626872
+        "temperaturaAr": 27.681,
+        "umidadeAr": 51.056,
+        "luminosidade": 1416.891
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-071",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:11:00Z",
+      "idObservacao": "sintetico-070",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.209226,
-        "temperaturaAr": 0.098464,
-        "umidadeAr": 0.172665,
-        "luminosidade": 0.380664
+        "temperaturaAr": 24.652,
+        "umidadeAr": 62.636,
+        "luminosidade": 1538.147
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-072",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:12:00Z",
+      "idObservacao": "sintetico-071",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.599154,
-        "temperaturaAr": 0.501882,
-        "umidadeAr": 0.551234,
-        "luminosidade": 0.469469
+        "temperaturaAr": 22.669,
+        "umidadeAr": 60.881,
+        "luminosidade": 1064.543
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-073",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:13:00Z",
+      "idObservacao": "sintetico-072",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.119879,
-        "temperaturaAr": 0.706274,
-        "umidadeAr": 0.905135,
-        "luminosidade": -0.479178
+        "temperaturaAr": 28.012,
+        "umidadeAr": 53.063,
+        "luminosidade": 2318.046
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-074",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:14:00Z",
+      "idObservacao": "sintetico-073",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.723749,
-        "temperaturaAr": 0.506785,
-        "umidadeAr": -0.568416,
-        "luminosidade": 0.754319
+        "temperaturaAr": 31.298,
+        "umidadeAr": 47.194,
+        "luminosidade": 2396.244
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-075",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:15:00Z",
+      "idObservacao": "sintetico-074",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.187988,
-        "temperaturaAr": 0.80395,
-        "umidadeAr": -0.564652,
-        "luminosidade": 0.015512
+        "temperaturaAr": 26.266,
+        "umidadeAr": 86.384,
+        "luminosidade": 2009.17
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-076",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:16:00Z",
+      "idObservacao": "sintetico-075",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.220533,
-        "temperaturaAr": -0.7971,
-        "umidadeAr": 0.759005,
-        "luminosidade": -0.049977
+        "temperaturaAr": 26.965,
+        "umidadeAr": 39.881,
+        "luminosidade": 780.539
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-077",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:17:00Z",
+      "idObservacao": "sintetico-076",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.579311,
-        "temperaturaAr": -0.524619,
-        "umidadeAr": 0.231854,
-        "luminosidade": 0.395694
+        "temperaturaAr": 29.219,
+        "umidadeAr": 75.448,
+        "luminosidade": 2790.485
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-078",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:18:00Z",
+      "idObservacao": "sintetico-077",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.4988,
-        "temperaturaAr": -0.604622,
-        "umidadeAr": 0.444529,
-        "luminosidade": -0.002874
+        "temperaturaAr": 25.104,
+        "umidadeAr": 58.628,
+        "luminosidade": 538.932
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-079",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:19:00Z",
+      "idObservacao": "sintetico-078",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.197635,
-        "temperaturaAr": -0.703996,
-        "umidadeAr": 0.85266,
-        "luminosidade": -0.141105
+        "temperaturaAr": 17.447,
+        "umidadeAr": 60.246,
+        "luminosidade": 962.095
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-080",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:20:00Z",
+      "idObservacao": "sintetico-079",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.822035,
-        "temperaturaAr": 0.871372,
-        "umidadeAr": 0.204418,
-        "luminosidade": 0.849365
+        "temperaturaAr": 21.05,
+        "umidadeAr": 40.299,
+        "luminosidade": 2950.649
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-081",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:21:00Z",
+      "idObservacao": "sintetico-080",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.807776,
-        "temperaturaAr": -0.730154,
-        "umidadeAr": -0.962609,
-        "luminosidade": -0.331424
+        "temperaturaAr": 27.365,
+        "umidadeAr": 49.055,
+        "luminosidade": 2413.382
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-082",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:22:00Z",
+      "idObservacao": "sintetico-081",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.509477,
-        "temperaturaAr": 0.32422,
-        "umidadeAr": 0.391026,
-        "luminosidade": -0.453841
+        "temperaturaAr": 25.455,
+        "umidadeAr": 54.679,
+        "luminosidade": 2327.561
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-083",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:23:00Z",
+      "idObservacao": "sintetico-082",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.026211,
-        "temperaturaAr": 0.657056,
-        "umidadeAr": -0.944718,
-        "luminosidade": 0.453016
+        "temperaturaAr": 27.379,
+        "umidadeAr": 70.105,
+        "luminosidade": 2407.888
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-084",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:24:00Z",
+      "idObservacao": "sintetico-083",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.095464,
-        "temperaturaAr": -0.111308,
-        "umidadeAr": 0.54578,
-        "luminosidade": 0.88786
+        "temperaturaAr": 25.335,
+        "umidadeAr": 63.618,
+        "luminosidade": 2279.39
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-085",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:25:00Z",
+      "idObservacao": "sintetico-084",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.182924,
-        "temperaturaAr": 0.910525,
-        "umidadeAr": -0.54041,
-        "luminosidade": -0.209049
+        "temperaturaAr": 26.827,
+        "umidadeAr": 55.462,
+        "luminosidade": 2408.447
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-086",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:26:00Z",
+      "idObservacao": "sintetico-085",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.203714,
-        "temperaturaAr": 0.812824,
-        "umidadeAr": 0.189594,
-        "luminosidade": -0.610172
+        "temperaturaAr": 26.277,
+        "umidadeAr": 52.183,
+        "luminosidade": 1609.062
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-087",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:27:00Z",
+      "idObservacao": "sintetico-086",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.449498,
-        "temperaturaAr": 0.687421,
-        "umidadeAr": 0.485733,
-        "luminosidade": 0.15555
+        "temperaturaAr": 23.116,
+        "umidadeAr": 64.238,
+        "luminosidade": 1920.464
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-088",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:28:00Z",
+      "idObservacao": "sintetico-087",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.319542,
-        "temperaturaAr": 0.50951,
-        "umidadeAr": 0.022482,
-        "luminosidade": -0.806351
+        "temperaturaAr": 26.007,
+        "umidadeAr": 60.096,
+        "luminosidade": 1980.986
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-089",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:29:00Z",
+      "idObservacao": "sintetico-088",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.429429,
-        "temperaturaAr": 0.737266,
-        "umidadeAr": 0.931376,
-        "luminosidade": -0.051598
+        "temperaturaAr": 26.325,
+        "umidadeAr": 81.86,
+        "luminosidade": 1437.593
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-090",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:30:00Z",
+      "idObservacao": "sintetico-089",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.905532,
-        "temperaturaAr": 0.541052,
-        "umidadeAr": -0.564818,
-        "luminosidade": -0.569687
+        "temperaturaAr": 26.26,
+        "umidadeAr": 68.706,
+        "luminosidade": 1479.919
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-091",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:31:00Z",
+      "idObservacao": "sintetico-090",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.095132,
-        "temperaturaAr": -0.795655,
-        "umidadeAr": 0.156698,
-        "luminosidade": -0.766635
+        "temperaturaAr": 19.898,
+        "umidadeAr": 67.658,
+        "luminosidade": 1979.363
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-092",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:32:00Z",
+      "idObservacao": "sintetico-091",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.578252,
-        "temperaturaAr": 0.229174,
-        "umidadeAr": 0.943653,
-        "luminosidade": -0.683111
+        "temperaturaAr": 23.077,
+        "umidadeAr": 51.593,
+        "luminosidade": 1776.299
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-093",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:33:00Z",
+      "idObservacao": "sintetico-092",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.851802,
-        "temperaturaAr": 0.888262,
-        "umidadeAr": 0.002578,
-        "luminosidade": 0.468759
+        "temperaturaAr": 26.934,
+        "umidadeAr": 36.092,
+        "luminosidade": 2252.285
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-094",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:34:00Z",
+      "idObservacao": "sintetico-093",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.277959,
-        "temperaturaAr": 0.787696,
-        "umidadeAr": -0.470877,
-        "luminosidade": 0.450897
+        "temperaturaAr": 25.798,
+        "umidadeAr": 50.008,
+        "luminosidade": 2347.351
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-095",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:35:00Z",
+      "idObservacao": "sintetico-094",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.263067,
-        "temperaturaAr": 0.530708,
-        "umidadeAr": 0.910197,
-        "luminosidade": 0.982762
+        "temperaturaAr": 20.017,
+        "umidadeAr": 52.515,
+        "luminosidade": 2196.397
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-096",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:36:00Z",
+      "idObservacao": "sintetico-095",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.961675,
-        "temperaturaAr": -0.69006,
-        "umidadeAr": -0.483345,
-        "luminosidade": -0.190532
+        "temperaturaAr": 31.031,
+        "umidadeAr": 65.133,
+        "luminosidade": 967.321
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-097",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:37:00Z",
+      "idObservacao": "sintetico-096",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.629665,
-        "temperaturaAr": 0.434699,
-        "umidadeAr": 0.436438,
-        "luminosidade": 0.081248
+        "temperaturaAr": 18.079,
+        "umidadeAr": 70.644,
+        "luminosidade": 2330.648
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-098",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:38:00Z",
+      "idObservacao": "sintetico-097",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.656433,
-        "temperaturaAr": -0.711875,
-        "umidadeAr": -0.212166,
-        "luminosidade": -0.595925
+        "temperaturaAr": 24.133,
+        "umidadeAr": 74.981,
+        "luminosidade": 1159.547
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-099",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:39:00Z",
+      "idObservacao": "sintetico-098",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.39478,
-        "temperaturaAr": -0.047675,
-        "umidadeAr": 0.949707,
-        "luminosidade": 0.729562
+        "temperaturaAr": 26.66,
+        "umidadeAr": 86.009,
+        "luminosidade": 861.696
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-100",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:40:00Z",
+      "idObservacao": "sintetico-099",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.365448,
-        "temperaturaAr": 0.549873,
-        "umidadeAr": -0.388194,
-        "luminosidade": -0.624509
+        "temperaturaAr": 29.561,
+        "umidadeAr": 64.882,
+        "luminosidade": 2576.361
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-101",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:41:00Z",
+      "idObservacao": "sintetico-100",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.762507,
-        "temperaturaAr": 0.213499,
-        "umidadeAr": 0.94245,
-        "luminosidade": 0.859022
+        "temperaturaAr": 23.648,
+        "umidadeAr": 65.545,
+        "luminosidade": 2378.568
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-102",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:42:00Z",
+      "idObservacao": "sintetico-101",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.776763,
-        "temperaturaAr": -0.424222,
-        "umidadeAr": 0.111669,
-        "luminosidade": -0.926639
+        "temperaturaAr": 22.037,
+        "umidadeAr": 64.18,
+        "luminosidade": 1485.879
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-103",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:43:00Z",
+      "idObservacao": "sintetico-102",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.542362,
-        "temperaturaAr": 0.953769,
-        "umidadeAr": 0.384619,
-        "luminosidade": -0.841423
+        "temperaturaAr": 20.613,
+        "umidadeAr": 49.641,
+        "luminosidade": 1898.549
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-104",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:44:00Z",
+      "idObservacao": "sintetico-103",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.265585,
-        "temperaturaAr": 0.299114,
-        "umidadeAr": 0.704072,
-        "luminosidade": -0.455422
+        "temperaturaAr": 27.522,
+        "umidadeAr": 59.555,
+        "luminosidade": 1228.839
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-105",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:45:00Z",
+      "idObservacao": "sintetico-104",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.795373,
-        "temperaturaAr": 0.602733,
-        "umidadeAr": 0.912877,
-        "luminosidade": -0.854666
+        "temperaturaAr": 23.251,
+        "umidadeAr": 58.049,
+        "luminosidade": 2449.786
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-106",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:46:00Z",
+      "idObservacao": "sintetico-105",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.21824,
-        "temperaturaAr": -0.090497,
-        "umidadeAr": -0.607588,
-        "luminosidade": 0.783624
+        "temperaturaAr": 23.202,
+        "umidadeAr": 85.831,
+        "luminosidade": 2620.696
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-107",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:47:00Z",
+      "idObservacao": "sintetico-106",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.989173,
-        "temperaturaAr": -0.016378,
-        "umidadeAr": -0.461123,
-        "luminosidade": 0.555737
+        "temperaturaAr": 18.08,
+        "umidadeAr": 45.654,
+        "luminosidade": 2157.041
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-108",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:48:00Z",
+      "idObservacao": "sintetico-107",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.002705,
-        "temperaturaAr": 0.036505,
-        "umidadeAr": 0.568739,
-        "luminosidade": -0.850578
+        "temperaturaAr": 26.162,
+        "umidadeAr": 72.751,
+        "luminosidade": 1961.32
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-109",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:49:00Z",
+      "idObservacao": "sintetico-108",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.478842,
-        "temperaturaAr": -0.242038,
-        "umidadeAr": 0.738245,
-        "luminosidade": -0.440147
+        "temperaturaAr": 25.167,
+        "umidadeAr": 44.33,
+        "luminosidade": 1744.492
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-110",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:50:00Z",
+      "idObservacao": "sintetico-109",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.265631,
-        "temperaturaAr": 0.365229,
-        "umidadeAr": -0.251651,
-        "luminosidade": 0.452542
+        "temperaturaAr": 22.141,
+        "umidadeAr": 39.541,
+        "luminosidade": 1989.587
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-111",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:51:00Z",
+      "idObservacao": "sintetico-110",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.113347,
-        "temperaturaAr": 0.141318,
-        "umidadeAr": 0.22312,
-        "luminosidade": -0.202862
+        "temperaturaAr": 31.027,
+        "umidadeAr": 65.339,
+        "luminosidade": 1299.303
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-112",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:52:00Z",
+      "idObservacao": "sintetico-111",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.570815,
-        "temperaturaAr": -0.467867,
-        "umidadeAr": -0.988192,
-        "luminosidade": 0.041892
+        "temperaturaAr": 26.217,
+        "umidadeAr": 66.129,
+        "luminosidade": 522.095
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-113",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:53:00Z",
+      "idObservacao": "sintetico-112",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.613682,
-        "temperaturaAr": -0.377791,
-        "umidadeAr": 0.080748,
-        "luminosidade": 0.363958
+        "temperaturaAr": 17.049,
+        "umidadeAr": 45.74,
+        "luminosidade": 1973.677
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-114",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:54:00Z",
+      "idObservacao": "sintetico-113",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.919107,
-        "temperaturaAr": -0.007457,
-        "umidadeAr": 0.668502,
-        "luminosidade": -0.30029
+        "temperaturaAr": 28.782,
+        "umidadeAr": 41.049,
+        "luminosidade": 2653.911
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-115",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:55:00Z",
+      "idObservacao": "sintetico-114",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.875407,
-        "temperaturaAr": -0.038227,
-        "umidadeAr": -0.013813,
-        "luminosidade": 0.712818
+        "temperaturaAr": 22.929,
+        "umidadeAr": 57.567,
+        "luminosidade": 1723.447
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-116",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:56:00Z",
+      "idObservacao": "sintetico-115",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.124305,
-        "temperaturaAr": 0.546918,
-        "umidadeAr": 0.577279,
-        "luminosidade": -0.421869
+        "temperaturaAr": 32.229,
+        "umidadeAr": 61.294,
+        "luminosidade": 1139.122
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-117",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:57:00Z",
+      "idObservacao": "sintetico-116",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.7708,
-        "temperaturaAr": 0.16852,
-        "umidadeAr": -0.168536,
-        "luminosidade": -0.061217
+        "temperaturaAr": 21.578,
+        "umidadeAr": 45.028,
+        "luminosidade": 1638.895
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-118",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:58:00Z",
+      "idObservacao": "sintetico-117",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": -0.144228,
-        "temperaturaAr": -0.376875,
-        "umidadeAr": -0.080572,
-        "luminosidade": 0.845108
+        "temperaturaAr": 24.879,
+        "umidadeAr": 56.683,
+        "luminosidade": 760.004
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-119",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T01:59:00Z",
+      "idObservacao": "sintetico-118",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.540066,
-        "temperaturaAr": 0.864685,
-        "umidadeAr": 0.30333,
-        "luminosidade": -0.208214
+        "temperaturaAr": 29.209,
+        "umidadeAr": 59.089,
+        "luminosidade": 2851.652
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
     },
     {
-      "idObservacao": "treino-normal-120",
-      "idDispositivo": "dispositivo-simulado-isolation-forest",
-      "registradoEm": "2026-11-09T02:00:00Z",
+      "idObservacao": "sintetico-119",
+      "idDispositivo": null,
+      "registradoEm": null,
       "valores": {
-        "umidadeSolo": 0.33769,
-        "temperaturaAr": 0.208898,
-        "umidadeAr": 0.736388,
-        "luminosidade": -0.912478
+        "temperaturaAr": 23.093,
+        "umidadeAr": 63.689,
+        "luminosidade": 2295.391
       },
       "unidades": {
-        "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-        "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-        "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-        "luminosidade": "indice_sintetico_sem_unidade_fisica"
+        "temperaturaAr": "°C",
+        "umidadeAr": "%",
+        "luminosidade": "ADC"
       },
       "qualidade": "VALIDA",
       "origem": "SIMULADO_TESTE"
@@ -2296,20 +2060,18 @@
   "avaliacao": [
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-001",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:01:00Z",
+        "idObservacao": "sintetico-120",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.951911,
-          "temperaturaAr": -0.960305,
-          "umidadeAr": -0.121188,
-          "luminosidade": 0.687204
+          "temperaturaAr": 23.314,
+          "umidadeAr": 63.64,
+          "luminosidade": 1645.388
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2318,20 +2080,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-002",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:02:00Z",
+        "idObservacao": "sintetico-121",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.652679,
-          "temperaturaAr": 0.843897,
-          "umidadeAr": 0.888124,
-          "luminosidade": 0.415748
+          "temperaturaAr": 24.105,
+          "umidadeAr": 66.033,
+          "luminosidade": 1123.16
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2340,20 +2100,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-003",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:03:00Z",
+        "idObservacao": "sintetico-122",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.136088,
-          "temperaturaAr": 0.702677,
-          "umidadeAr": 0.185942,
-          "luminosidade": -0.565449
+          "temperaturaAr": 27.197,
+          "umidadeAr": 60.759,
+          "luminosidade": 3144.862
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2362,20 +2120,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-004",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:04:00Z",
+        "idObservacao": "sintetico-123",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.856693,
-          "temperaturaAr": 0.286824,
-          "umidadeAr": -0.947922,
-          "luminosidade": -0.55771
+          "temperaturaAr": 20.902,
+          "umidadeAr": 42.461,
+          "luminosidade": 1892.353
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2384,20 +2140,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-005",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:05:00Z",
+        "idObservacao": "sintetico-124",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.186026,
-          "temperaturaAr": -0.472412,
-          "umidadeAr": -0.025463,
-          "luminosidade": 0.722459
+          "temperaturaAr": 19.83,
+          "umidadeAr": 81.479,
+          "luminosidade": 1814.797
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2406,20 +2160,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-006",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:06:00Z",
+        "idObservacao": "sintetico-125",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.584923,
-          "temperaturaAr": -0.629852,
-          "umidadeAr": 0.445182,
-          "luminosidade": -0.72965
+          "temperaturaAr": 31.084,
+          "umidadeAr": 48.157,
+          "luminosidade": 2626.406
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2428,20 +2180,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-007",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:07:00Z",
+        "idObservacao": "sintetico-126",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.349249,
-          "temperaturaAr": -0.727867,
-          "umidadeAr": 0.314547,
-          "luminosidade": 0.132588
+          "temperaturaAr": 36.254,
+          "umidadeAr": 51.699,
+          "luminosidade": 2234.146
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2450,20 +2200,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-008",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:08:00Z",
+        "idObservacao": "sintetico-127",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.998093,
-          "temperaturaAr": -0.034995,
-          "umidadeAr": -0.061433,
-          "luminosidade": 0.530168
+          "temperaturaAr": 25.265,
+          "umidadeAr": 61.361,
+          "luminosidade": 2489.964
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2472,20 +2220,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-009",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:09:00Z",
+        "idObservacao": "sintetico-128",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.944604,
-          "temperaturaAr": 0.582988,
-          "umidadeAr": 0.119209,
-          "luminosidade": -0.96343
+          "temperaturaAr": 27.393,
+          "umidadeAr": 79.515,
+          "luminosidade": 1756.498
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2494,20 +2240,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-010",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:10:00Z",
+        "idObservacao": "sintetico-129",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.478735,
-          "temperaturaAr": 0.052842,
-          "umidadeAr": -0.68649,
-          "luminosidade": 0.84296
+          "temperaturaAr": 20.354,
+          "umidadeAr": 65.159,
+          "luminosidade": 1614.777
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2516,20 +2260,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-011",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:11:00Z",
+        "idObservacao": "sintetico-130",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.462413,
-          "temperaturaAr": 0.511591,
-          "umidadeAr": 0.105879,
-          "luminosidade": -0.058824
+          "temperaturaAr": 22.993,
+          "umidadeAr": 66.985,
+          "luminosidade": 1685.926
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2538,20 +2280,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-012",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:12:00Z",
+        "idObservacao": "sintetico-131",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.491803,
-          "temperaturaAr": -0.953238,
-          "umidadeAr": 0.419034,
-          "luminosidade": -0.549689
+          "temperaturaAr": 29.087,
+          "umidadeAr": 85.706,
+          "luminosidade": 1717.442
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2560,20 +2300,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-013",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:13:00Z",
+        "idObservacao": "sintetico-132",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.238596,
-          "temperaturaAr": -0.860376,
-          "umidadeAr": -0.299509,
-          "luminosidade": -0.838487
+          "temperaturaAr": 22.308,
+          "umidadeAr": 80.901,
+          "luminosidade": 1771.305
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2582,20 +2320,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-014",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:14:00Z",
+        "idObservacao": "sintetico-133",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.864798,
-          "temperaturaAr": 0.29472,
-          "umidadeAr": 0.518209,
-          "luminosidade": 0.559223
+          "temperaturaAr": 27.301,
+          "umidadeAr": 74.039,
+          "luminosidade": 1362.117
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2604,20 +2340,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-015",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:15:00Z",
+        "idObservacao": "sintetico-134",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.612561,
-          "temperaturaAr": -0.48718,
-          "umidadeAr": 0.864813,
-          "luminosidade": -0.197755
+          "temperaturaAr": 33.609,
+          "umidadeAr": 57.03,
+          "luminosidade": 2265.145
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2626,20 +2360,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-016",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:16:00Z",
+        "idObservacao": "sintetico-135",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.10053,
-          "temperaturaAr": -0.26575,
-          "umidadeAr": 0.214747,
-          "luminosidade": 0.222357
+          "temperaturaAr": 27.02,
+          "umidadeAr": 58.919,
+          "luminosidade": 1845.507
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2648,20 +2380,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-017",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:17:00Z",
+        "idObservacao": "sintetico-136",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.701553,
-          "temperaturaAr": -0.377281,
-          "umidadeAr": -0.190032,
-          "luminosidade": -0.901369
+          "temperaturaAr": 26.384,
+          "umidadeAr": 29.352,
+          "luminosidade": 1816.403
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2670,20 +2400,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-018",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:18:00Z",
+        "idObservacao": "sintetico-137",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.679099,
-          "temperaturaAr": -0.172226,
-          "umidadeAr": 0.781672,
-          "luminosidade": -0.241369
+          "temperaturaAr": 23.556,
+          "umidadeAr": 50.328,
+          "luminosidade": 1277.729
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2692,20 +2420,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-019",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:19:00Z",
+        "idObservacao": "sintetico-138",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.191801,
-          "temperaturaAr": -0.061414,
-          "umidadeAr": -0.588416,
-          "luminosidade": 0.576574
+          "temperaturaAr": 26.812,
+          "umidadeAr": 54.332,
+          "luminosidade": 2734.648
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2714,20 +2440,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-020",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:20:00Z",
+        "idObservacao": "sintetico-139",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.013451,
-          "temperaturaAr": 0.171934,
-          "umidadeAr": 0.817822,
-          "luminosidade": -0.593377
+          "temperaturaAr": 29.096,
+          "umidadeAr": 66.488,
+          "luminosidade": 1839.103
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2736,20 +2460,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-021",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:21:00Z",
+        "idObservacao": "sintetico-140",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.294257,
-          "temperaturaAr": 0.218826,
-          "umidadeAr": 0.335947,
-          "luminosidade": -0.255694
+          "temperaturaAr": 21.761,
+          "umidadeAr": 70.368,
+          "luminosidade": 2305.615
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2758,20 +2480,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-022",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:22:00Z",
+        "idObservacao": "sintetico-141",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.4489,
-          "temperaturaAr": 0.981264,
-          "umidadeAr": 0.873303,
-          "luminosidade": -0.730005
+          "temperaturaAr": 32.561,
+          "umidadeAr": 75.954,
+          "luminosidade": 1922.95
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2780,20 +2500,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-023",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:23:00Z",
+        "idObservacao": "sintetico-142",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.961124,
-          "temperaturaAr": -0.268027,
-          "umidadeAr": 0.564249,
-          "luminosidade": 0.134358
+          "temperaturaAr": 24.197,
+          "umidadeAr": 82.661,
+          "luminosidade": 1199.048
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2802,20 +2520,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-024",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:24:00Z",
+        "idObservacao": "sintetico-143",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.393631,
-          "temperaturaAr": 0.305867,
-          "umidadeAr": 0.097555,
-          "luminosidade": -0.976535
+          "temperaturaAr": 25.039,
+          "umidadeAr": 63.013,
+          "luminosidade": 1676.743
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2824,20 +2540,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-025",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:25:00Z",
+        "idObservacao": "sintetico-144",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.935994,
-          "temperaturaAr": -0.986291,
-          "umidadeAr": 0.985821,
-          "luminosidade": -0.391072
+          "temperaturaAr": 24.754,
+          "umidadeAr": 73.687,
+          "luminosidade": 2219.879
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2846,20 +2560,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-026",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:26:00Z",
+        "idObservacao": "sintetico-145",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.633634,
-          "temperaturaAr": 0.647631,
-          "umidadeAr": -0.510033,
-          "luminosidade": 0.545966
+          "temperaturaAr": 22.743,
+          "umidadeAr": 49.791,
+          "luminosidade": 1248.908
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2868,20 +2580,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-027",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:27:00Z",
+        "idObservacao": "sintetico-146",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.959746,
-          "temperaturaAr": -0.383027,
-          "umidadeAr": 0.400693,
-          "luminosidade": 0.531978
+          "temperaturaAr": 20.697,
+          "umidadeAr": 75.73,
+          "luminosidade": 1193.09
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2890,20 +2600,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-028",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:28:00Z",
+        "idObservacao": "sintetico-147",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.293652,
-          "temperaturaAr": -0.888924,
-          "umidadeAr": 0.411844,
-          "luminosidade": -0.584215
+          "temperaturaAr": 26.723,
+          "umidadeAr": 52.752,
+          "luminosidade": 1522.786
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2912,20 +2620,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-029",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:29:00Z",
+        "idObservacao": "sintetico-148",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.175443,
-          "temperaturaAr": 0.225467,
-          "umidadeAr": -0.759399,
-          "luminosidade": 0.909665
+          "temperaturaAr": 25.659,
+          "umidadeAr": 71.206,
+          "luminosidade": 2603.179
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2934,20 +2640,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-030",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:30:00Z",
+        "idObservacao": "sintetico-149",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.129785,
-          "temperaturaAr": -0.344649,
-          "umidadeAr": -0.787972,
-          "luminosidade": -0.512044
+          "temperaturaAr": 25.171,
+          "umidadeAr": 65.622,
+          "luminosidade": 2369.133
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2956,20 +2660,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-031",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:31:00Z",
+        "idObservacao": "sintetico-150",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.722987,
-          "temperaturaAr": 0.22743,
-          "umidadeAr": 0.856355,
-          "luminosidade": -0.749313
+          "temperaturaAr": 19.432,
+          "umidadeAr": 57.441,
+          "luminosidade": 2557.412
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -2978,20 +2680,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-032",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:32:00Z",
+        "idObservacao": "sintetico-151",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.92934,
-          "temperaturaAr": 0.76969,
-          "umidadeAr": -0.105983,
-          "luminosidade": -0.810911
+          "temperaturaAr": 23.881,
+          "umidadeAr": 67.623,
+          "luminosidade": 1435.447
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3000,20 +2700,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-033",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:33:00Z",
+        "idObservacao": "sintetico-152",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.574938,
-          "temperaturaAr": -0.032294,
-          "umidadeAr": -0.074788,
-          "luminosidade": -0.414839
+          "temperaturaAr": 29.022,
+          "umidadeAr": 67.242,
+          "luminosidade": 758.376
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3022,20 +2720,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-034",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:34:00Z",
+        "idObservacao": "sintetico-153",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.616798,
-          "temperaturaAr": 0.735031,
-          "umidadeAr": 0.755517,
-          "luminosidade": 0.709002
+          "temperaturaAr": 25.325,
+          "umidadeAr": 42.878,
+          "luminosidade": 1519.527
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3044,20 +2740,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-035",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:35:00Z",
+        "idObservacao": "sintetico-154",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.775883,
-          "temperaturaAr": 0.030604,
-          "umidadeAr": -0.796704,
-          "luminosidade": -0.730831
+          "temperaturaAr": 25.755,
+          "umidadeAr": 52.378,
+          "luminosidade": 2477.698
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3066,20 +2760,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-036",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:36:00Z",
+        "idObservacao": "sintetico-155",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.281689,
-          "temperaturaAr": 0.068058,
-          "umidadeAr": -0.574655,
-          "luminosidade": 0.901839
+          "temperaturaAr": 21.68,
+          "umidadeAr": 50.34,
+          "luminosidade": 2229.801
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3088,20 +2780,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-037",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:37:00Z",
+        "idObservacao": "sintetico-156",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.37413,
-          "temperaturaAr": 0.895488,
-          "umidadeAr": -0.182701,
-          "luminosidade": 0.908437
+          "temperaturaAr": 22.048,
+          "umidadeAr": 66.539,
+          "luminosidade": 629.882
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3110,20 +2800,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-038",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:38:00Z",
+        "idObservacao": "sintetico-157",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.549986,
-          "temperaturaAr": -0.203849,
-          "umidadeAr": 0.802356,
-          "luminosidade": 0.908177
+          "temperaturaAr": 27.153,
+          "umidadeAr": 65.496,
+          "luminosidade": 564.525
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3132,20 +2820,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-039",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:39:00Z",
+        "idObservacao": "sintetico-158",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.774274,
-          "temperaturaAr": -0.387007,
-          "umidadeAr": 0.796379,
-          "luminosidade": -0.630465
+          "temperaturaAr": 22.79,
+          "umidadeAr": 52.179,
+          "luminosidade": 1514.43
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3154,20 +2840,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-normal-040",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:40:00Z",
+        "idObservacao": "sintetico-159",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.899724,
-          "temperaturaAr": -0.027315,
-          "umidadeAr": -0.766594,
-          "luminosidade": -0.733429
+          "temperaturaAr": 20.483,
+          "umidadeAr": 64.428,
+          "luminosidade": 1772.176
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3176,20 +2860,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-001",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:01:00Z",
+        "idObservacao": "sintetico-160",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 7.130153,
-          "temperaturaAr": 0.990041,
-          "umidadeAr": 0.800276,
-          "luminosidade": 0.044726
+          "temperaturaAr": 5.071,
+          "umidadeAr": 10.043,
+          "luminosidade": 3956.515
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3198,20 +2880,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-002",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:02:00Z",
+        "idObservacao": "sintetico-161",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.681049,
-          "temperaturaAr": -7.91387,
-          "umidadeAr": 0.479827,
-          "luminosidade": 0.722686
+          "temperaturaAr": 5.044,
+          "umidadeAr": 95.915,
+          "luminosidade": 101.456
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3220,20 +2900,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-003",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:03:00Z",
+        "idObservacao": "sintetico-162",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.383409,
-          "temperaturaAr": 0.591165,
-          "umidadeAr": 6.237509,
-          "luminosidade": 0.976545
+          "temperaturaAr": 4.965,
+          "umidadeAr": 94.964,
+          "luminosidade": 4043.348
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3242,20 +2920,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-004",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:04:00Z",
+        "idObservacao": "sintetico-163",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.075891,
-          "temperaturaAr": -0.651282,
-          "umidadeAr": 0.147503,
-          "luminosidade": -4.440519
+          "temperaturaAr": 4.934,
+          "umidadeAr": 10.094,
+          "luminosidade": 100.244
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3264,20 +2940,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-005",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:05:00Z",
+        "idObservacao": "sintetico-164",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 6.059144,
-          "temperaturaAr": -0.878837,
-          "umidadeAr": 0.552726,
-          "luminosidade": -0.786634
+          "temperaturaAr": 5.048,
+          "umidadeAr": 9.883,
+          "luminosidade": 3969.668
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3286,20 +2960,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-006",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:06:00Z",
+        "idObservacao": "sintetico-165",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.855258,
-          "temperaturaAr": -6.306139,
-          "umidadeAr": 0.575349,
-          "luminosidade": -0.780462
+          "temperaturaAr": 4.928,
+          "umidadeAr": 10.072,
+          "luminosidade": 4003.171
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3308,20 +2980,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-007",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:07:00Z",
+        "idObservacao": "sintetico-166",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.930127,
-          "temperaturaAr": -0.472886,
-          "umidadeAr": -7.626035,
-          "luminosidade": -0.477278
+          "temperaturaAr": 5.008,
+          "umidadeAr": 94.916,
+          "luminosidade": 100.738
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3330,20 +3000,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-008",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:08:00Z",
+        "idObservacao": "sintetico-167",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.938151,
-          "temperaturaAr": -0.898758,
-          "umidadeAr": -0.415644,
-          "luminosidade": 4.99263
+          "temperaturaAr": 4.928,
+          "umidadeAr": 94.092,
+          "luminosidade": 99.089
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3352,20 +3020,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-009",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:09:00Z",
+        "idObservacao": "sintetico-168",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 4.104859,
-          "temperaturaAr": -0.130099,
-          "umidadeAr": -0.837615,
-          "luminosidade": -0.161956
+          "temperaturaAr": 5.065,
+          "umidadeAr": 10.044,
+          "luminosidade": 100.777
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3374,20 +3040,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-010",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:10:00Z",
+        "idObservacao": "sintetico-169",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.076462,
-          "temperaturaAr": 5.676776,
-          "umidadeAr": -0.952602,
-          "luminosidade": 0.247352
+          "temperaturaAr": 44.457,
+          "umidadeAr": 95.851,
+          "luminosidade": 4026.543
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3396,20 +3060,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-011",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:11:00Z",
+        "idObservacao": "sintetico-170",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.505139,
-          "temperaturaAr": -0.515495,
-          "umidadeAr": -4.990015,
-          "luminosidade": -0.921823
+          "temperaturaAr": 5.016,
+          "umidadeAr": 95.317,
+          "luminosidade": 4042.093
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3418,20 +3080,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-012",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:12:00Z",
+        "idObservacao": "sintetico-171",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.829751,
-          "temperaturaAr": -0.846988,
-          "umidadeAr": -0.068251,
-          "luminosidade": -4.539095
+          "temperaturaAr": 44.392,
+          "umidadeAr": 95.968,
+          "luminosidade": 99.742
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3440,20 +3100,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-013",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:13:00Z",
+        "idObservacao": "sintetico-172",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 6.685695,
-          "temperaturaAr": -0.396896,
-          "umidadeAr": 0.588063,
-          "luminosidade": -0.672516
+          "temperaturaAr": 45.492,
+          "umidadeAr": 93.914,
+          "luminosidade": 4055.071
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3462,20 +3120,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-014",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:14:00Z",
+        "idObservacao": "sintetico-173",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.366457,
-          "temperaturaAr": -4.206584,
-          "umidadeAr": -0.125076,
-          "luminosidade": 0.141542
+          "temperaturaAr": 5.0,
+          "umidadeAr": 9.973,
+          "luminosidade": 4054.916
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3484,20 +3140,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-015",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:15:00Z",
+        "idObservacao": "sintetico-174",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.960693,
-          "temperaturaAr": -0.014129,
-          "umidadeAr": 4.457774,
-          "luminosidade": -0.464803
+          "temperaturaAr": 44.507,
+          "umidadeAr": 10.144,
+          "luminosidade": 99.598
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3506,20 +3160,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-016",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:16:00Z",
+        "idObservacao": "sintetico-175",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.309997,
-          "temperaturaAr": -0.294572,
-          "umidadeAr": -0.611073,
-          "luminosidade": -6.884428
+          "temperaturaAr": 5.007,
+          "umidadeAr": 93.608,
+          "luminosidade": 101.404
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3528,20 +3180,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-017",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:17:00Z",
+        "idObservacao": "sintetico-176",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 6.386443,
-          "temperaturaAr": -0.401583,
-          "umidadeAr": 0.697045,
-          "luminosidade": -0.305334
+          "temperaturaAr": 5.048,
+          "umidadeAr": 95.923,
+          "luminosidade": 3969.398
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3550,20 +3200,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-018",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:18:00Z",
+        "idObservacao": "sintetico-177",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.909457,
-          "temperaturaAr": 7.577342,
-          "umidadeAr": -0.72985,
-          "luminosidade": 0.00232
+          "temperaturaAr": 44.4,
+          "umidadeAr": 10.062,
+          "luminosidade": 99.124
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3572,20 +3220,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-019",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:19:00Z",
+        "idObservacao": "sintetico-178",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.155553,
-          "temperaturaAr": 0.406221,
-          "umidadeAr": -5.893782,
-          "luminosidade": -0.8086
+          "temperaturaAr": 44.781,
+          "umidadeAr": 9.929,
+          "luminosidade": 100.206
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3594,20 +3240,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-020",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:20:00Z",
+        "idObservacao": "sintetico-179",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.289518,
-          "temperaturaAr": -0.2537,
-          "umidadeAr": -0.339101,
-          "luminosidade": -6.790279
+          "temperaturaAr": 5.063,
+          "umidadeAr": 9.856,
+          "luminosidade": 100.995
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3616,20 +3260,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-021",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:21:00Z",
+        "idObservacao": "sintetico-180",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -5.979486,
-          "temperaturaAr": 0.394482,
-          "umidadeAr": -0.876073,
-          "luminosidade": 0.69485
+          "temperaturaAr": 5.07,
+          "umidadeAr": 10.115,
+          "luminosidade": 99.841
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3638,20 +3280,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-022",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:22:00Z",
+        "idObservacao": "sintetico-181",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.731008,
-          "temperaturaAr": 7.10275,
-          "umidadeAr": 0.937654,
-          "luminosidade": -0.221603
+          "temperaturaAr": 4.951,
+          "umidadeAr": 10.048,
+          "luminosidade": 100.072
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3660,20 +3300,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-023",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:23:00Z",
+        "idObservacao": "sintetico-182",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": -0.781914,
-          "temperaturaAr": -0.856982,
-          "umidadeAr": -6.121304,
-          "luminosidade": 0.227682
+          "temperaturaAr": 44.476,
+          "umidadeAr": 10.005,
+          "luminosidade": 98.805
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"
@@ -3682,20 +3320,18 @@
     },
     {
       "leitura": {
-        "idObservacao": "avaliacao-atipica-024",
-        "idDispositivo": "dispositivo-simulado-isolation-forest",
-        "registradoEm": "2026-11-09T00:24:00Z",
+        "idObservacao": "sintetico-183",
+        "idDispositivo": null,
+        "registradoEm": null,
         "valores": {
-          "umidadeSolo": 0.187836,
-          "temperaturaAr": 0.718617,
-          "umidadeAr": 0.265512,
-          "luminosidade": 5.772947
+          "temperaturaAr": 5.005,
+          "umidadeAr": 94.181,
+          "luminosidade": 4054.11
         },
         "unidades": {
-          "umidadeSolo": "indice_sintetico_sem_unidade_fisica",
-          "temperaturaAr": "indice_sintetico_sem_unidade_fisica",
-          "umidadeAr": "indice_sintetico_sem_unidade_fisica",
-          "luminosidade": "indice_sintetico_sem_unidade_fisica"
+          "temperaturaAr": "°C",
+          "umidadeAr": "%",
+          "luminosidade": "ADC"
         },
         "qualidade": "VALIDA",
         "origem": "SIMULADO_TESTE"

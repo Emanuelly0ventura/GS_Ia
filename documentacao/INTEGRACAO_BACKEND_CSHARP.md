@@ -18,7 +18,7 @@ Confirmar tipo, formato, escopo e estabilidade dos identificadores de usuário, 
 
 ## 4. Unidades e calibração
 
-Para cada grandeza, informar unidade, escala, faixa física, precisão, calibração e significado de ausente: umidade do solo, temperatura do ar, umidade do ar, luminosidade e quaisquer métricas adicionais. Esclarecer se umidade do solo é percentual calibrado ou leitura relativa e qual unidade é usada para luminosidade. Informar a versão e a fonte dos parâmetros agronômicos por cultura, variedade, solo e fase de desenvolvimento.
+Para as leituras de demonstração, confirmar unidade, escala, faixa física, precisão, calibração e significado de ausente para temperatura do ar (DHT22), umidade do ar (DHT22), luminosidade bruta do LDR e complementos BMP180. O modelo usa somente as três primeiras variáveis; `fields.soil_type` é atributo cadastral do terreno, não sensor. Informar a versão e a fonte dos parâmetros agronômicos por cultura, variedade, solo cadastral e fase de desenvolvimento.
 
 ## 5. Qualidade e validade de leituras
 

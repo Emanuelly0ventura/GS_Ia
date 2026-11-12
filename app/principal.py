@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+from pathlib import Path
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
@@ -13,6 +14,8 @@ from app.nucleo.excecoes import ErroAplicacao
 from app.rotas.saude import roteador as roteador_saude
 from app.rotas.anomalias import roteador as roteador_anomalias
 from app.rotas.conhecimento import roteador as roteador_conhecimento
+from app.telemetria.rotas import roteador_telemetria, roteador_dashboard
+from app.rotas.mobile_demo import roteador as roteador_mobile_demo
 
 configurar_logging()
 logger = obter_logger(__name__)
@@ -44,6 +47,9 @@ app.add_middleware(
 app.include_router(roteador_saude)
 app.include_router(roteador_anomalias)
 app.include_router(roteador_conhecimento)
+app.include_router(roteador_telemetria)
+app.include_router(roteador_dashboard)
+app.include_router(roteador_mobile_demo)
 
 @app.exception_handler(ErroAplicacao)
 async def tratar_erro_aplicacao(_: Request, erro: ErroAplicacao) -> JSONResponse:
@@ -58,3 +64,7 @@ async def tratar_erro_http(_: Request, erro: StarletteHTTPException) -> JSONResp
 async def tratar_erro_inesperado(_: Request, erro: Exception) -> JSONResponse:
     logger.exception("Erro inesperado durante o processamento", exc_info=erro)
     return JSONResponse(status_code=HTTP_500_INTERNAL_SERVER_ERROR, content={"erro": {"codigo": "ERRO_INTERNO", "mensagem": "Ocorreu um erro interno."}})
+
+@app.get("/dashboard", response_class=HTMLResponse, include_in_schema=False)
+def dashboard_web():
+    return (Path(__file__).resolve().parent.parent / "dashboard" / "index.html").read_text(encoding="utf-8")

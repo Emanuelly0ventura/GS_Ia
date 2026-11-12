@@ -12,6 +12,8 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-install-project
 COPY app ./app
+COPY dashboard ./dashboard
+COPY migrations ./migrations
 ENV PATH="/opt/venv/bin:$PATH"
 
 # O Render fornece PORT; localmente usa 8000.

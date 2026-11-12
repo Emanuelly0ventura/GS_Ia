@@ -1,7 +1,9 @@
-# Arquitetura inicial
+# Arquitetura
 
-A aplicação FastAPI expõe rotas HTTP e health checks. Configurações e logging ficam em `nucleo`; a conectividade PostgreSQL fica isolada em `banco`; contratos de acesso a dados e adaptadores provisórios ficam em `repositorios`.
+A aplicação FastAPI separa saúde, dados predefinidos do mobile, demonstração de anomalias, ingestão IoT, consultas do dashboard e conhecimento/RAG. Configurações e logging ficam em `app/nucleo`; contratos/adaptadores do banco principal permanecem em `app/repositorios`.
 
-Nesta fase não há consultas de negócio nem inferência. O PostgreSQL compartilhado será acessado futuramente apenas por repositórios de consulta, com credencial `SELECT` e engine configurada para transações read-only. O schema físico é desconhecido e não é presumido.
+O banco principal do aplicativo continua sem mapeamento físico nem escrita pela API. Sua engine read-only em `app/banco/conexao.py` não é reutilizada pela telemetria. O fluxo de demonstração usa `TELEMETRY_DATABASE_URL`, ORM próprio em `app/telemetria` e DDL versionado em `migrations/telemetria`; a API não aplica DDL no startup.
 
-A integração generativa e a base documental RAG serão módulos independentes, não acoplados ao schema compartilhado.
+A ingestão persiste um conjunto agrupado de temperatura do ar, umidade do ar e luminosidade ADC, executa modelo Isolation Forest v2 somente após validar os três valores e armazena o resultado com a versão do modelo. BMP180 é complementar. O snapshot mobile é fixo e não lê telemetria.
+
+RAG e geração ficam em módulos independentes e mantêm seus contratos e fontes separados da telemetria.

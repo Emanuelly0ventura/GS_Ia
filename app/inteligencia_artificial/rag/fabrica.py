@@ -122,9 +122,6 @@ def consultar_estado_rag(configuracoes: Configuracoes | None = None) -> dict[str
         modelo_estado = "PRESENTE_NAO_VALIDADO"
     elif find_spec("faiss") is None:
         modelo_estado = "PRESENTE_NAO_VALIDADO"
-    elif find_spec("sentence_transformers") is None:
-        modelo_estado = "DEPENDENCIA_AUSENTE"
-        indice_estado = "NAO_VALIDADO_MODELO_INDISPONIVEL"
     elif not configuracoes.rag_revisao_embeddings or not configuracoes.rag_revisao_embeddings.strip():
         modelo_estado = "REVISAO_NAO_CONFIGURADA"
         indice_estado = "NAO_VALIDADO_REVISAO_AUSENTE"
@@ -161,7 +158,11 @@ def consultar_estado_rag(configuracoes: Configuracoes | None = None) -> dict[str
                     except IndiceIndisponivel:
                         indice_estado = "INCOMPATIVEL_OU_CORROMPIDO"
         except (EmbeddingsIndisponiveis, OSError, RuntimeError, ValueError):
-            modelo_estado = "INDISPONIVEL_OU_INVALIDO"
+            if find_spec("sentence_transformers") is None:
+                modelo_estado = "DEPENDENCIA_AUSENTE"
+            else:
+                modelo_estado = "INDISPONIVEL_OU_INVALIDO"
+
             if artefatos_presentes:
                 indice_estado = "NAO_VALIDADO_MODELO_INDISPONIVEL"
 

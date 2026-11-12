@@ -1,6 +1,6 @@
 # AgroConnect AI
 
-API independente do AgroConnect. O projeto contém a demonstração da **Fase 3** com Isolation Forest e a pipeline local da **Fase 4** para ingestão, recuperação documental e geração configurável. A base documental começa vazia; não há fontes oficiais, pesos de embeddings ou credenciais incluídos. A API não consulta dados de negócio.
+API de demonstração do AgroConnect. O projeto contém Isolation Forest com três variáveis, RAG/geração configurável e um fluxo IoT separado para telemetria da demonstração. O snapshot mobile predefinido não depende do simulador. O banco principal continua isolado; a telemetria usa PostgreSQL próprio. A base documental começa vazia; não há fontes oficiais, pesos de embeddings ou credenciais incluídos.
 
 ## Requisitos
 
@@ -42,7 +42,7 @@ uvicorn app.principal:app --reload
 
 A conexão está preparada para PostgreSQL via SQLAlchemy 2 e psycopg 3. A engine força transações padrão read-only por parâmetro de conexão. **Isso é uma proteção adicional, não substitui permissões do banco**: em integração, configure um usuário PostgreSQL que possua apenas `CONNECT` e `SELECT` nas estruturas compartilhadas necessárias. Não coloque uma URL com credenciais reais no repositório.
 
-Não foram definidos nomes de tabelas ou colunas, nem criados bancos, tabelas, entidades paralelas ou migrations. `app/repositorios/contratos.py` define interfaces canônicas e `adaptadores.py` é um ponto provisório de extensão. O mapeamento físico será feito somente após confirmação do contrato do Backend C#.
+Para o banco principal, não foram definidos nomes físicos nem criadas tabelas/migrations; `app/repositorios/contratos.py` define interfaces canônicas e `adaptadores.py` é um ponto provisório até confirmação do contrato do Backend C#. A telemetria da demonstração tem conexão e schema separados, descritos em `migrations/telemetria/001_create_schema.sql`; aplique essa migration manualmente somente no banco de demonstração.
 
 ## Configuração
 
@@ -51,7 +51,7 @@ Copie `.env.example` para `.env`. Variáveis nesta fase:
 - `AMBIENTE`: nome do ambiente.
 - `NIVEL_LOG`: `DEBUG`, `INFO`, `WARNING`, `ERROR` ou `CRITICAL`.
 - `NOME_APLICACAO`: nome exibido nos health checks.
-- `DATABASE_URL`: URL PostgreSQL com usuário de somente leitura; opcional para inicialização.
+- `DATABASE_URL`: URL PostgreSQL principal com usuário de somente leitura; opcional para inicialização. `TELEMETRY_DATABASE_URL`: conexão independente do PostgreSQL exclusivo da demonstração IoT. `TELEMETRY_DEVICE_TIMEOUT_SECONDS`: prazo para derivar o status de conexão do ESP32.
 - `PROVEDOR_IA`, `PROVEDOR_IA_MODELO`, `PROVEDOR_IA_URL`, `PROVEDOR_IA_API_KEY`: configuração opcional do provedor compatível com Chat Completions; nenhum segredo deve ser salvo no repositório. As variáveis `RAG_*` configuram caminhos locais, chunking, revisão do modelo, limiar de busca, limites de ingestão e a chave de API da rota generativa. Sem documentos, pesos, índice ou credenciais, o endpoint informa configuração incompleta.
 - Limites HTTP/contexto/resposta: `API_LIMITE_CORPO_HTTP_BYTES=65536`, `API_JSON_PROFUNDIDADE_MAXIMA=32`, `RAG_ORCAMENTO_CONTEXTO_BYTES=100000`, `PROVEDOR_IA_LIMITE_TOKENS_RESPOSTA=2048`, `PROVEDOR_IA_CAMPO_LIMITE_TOKENS=max_completion_tokens` e `PROVEDOR_IA_LIMITE_RESPOSTA_BYTES=1000000`. O corpo acima do teto retorna 413 antes de materializar o JSON; contexto excedido retorna 413 sem truncar fontes; resposta do provedor é limitada por bytes e lida em streaming.
 - Limites padrão da ingestão local: 5.000.000 bytes por documento, 100 documentos, 50.000.000 bytes no total, 65.536 bytes por sidecar e 20.000 trechos por reconstrução.
@@ -70,19 +70,21 @@ A imagem usa Python 3.12 slim, instala pelo `uv.lock` com `uv sync --locked` e i
 
 ```powershell
 docker build -t agroconnect-ai .
-docker run --rm -p 8000:8000 -e PORT=8000 agroconnect-ai
+.\.venv-fase4\Scripts\python.exe scripts\treinar_modelo.py
+$env:TELEMETRY_DATABASE_URL = "postgresql+psycopg://usuario:senha@host.docker.internal:5432/agroconnect_demo"
+docker run --rm -p 8000:8000 -e PORT=8000 -e TELEMETRY_DATABASE_URL=$env:TELEMETRY_DATABASE_URL -v "${PWD}/modelos_treinados:/app/modelos_treinados:ro" agroconnect-ai
 ```
 
 Os pesos do modelo E5 não vêm na imagem; sem modelo, documentos, índice e credenciais, o status RAG permanece incompleto, sem resposta simulada.
 
-Configure variáveis e credenciais no painel do serviço, nunca na imagem ou no Git. Não há migrações no startup.
+Configure variáveis e credenciais no painel do serviço, nunca na imagem ou no Git. Monte/injete o artefato v2 treinado em runtime; ele é ignorado pelo Git. A migration da telemetria continua manual e não roda no startup.
 
 ## Próximas integrações (fora desta etapa)
 
 - Confirmar schema, unidades, qualidade e relações de acesso com o Backend C#.
 - Implementar os repositórios concretos e autorização após o contrato de banco estar disponível.
 - A Fase 4 depende de documentos técnicos revisados, pesos locais e credenciais de provedor; veja `documentacao/fase4_rag.md`.
-- Validação Linux anterior às últimas proteções: Python 3.12.16, uv 0.13.7, `uv sync --locked --all-groups` e `pytest -q`: **80 passed em 5,69 s**. Após as proteções, a suíte completa atual passou localmente no Windows/Python 3.13.17: **102 passed em 2,97 s**. A versão atual ainda não foi testada integralmente em Linux. A Fase 4 não está pronta para produção: faltam documentos agronômicos oficiais licenciados/revisados para ingestão, credenciais e teste real do provedor, integração de identidade com o Backend .NET e rate limit compartilhado entre workers. O status não atesta fontes oficiais automaticamente. Build/execução Docker e endpoints dentro da imagem também não foram validados nesta rodada.
+- Validação Linux anterior às últimas proteções: Python 3.12.16, uv 0.13.7, `uv sync --locked --all-groups` e `pytest -q`: **80 passed em 5,69 s**. Após esta implementação, a suíte completa passou com **108 testes** no ambiente existente `.venv-f4-clean-uv` (que inclui FAISS, necessário pelos testes do RAG). A versão atual ainda não foi testada integralmente em Linux. A Fase 4 não está pronta para produção: faltam documentos agronômicos oficiais licenciados/revisados para ingestão, credenciais e teste real do provedor, integração de identidade com o Backend .NET e rate limit compartilhado entre workers. O status não atesta fontes oficiais automaticamente. Build/execução Docker e endpoints dentro da imagem também não foram validados nesta rodada.
 
 
 Consulte [`documentacao/INTEGRACAO_BACKEND_CSHARP.md`](documentacao/INTEGRACAO_BACKEND_CSHARP.md) para o checklist e as informações pendentes do Backend C#.
@@ -101,3 +103,7 @@ O modelo é treinado manualmente por script, não no startup nem em requisiçõe
 ```
 
 O endpoint `POST /api/v1/anomalias/analisar-demo` é exclusivo de desenvolvimento/teste e aceita apenas dados `SIMULADO_TESTE`. A implementação, o contrato e as limitações estão em [`documentacao/aprendizado_maquina.md`](documentacao/aprendizado_maquina.md). O escore não é probabilidade nem diagnóstico agronômico.
+
+## IoT e dashboard
+
+Consulte [`documentacao/telemetria_iot.md`](documentacao/telemetria_iot.md) para aplicar manualmente o schema isolado, configurar Node-RED, treinar o modelo v2 e usar os endpoints. O dashboard web é servido em `/dashboard`; mobile de demonstração predefinido em `GET /api/v1/mobile/demo/snapshot`. O endpoint de ingestão aceita conjuntos completos e agrupados em `POST /api/v1/iot/readings`; as consultas do painel ficam em `/api/v1/dashboard/readings` e `/api/v1/dashboard/status`. Nenhuma migration é aplicada no startup.

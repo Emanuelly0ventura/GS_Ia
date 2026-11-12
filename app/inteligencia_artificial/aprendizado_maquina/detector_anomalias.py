@@ -17,7 +17,7 @@ from app.inteligencia_artificial.aprendizado_maquina.preparacao import preparar_
 
 class DetectorAnomalias:
     """Treina e executa um pipeline Isolation Forest; não treina durante inferência."""
-    FORMATO_ARTEFATO = 1
+    FORMATO_ARTEFATO = 2
 
     def __init__(
         self,
@@ -25,7 +25,7 @@ class DetectorAnomalias:
         contaminacao: float = 0.05,
         semente_aleatoria: int = 42,
         minimo_observacoes: int = 32,
-        versao_modelo: str = "isolation-forest-v1",
+        versao_modelo: str = "isolation-forest-v2",
     ) -> None:
         if numero_estimadores < 10:
             raise ValueError("numero_estimadores deve ser pelo menos 10.")
@@ -72,6 +72,7 @@ class DetectorAnomalias:
             "versao_modelo": self.versao_modelo,
             "versao_scikit_learn": sklearn.__version__,
             "variaveis": list(VARIAVEIS_MODELO),
+            "quantidade_caracteristicas": len(VARIAVEIS_MODELO),
             "unidades": dict(conjunto.unidades),
             "origens_treinamento": origens,
             "dados_sinteticos": bool(origens) and all(origem == "SIMULADO_TESTE" for origem in origens),
@@ -162,13 +163,13 @@ class DetectorAnomalias:
             raise ValueError("Formato ou versão do artefato incompatível.")
         if artefato.get("versao_scikit_learn") != sklearn.__version__:
             raise ValueError("A versão do Scikit-learn difere da usada no treinamento; retreine o artefato.")
-        if artefato.get("variaveis") != list(VARIAVEIS_MODELO):
+        if artefato.get("variaveis") != list(VARIAVEIS_MODELO) or artefato.get("quantidade_caracteristicas") != len(VARIAVEIS_MODELO):
             raise ValueError("O artefato não corresponde às variáveis desta versão da API.")
         pipeline = artefato.get("pipeline")
         configuracao = artefato.get("configuracao")
         unidades = artefato.get("unidades")
         versao = artefato.get("versao_modelo")
-        if not isinstance(pipeline, Pipeline) or set(pipeline.named_steps) != {"padronizador", "isolation_forest"}:
+        if not isinstance(pipeline, Pipeline) or set(pipeline.named_steps) != {"padronizador", "isolation_forest"} or getattr(pipeline.named_steps.get("padronizador"), "n_features_in_", None) != len(VARIAVEIS_MODELO):
             raise ValueError("O artefato não contém o pipeline Scikit-learn esperado.")
         if not isinstance(configuracao, dict) or not isinstance(unidades, dict) or not isinstance(versao, str):
             raise ValueError("O manifesto do artefato está incompleto.")
