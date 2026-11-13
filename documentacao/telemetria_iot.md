@@ -74,7 +74,7 @@ $env:TELEMETRY_DATABASE_URL = "postgresql+psycopg://telemetry_app:<senha>@localh
 psql "$env:TELEMETRY_DATABASE_URL" -f migrations\telemetria\001_create_schema.sql
 ```
 
-Use um banco exclusivamente da demonstração, separado de `DATABASE_URL` (que continua read-only). Execute o DDL com uma conta de provisionamento; para runtime, use uma conta própria com `CONNECT`, `SELECT`, `INSERT` e `UPDATE` somente nas tabelas `iot_devices`, `iot_readings` e `iot_anomaly_analyses`, mais `USAGE/SELECT` nas respectivas sequences. Configure credenciais por ambiente/secret manager; não inclua credenciais no Git. A API nunca cria nem migra tabelas no startup.
+Use o banco PostgreSQL local próprio do módulo de IA configurado por `TELEMETRY_DATABASE_URL`. Para configuração do container, migrations e testes de persistência, consulte `documentacao/postgresql_local.md`. Configure credenciais por `.env` local, ignorado pelo Git. A API nunca cria nem migra tabelas no startup.
 
 ## Modelo
 

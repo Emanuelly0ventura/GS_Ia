@@ -9,7 +9,6 @@ class Configuracoes(BaseSettings):
     nome_aplicacao: str = "AgroConnect AI"
     ambiente: str = "desenvolvimento"
     nivel_log: str = "INFO"
-    database_url: str | None = None
     telemetry_database_url: str | None = None
     telemetry_device_timeout_seconds: int = Field(default=60, ge=10, le=86400)
     provedor_ia: str | None = None

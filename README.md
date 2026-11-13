@@ -1,6 +1,6 @@
 # AgroConnect AI
 
-API de demonstração do AgroConnect. O projeto contém Isolation Forest com três variáveis, RAG/geração configurável e um fluxo IoT separado para telemetria da demonstração. O snapshot mobile predefinido não depende do simulador. O banco principal continua isolado; a telemetria usa PostgreSQL próprio. A base documental começa vazia; não há fontes oficiais, pesos de embeddings ou credenciais incluídos.
+API de demonstração do AgroConnect. O projeto contém Isolation Forest com três variáveis, RAG/geração configurável e um fluxo IoT separado para telemetria da demonstração. O snapshot mobile predefinido não depende do simulador. A aplicação usa PostgreSQL local próprio, sem dependência do Backend C# ou Mobile. A base documental começa vazia; não há fontes oficiais, pesos de embeddings ou credenciais incluídos.
 
 ## Requisitos
 
@@ -36,13 +36,11 @@ uvicorn app.principal:app --reload
 - OpenAPI: <http://127.0.0.1:8000/openapi.json>
 - Estado do RAG: <http://127.0.0.1:8000/api/v1/conhecimento/status>
 
-`/health/ready` retorna 503 até que um PostgreSQL configurado esteja acessível. A ausência de `DATABASE_URL` não impede a inicialização da API.
+`/health/ready` retorna 200 somente quando o PostgreSQL local próprio da IA responde. A conexão é opcional no startup; sem banco disponível, o endpoint retorna 503.
 
-## PostgreSQL compartilhado
+## PostgreSQL local
 
-A conexão está preparada para PostgreSQL via SQLAlchemy 2 e psycopg 3. A engine força transações padrão read-only por parâmetro de conexão. **Isso é uma proteção adicional, não substitui permissões do banco**: em integração, configure um usuário PostgreSQL que possua apenas `CONNECT` e `SELECT` nas estruturas compartilhadas necessárias. Não coloque uma URL com credenciais reais no repositório.
-
-Para o banco principal, não foram definidos nomes físicos nem criadas tabelas/migrations; `app/repositorios/contratos.py` define interfaces canônicas e `adaptadores.py` é um ponto provisório até confirmação do contrato do Backend C#. A telemetria da demonstração tem conexão e schema separados, descritos em `migrations/telemetria/001_create_schema.sql`; aplique essa migration manualmente somente no banco de demonstração.
+O banco da IA é independente do Backend C# e usa Docker Compose com volume persistente. Configure `.env`, inicie o container e aplique as migrations SQL manuais. Consulte [`documentacao/postgresql_local.md`](documentacao/postgresql_local.md) para os comandos PowerShell, detalhes das tabelas e testes de integração. O startup da API não executa DDL.
 
 ## Configuração
 
@@ -51,7 +49,7 @@ Copie `.env.example` para `.env`. Variáveis nesta fase:
 - `AMBIENTE`: nome do ambiente.
 - `NIVEL_LOG`: `DEBUG`, `INFO`, `WARNING`, `ERROR` ou `CRITICAL`.
 - `NOME_APLICACAO`: nome exibido nos health checks.
-- `DATABASE_URL`: URL PostgreSQL principal com usuário de somente leitura; opcional para inicialização. `TELEMETRY_DATABASE_URL`: conexão independente do PostgreSQL exclusivo da demonstração IoT. `TELEMETRY_DEVICE_TIMEOUT_SECONDS`: prazo para derivar o status de conexão do ESP32.
+- `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_PORT`: configuração do serviço PostgreSQL local no Docker Compose. `TELEMETRY_DATABASE_URL`: conexão SQLAlchemy da API com esse banco. `TELEMETRY_DEVICE_TIMEOUT_SECONDS`: prazo para derivar o status de conexão do ESP32.
 - `PROVEDOR_IA`, `PROVEDOR_IA_MODELO`, `PROVEDOR_IA_URL`, `PROVEDOR_IA_API_KEY`: configuração opcional do provedor compatível com Chat Completions; nenhum segredo deve ser salvo no repositório. As variáveis `RAG_*` configuram caminhos locais, chunking, revisão do modelo, limiar de busca, limites de ingestão e a chave de API da rota generativa. Sem documentos, pesos, índice ou credenciais, o endpoint informa configuração incompleta.
 - Limites HTTP/contexto/resposta: `API_LIMITE_CORPO_HTTP_BYTES=65536`, `API_JSON_PROFUNDIDADE_MAXIMA=32`, `RAG_ORCAMENTO_CONTEXTO_BYTES=100000`, `PROVEDOR_IA_LIMITE_TOKENS_RESPOSTA=2048`, `PROVEDOR_IA_CAMPO_LIMITE_TOKENS=max_completion_tokens` e `PROVEDOR_IA_LIMITE_RESPOSTA_BYTES=1000000`. O corpo acima do teto retorna 413 antes de materializar o JSON; contexto excedido retorna 413 sem truncar fontes; resposta do provedor é limitada por bytes e lida em streaming.
 - Limites padrão da ingestão local: 5.000.000 bytes por documento, 100 documentos, 50.000.000 bytes no total, 65.536 bytes por sidecar e 20.000 trechos por reconstrução.
@@ -89,9 +87,9 @@ Configure variáveis e credenciais no painel do serviço, nunca na imagem ou no 
 
 Consulte [`documentacao/INTEGRACAO_BACKEND_CSHARP.md`](documentacao/INTEGRACAO_BACKEND_CSHARP.md) para o checklist e as informações pendentes do Backend C#.
 
-## Acesso a dados e integração pendente
+## Repositórios históricos
 
-Os contratos lógicos e o adaptador de consultas estão em `app/repositorios/`. O adaptador só aceita `SELECT` configurado externamente, usa parâmetros vinculados e falha quando não há mapeamento. Nenhuma consulta de negócio é carregada por padrão; o schema do Backend C# precisa ser aprovado antes de configurar consultas reais. Fixtures simuladas ficam exclusivamente em `tests/fixtures/` e não são carregadas pela API. Consulte `documentacao/INTEGRACAO_BACKEND_CSHARP.md` e `documentacao/acesso_dados_fase2.md`.
+Os contratos em `app/repositorios/` descrevem uma integração antiga com o Backend C#. Eles não são usados pelo fluxo do banco local desta fase e não há consultas de negócio carregadas pela API.
 
 ## Machine Learning (demonstração)
 
@@ -106,4 +104,4 @@ O endpoint `POST /api/v1/anomalias/analisar-demo` é exclusivo de desenvolviment
 
 ## IoT e dashboard
 
-Consulte [`documentacao/telemetria_iot.md`](documentacao/telemetria_iot.md) para aplicar manualmente o schema isolado, configurar Node-RED, treinar o modelo v2 e usar os endpoints. O dashboard web é servido em `/dashboard`; mobile de demonstração predefinido em `GET /api/v1/mobile/demo/snapshot`. O endpoint de ingestão aceita conjuntos completos e agrupados em `POST /api/v1/iot/readings`; as consultas do painel ficam em `/api/v1/dashboard/readings` e `/api/v1/dashboard/status`. Nenhuma migration é aplicada no startup.
+Consulte [`documentacao/telemetria_iot.md`](documentacao/telemetria_iot.md) para aplicar manualmente o schema isolado, configurar Node-RED, treinar o modelo v2 e usar os endpoints. O dashboard web é servido em `/dashboard`; mobile de demonstração predefinido em `GET /api/v1/mobile/demo/snapshot`. O endpoint de ingestão aceita conjuntos completos e agrupados em `POST /api/v1/iot/readings`; as consultas do painel ficam em `/api/v1/dashboard/readings` e `/api/v1/dashboard/status`. Nenhuma migration é aplicada no startup. O banco local e seus comandos estão em [`documentacao/postgresql_local.md`](documentacao/postgresql_local.md).

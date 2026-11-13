@@ -23,6 +23,11 @@ dependencies = [
 [tool.uv]
 package = false
 
+[tool.pytest.ini_options]
+markers = [
+    "integration: requer um PostgreSQL descartável configurado em TEST_TELEMETRY_DATABASE_URL",
+]
+
 [[tool.uv.index]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"

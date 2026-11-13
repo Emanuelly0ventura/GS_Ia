@@ -29,9 +29,17 @@ class Dispositivo(BaseTelemetria):
 
     id: Mapped[int] = mapped_column(ID_COMPAT, primary_key=True)
     device_id: Mapped[str] = mapped_column(String(120), unique=True)
-    source: Mapped[str] = mapped_column(String(80))
+    source: Mapped[str] = mapped_column(String(80), nullable=False)
     last_seen_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    readings: Mapped[list["Leitura"]] = relationship(back_populates="device")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
+    )
+    readings: Mapped[list["Leitura"]] = relationship(
+        back_populates="device", cascade="all, delete-orphan"
+    )
 
 
 class Leitura(BaseTelemetria):
@@ -56,7 +64,9 @@ class Leitura(BaseTelemetria):
         JSON_COMPAT, default=dict, server_default=text("'{}'"), nullable=False
     )
     device: Mapped[Dispositivo] = relationship(back_populates="readings")
-    anomaly: Mapped["AnaliseAnomalia | None"] = relationship(back_populates="reading", uselist=False)
+    anomaly: Mapped["AnaliseAnomalia | None"] = relationship(
+        back_populates="reading", uselist=False, cascade="all, delete-orphan"
+    )
 
 
 class AnaliseAnomalia(BaseTelemetria):

@@ -109,6 +109,7 @@ def test_model_types_match_postgresql_migration_and_keep_sqlite_compatibility():
     assert str(Leitura.__table__.c.id.type.compile(dialect=postgresql.dialect())) == "BIGINT"
     assert str(AnaliseAnomalia.__table__.c.id.type.compile(dialect=postgresql.dialect())) == "BIGINT"
     assert str(AnaliseAnomalia.__table__.c.reading_id.type.compile(dialect=postgresql.dialect())) == "BIGINT"
+    assert {"created_at", "updated_at"}.issubset(Dispositivo.__table__.columns.keys())
     assert str(Leitura.__table__.c.id.type.compile(dialect=sqlite.dialect())) == "INTEGER"
     assert "uq_iot_reading_observation" in {c.name for c in Leitura.__table__.constraints}
     assert "ck_iot_anomaly_variables_three" in {c.name for c in AnaliseAnomalia.__table__.constraints}

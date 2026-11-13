@@ -1,1 +1,1 @@
-"""Contratos documentais independentes do PostgreSQL compartilhado."""
+"""Contratos documentais independentes do PostgreSQL local da IA."""

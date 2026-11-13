@@ -2,6 +2,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 
 from app.principal import app
+from app.rotas.saude import prontidao
 
 @pytest.fixture(scope="session")
 def anyio_backend():
@@ -23,9 +24,15 @@ async def test_openapi_disponivel():
     assert especificacao["info"]["title"] == "AgroConnect AI"
     assert "/health/ready" in especificacao["paths"]
 
+def test_prontidao_responde_com_banco_local(monkeypatch):
+    monkeypatch.setattr("app.rotas.saude.verificar_conexao_telemetria", lambda: True)
+    resposta = prontidao()
+    assert resposta.status_code == 200
+    assert resposta.body == b'{"status":"pronto","banco":"conectado"}'
+
 @pytest.mark.anyio
 async def test_prontidao_sem_banco_configurado(monkeypatch):
-    monkeypatch.setattr("app.rotas.saude.verificar_conexao", lambda: False)
+    monkeypatch.setattr("app.rotas.saude.verificar_conexao_telemetria", lambda: False)
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://teste") as cliente:
         resposta = await cliente.get("/health/ready")
     assert resposta.status_code == 503

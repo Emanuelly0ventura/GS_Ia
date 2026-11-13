@@ -1,5 +1,5 @@
--- Aplicar somente no banco PostgreSQL SEPARADO da demonstração.
--- Execução manual por DBA/ambiente; nunca é executada no startup da API.
+-- Aplicar somente no PostgreSQL local próprio do módulo de IA.
+-- Execução manual e versionada; nunca é executada no startup da API.
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS iot_devices (
