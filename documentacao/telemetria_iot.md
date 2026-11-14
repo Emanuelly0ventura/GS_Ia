@@ -1,68 +1,99 @@
 # Telemetria da demonstração e dashboard
 
-O mobile permanece em `/api/v1/mobile/demo/snapshot`, com conteúdo predefinido explicitamente rotulado `PREDEFINED_DEMO`. Esse endpoint não consulta MQTT nem o banco de telemetria. O contrato real do aplicativo não está no repositório; confirme os nomes esperados com Mobile/Backend antes de substituir ou adaptar o contrato de demonstração.
+O endpoint `POST /api/v1/iot/readings` recebe as quatro leituras do Node-RED. O contrato oficial é:
 
-O firmware colado publica temperatura, umidade e ADC em tópicos individuais, sem id de ciclo nos payloads. No Node-RED, normalize cada tópico para `{variavel, valor, recebidoEm}`, envie os três ramos a um `Join` configurado por chave de variável (`manual`, 3 mensagens) com timeout menor que o intervalo de publicação de 5 s, e descarte grupos incompletos ou cujo maior/menor horário de recebimento difira acima da tolerância definida (por exemplo, 2 s). Como o protocolo atual não traz timestamp/correlation id em cada payload, essa é uma aproximação temporal: para garantia de amostra atômica, o firmware deve publicar um JSON único com `observationId`/timestamp, mediante autorização e atualização separada. A API exige que o agrupador entregue o trio completo, gera `observationId` único e timestamp ISO-8601 com fuso; não presume ordem dos tópicos.
+| Sensor | Campo recebido em `values` | Unidade de entrada | Indicador persistido | Unidade persistida |
+|---|---|---:|---|---:|
+| BMP180 | `temperaturaAr` | °C | `temperaturaAr` | °C |
+| DHT22 temperatura | `umidadeSolo` | °C | `umidadeSolo` (demonstrativo) | % |
+| DHT22 umidade | `umidadeAr` | % | `umidadeAr` | % |
+| LDR | `luminosidade` | ADC | `luminosidade` | ADC |
+
+Exemplo de entrada (números ilustrativos; não representam uma captura real):
 
 ```json
 {
-  "deviceId":"esp32-estufa-01", "observationId":"captura-2026-11-11T10:20:00-03:00",
-  "source":"WOKWI_HIVEMQ_NODE_RED", "measuredAt":"2026-11-11T10:20:00-03:00",
-  "quality":"VALID",
-  "values":{"temperaturaAr":25.4,"umidadeAr":62.0,"luminosidade":1870},
-  "units":{"temperaturaAr":"°C","umidadeAr":"%","luminosidade":"ADC"},
-  "complements":{"temperaturaBmp":25.1,"pressao":1012.2,"altitude":24.0}
+  "deviceId": "esp32-estufa-01",
+  "observationId": "captura-2026-11-11T10:20:00-03:00-42",
+  "source": "WOKWI_HIVEMQ_NODE_RED",
+  "measuredAt": "2026-11-11T10:20:00-03:00",
+  "quality": "VALID",
+  "values": {
+    "temperaturaAr": 25.1,
+    "umidadeSolo": 25.0,
+    "umidadeAr": 62.0,
+    "luminosidade": 1870.0
+  },
+  "units": {
+    "temperaturaAr": "°C",
+    "umidadeSolo": "°C",
+    "umidadeAr": "%",
+    "luminosidade": "ADC"
+  }
 }
 ```
 
-`POST /api/v1/iot/readings` valida e persiste conjunto e análise. Responde 409 para `observationId` duplicado, 422 para campos incompletos/inválidos/unidades incompatíveis e 503 se banco ou artefato v2 não estiver pronto. As rotas `GET /api/v1/dashboard/readings?limit=100`, `GET /api/v1/dashboard/status` alimentam `/dashboard`. Status conectado é derivado de `last_seen_at` e `TELEMETRY_DEVICE_TIMEOUT_SECONDS`. O LDR é mostrado como ADC bruto, não lux. BMP é complemento e não participa do modelo.
+`temperaturaAr` recebe diretamente BMP180. `umidadeSolo` recebe a temperatura bruta DHT22 em °C; o backend converte esse campo para percentual. Leituras ausentes, nulas, não finitas, unidades incorretas ou campos desconhecidos são rejeitados com HTTP 422. O Node-RED só deve enviar a captura quando as quatro leituras do mesmo agrupamento estiverem disponíveis.
 
-### Node-RED: agrupamento das mensagens MQTT
+A conversão isolada `converter_temperatura_dht22_em_umidade_solo` aplica `clamp((temperatura - limite inferior) / (limite superior - limite inferior) × 100, 0, 100)`. Os padrões são 15 °C → 0%, 25 °C → 50% e 35 °C → 100%. Configure `TELEMETRY_SOIL_MOISTURE_TEMP_MIN_C` e `TELEMETRY_SOIL_MOISTURE_TEMP_MAX_C` para ajustar os limites. O percentual é simulado, não medido. O backend preserva a temperatura DHT22 original em `complements.umidadeSolo.temperaturaFonteC`, com origem `DHT22_TEMPERATURA`, método `CONVERSAO_LINEAR_DEMONSTRATIVA` e `simulado=true`.
 
-Conecte as três entradas MQTT ao mesmo normalizador abaixo. Configure um `Join` em modo manual para gerar objeto por `msg.topic`, completar depois de 3 mensagens, com timeout de 2 segundos. Depois, ligue um Function de validação/serialização e um HTTP Request `POST`, com `Content-Type: application/json`, para `/api/v1/iot/readings`.
+Registro persistido (para o exemplo acima):
 
-Function normalizador (antes do Join):
-
-```javascript
-const nomes = {
-  "estufa/dht22/temperatura": "temperaturaAr",
-  "estufa/dht22/umidade": "umidadeAr",
-  "estufa/ldr/luminosidade": "luminosidade"
-};
-const chave = nomes[msg.topic];
-const valor = Number(msg.payload);
-if (!chave || !Number.isFinite(valor)) return null;
-msg.topic = chave;
-msg.payload = { value: valor, receivedAt: Date.now() };
-return msg;
+```json
+{
+  "values": {
+    "temperaturaAr": 25.1,
+    "umidadeSolo": 50.0,
+    "umidadeAr": 62.0,
+    "luminosidade": 1870.0
+  },
+  "units": {
+    "temperaturaAr": "°C",
+    "umidadeSolo": "%",
+    "umidadeAr": "%",
+    "luminosidade": "ADC"
+  },
+  "complements": {
+    "umidadeSolo": {
+      "origem": "DHT22_TEMPERATURA",
+      "metodo": "CONVERSAO_LINEAR_DEMONSTRATIVA",
+      "simulado": true,
+      "temperaturaFonteC": 25.0
+    }
+  }
+}
 ```
 
-Function depois do Join (descarta grupos incompletos e com diferença temporal acima de 2 s):
+A análise do Isolation Forest permanece `PENDENTE_ADEQUACAO_CONTRATO_ML`, com `analysis.executed=false`; esta ingestão não executa o modelo legado de três variáveis. Capturas repetidas com o mesmo `deviceId` e `observationId` retornam HTTP 409. O dashboard usa os quatro campos persistidos em `/api/v1/dashboard/readings`; o snapshot mobile continua predefinido e independente do banco de telemetria.
 
-```javascript
-const grupo = msg.payload;
-const nomes = ["temperaturaAr", "umidadeAr", "luminosidade"];
-if (!grupo || nomes.some(n => !grupo[n] || !Number.isFinite(grupo[n].value))) return null;
-const tempos = nomes.map(n => grupo[n].receivedAt);
-if (Math.max(...tempos) - Math.min(...tempos) > 2000) return null;
-const capturado = Math.max(...tempos);
-const seq = (flow.get("telemetrySeq") || 0) + 1;
-flow.set("telemetrySeq", seq);
-msg.headers = { "Content-Type": "application/json" };
-msg.payload = {
-  deviceId: "esp32-estufa-01",
-  observationId: `esp32-estufa-01-${capturado}-${seq}`,
-  source: "WOKWI_HIVEMQ_NODE_RED",
-  measuredAt: new Date(capturado).toISOString(),
-  quality: "VALID",
-  values: Object.fromEntries(nomes.map(n => [n, grupo[n].value])),
-  units: { temperaturaAr: "°C", umidadeAr: "%", luminosidade: "ADC" },
-  complements: {}
-};
-return msg;
+### Agrupamento Node-RED
+
+O fluxo agrupa os tópicos `estufa/bmp180/temperatura`, `estufa/dht22/temperatura`, `estufa/dht22/umidade` e `estufa/ldr/luminosidade`. BMP180 também permanece conectado ao nó de exibição já existente. O agrupador abaixo guarda no máximo uma leitura pendente por tópico, descarta o conjunto quando um sensor se repete antes de completar a captura ou quando a diferença temporal ultrapassa 2 segundos, e limpa o estado antes de emitir o POST. Assim ele não reutiliza uma leitura de um ciclo incompleto. Como os tópicos não incluem id de ciclo, a janela de chegada é uma aproximação temporal; atomicidade física exigiria um identificador comum publicado pelos sensores.
+
+A Function de ingestão espera os quatro tópicos. Após completar a captura, envia este contrato para `/api/v1/iot/readings`:
+
+```json
+{
+  "values": {
+    "temperaturaAr": "BMP180 em °C",
+    "umidadeSolo": "temperatura bruta do DHT22 em °C",
+    "umidadeAr": "DHT22 em %",
+    "luminosidade": "LDR em ADC"
+  },
+  "units": {
+    "temperaturaAr": "°C",
+    "umidadeSolo": "°C",
+    "umidadeAr": "%",
+    "luminosidade": "ADC"
+  }
+}
 ```
 
-O protocolo MQTT individual não contém id/timestamp de ciclo. A validação temporal acima é uma aproximação pela hora de chegada e não comprova que valores pertencem à mesma amostra física. Um JSON único por ciclo enviado pelo firmware seria necessário para atomicidade; o firmware não foi alterado.
+Os valores entre aspas acima descrevem as fontes, não são strings válidas no payload HTTP. Em runtime, todos os quatro campos são números.
+
+## Persistência e aprendizado
+
+A tabela `iot_readings` guarda `values`, `units` e `complements` em JSONB; não foi necessária nova migration. O dashboard exibe `umidadeSolo` com indicação de valor simulado. O modelo Isolation Forest, seu scaler e seu artefato não foram adaptados nem executados para este contrato.
 
 ## Banco isolado
 

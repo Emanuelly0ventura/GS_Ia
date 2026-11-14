@@ -1,4 +1,5 @@
 from functools import lru_cache
+import math
 from pathlib import Path
 from typing import Literal
 
@@ -11,6 +12,8 @@ class Configuracoes(BaseSettings):
     nivel_log: str = "INFO"
     telemetry_database_url: str | None = None
     telemetry_device_timeout_seconds: int = Field(default=60, ge=10, le=86400)
+    telemetry_soil_moisture_temp_min_c: float = 15.0
+    telemetry_soil_moisture_temp_max_c: float = 35.0
     provedor_ia: str | None = None
     provedor_ia_modelo: str | None = None
     provedor_ia_url: str | None = None
@@ -61,6 +64,14 @@ class Configuracoes(BaseSettings):
 
     @model_validator(mode="after")
     def validar_chunking_rag(self) -> "Configuracoes":
+        limites_umidade_solo = (
+            self.telemetry_soil_moisture_temp_min_c,
+            self.telemetry_soil_moisture_temp_max_c,
+        )
+        if not all(math.isfinite(valor) for valor in limites_umidade_solo):
+            raise ValueError("Os limites da conversão de umidade devem ser valores finitos.")
+        if limites_umidade_solo[0] >= limites_umidade_solo[1]:
+            raise ValueError("O limite inferior da conversão de umidade deve ser menor que o superior.")
         if self.rag_sobreposicao_trechos >= self.rag_tamanho_trecho:
             raise ValueError("RAG_SOBREPOSICAO_TRECHOS deve ser menor que RAG_TAMANHO_TRECHO.")
         if self.rag_ingestao_limite_documento_bytes > self.rag_ingestao_limite_total_bytes:

@@ -5,7 +5,7 @@ O serviço FastAPI usa um PostgreSQL próprio para telemetria e análises. Ele n
 ## Tabelas e relações
 
 - `iot_devices`: dispositivo externo único, origem, última comunicação e datas de criação/atualização. Um dispositivo possui várias leituras.
-- `iot_readings`: uma captura por dispositivo + `observation_id`; guarda horários medido/recebido, qualidade, origem e objetos JSONB `sensor_values`, `units` e `complements`. Os objetos suportam novos indicadores e metadados; a fase atual mantém o contrato de três variáveis.
+- `iot_readings`: uma captura por dispositivo + `observation_id`; guarda horários medido/recebido, qualidade, origem e objetos JSONB `sensor_values`, `units` e `complements`. Os objetos suportam novos indicadores e metadados; o contrato IoT persiste quatro indicadores e os metadados da conversão demonstrativa de umidade do solo.
 - `iot_anomaly_analyses`: resultado único associado a cada leitura, com versão do modelo, classificação, score, data, variáveis e justificativa.
 
 Uma captura tem no máximo uma análise, e as chaves estrangeiras usam exclusão em cascata. Os catálogos de sementes, solos e compatibilidade devem ser introduzidos em uma migration futura própria, quando a modelagem e os critérios forem definidos.

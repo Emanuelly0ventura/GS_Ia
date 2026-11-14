@@ -3,12 +3,12 @@ from datetime import datetime, timezone
 from uuid import uuid4
 
 import pytest
+from fastapi import HTTPException
 from sqlalchemy import inspect, select, func
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.engine import make_url
+from sqlalchemy.orm import Session, joinedload, sessionmaker
 
-from app.telemetria.modelos import AnaliseAnomalia, Dispositivo, Leitura
+from app.telemetria.modelos import Dispositivo, Leitura, AnaliseAnomalia
 
 DATABASE_URL = os.getenv("TEST_TELEMETRY_DATABASE_URL")
 pytestmark = pytest.mark.integration
@@ -29,77 +29,69 @@ def postgres_engine():
     engine.dispose()
 
 
-def test_postgres_persiste_leitura_jsonb_relacoes_e_unicidade(postgres_engine):
-    tabelas_esperadas = {"iot_devices", "iot_readings", "iot_anomaly_analyses"}
+def test_postgres_ingere_quatro_indicadores_e_nao_executa_ml(postgres_engine, monkeypatch):
+    from app.telemetria import rotas
+    from app.telemetria.esquemas import LeituraIoT
+
     inspector = inspect(postgres_engine)
-    assert tabelas_esperadas.issubset(set(inspector.get_table_names()))
-    assert {"created_at", "updated_at"}.issubset(
-        {col["name"] for col in inspector.get_columns("iot_devices")}
+    assert {"iot_devices", "iot_readings", "iot_anomaly_analyses"}.issubset(
+        set(inspector.get_table_names())
     )
+    expected_columns = {
+        "iot_devices": {"id", "device_id", "source", "last_seen_at", "created_at", "updated_at"},
+        "iot_readings": {"id", "device_id", "observation_id", "measured_at", "received_at", "source", "quality", "sensor_values", "units", "complements"},
+        "iot_anomaly_analyses": {"id", "reading_id", "model_version", "is_anomaly", "score", "analyzed_at", "variables", "explanation"},
+    }
+    for table, expected in expected_columns.items():
+        assert {column["name"] for column in inspector.get_columns(table)} == expected
 
-    device_id = f"pytest-{uuid4()}"
-    observation_id = f"capture-{uuid4()}"
-    valores = {"temperaturaAr": 24.2, "umidadeAr": 61.0, "luminosidade": 1450}
-    unidades = {"temperaturaAr": "°C", "umidadeAr": "%", "luminosidade": "ADC"}
+    factory = sessionmaker(postgres_engine, expire_on_commit=False)
+    monkeypatch.setattr(rotas, "_sessao", lambda: factory())
+    device_id = f"pytest-fase2-{uuid4().hex}"
+    observation_id = f"capture-{uuid4().hex}"
+    payload = LeituraIoT.model_validate({
+        "deviceId": device_id,
+        "observationId": observation_id,
+        "source": "WOKWI_HIVEMQ_NODE_RED",
+        "measuredAt": datetime.now(timezone.utc).isoformat(),
+        "quality": "VALID",
+        "values": {"temperaturaAr": 25.1, "umidadeSolo": 25.0, "umidadeAr": 62.0, "luminosidade": 1870},
+        "units": {"temperaturaAr": "°C", "umidadeSolo": "°C", "umidadeAr": "%", "luminosidade": "ADC"},
+    })
     try:
+        response = rotas.receber(payload)
+        assert response["analysisStatus"] == "PENDENTE_ADEQUACAO_CONTRATO_ML"
+        assert response["analysis"]["executed"] is False
         with Session(postgres_engine) as db:
-            device = Dispositivo(device_id=device_id, source="TESTE_INTEGRACAO")
-            reading = Leitura(
-                device_id=device_id,
-                observation_id=observation_id,
-                measured_at=datetime.now(timezone.utc),
-                source="TESTE_INTEGRACAO",
-                quality="VALID",
-                values=valores,
-                units=unidades,
-                complements={"umidadeSolo": {"value": 37, "unit": "%", "simulated": True}},
-            )
-            reading.anomaly = AnaliseAnomalia(
-                model_version="integration-test-v1",
-                is_anomaly=False,
-                score=0.12,
-                analyzed_at=datetime.now(timezone.utc),
-                variables=["temperaturaAr", "umidadeAr", "luminosidade"],
-                explanation="Resultado sintético de teste.",
-            )
-            db.add_all([device, reading])
-            db.commit()
-            reading_id = reading.id
-            assert device.created_at is not None and device.updated_at is not None
-
-        with Session(postgres_engine) as db:
-            persisted = db.scalar(
+            reading = db.scalar(
                 select(Leitura)
-                .options(joinedload(Leitura.device), joinedload(Leitura.anomaly))
-                .where(Leitura.id == reading_id)
+                .options(joinedload(Leitura.device))
+                .where(Leitura.device_id == device_id, Leitura.observation_id == observation_id)
             )
-            assert persisted is not None
-            assert persisted.values == valores
-            assert persisted.units == unidades
-            assert persisted.complements["umidadeSolo"]["simulated"] is True
-            assert persisted.device.device_id == device_id
-            assert persisted.anomaly.model_version == "integration-test-v1"
-            assert db.scalar(
-                select(func.count(Leitura.id)).where(
-                    Leitura.device_id == device_id,
-                    Leitura.observation_id == observation_id,
-                )
-            ) == 1
+            assert reading is not None
+            assert reading.values == {
+                "temperaturaAr": 25.1,
+                "umidadeSolo": 50.0,
+                "umidadeAr": 62.0,
+                "luminosidade": 1870.0,
+            }
+            assert reading.units == {
+                "temperaturaAr": "°C", "umidadeSolo": "%", "umidadeAr": "%", "luminosidade": "ADC"
+            }
+            assert reading.complements["umidadeSolo"] == {
+                "origem": "DHT22_TEMPERATURA",
+                "metodo": "CONVERSAO_LINEAR_DEMONSTRATIVA",
+                "simulado": True,
+                "temperaturaFonteC": 25.0,
+            }
+            assert reading.device.device_id == device_id
+            assert db.scalar(select(func.count(AnaliseAnomalia.id)).where(AnaliseAnomalia.reading_id == reading.id)) == 0
 
-            duplicada = Leitura(
-                device_id=device_id,
-                observation_id=observation_id,
-                measured_at=datetime.now(timezone.utc),
-                source="TESTE_INTEGRACAO",
-                quality="VALID",
-                values=valores,
-                units=unidades,
-                complements={},
-            )
-            db.add(duplicada)
-            with pytest.raises(IntegrityError):
-                db.commit()
-            db.rollback()
+        with pytest.raises(HTTPException) as error:
+            rotas.receber(payload)
+        assert error.value.status_code == 409
+        with Session(postgres_engine) as db:
+            assert db.scalar(select(func.count(Leitura.id)).where(Leitura.device_id == device_id)) == 1
     finally:
         with Session(postgres_engine) as db:
             device = db.scalar(select(Dispositivo).where(Dispositivo.device_id == device_id))

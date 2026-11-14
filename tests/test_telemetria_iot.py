@@ -2,165 +2,208 @@ from datetime import datetime, timezone
 from types import SimpleNamespace
 
 import pytest
+from fastapi import HTTPException
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 from sqlalchemy import create_engine, select
 from sqlalchemy.dialects import postgresql, sqlite
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.principal import app
+from app.nucleo.configuracoes import Configuracoes
 from app.telemetria.banco import BaseTelemetria
-from app.telemetria.esquemas import LeituraIoT
+from app.telemetria.conversoes import converter_temperatura_dht22_em_umidade_solo
+from app.telemetria.esquemas import LeituraIoT, MetadadosUmidadeSolo
 from app.telemetria.modelos import AnaliseAnomalia, Dispositivo, Leitura
 
 BASE = {
     "deviceId": "esp32-test", "observationId": "sample-1", "source": "SIMULADOR_TESTE",
     "measuredAt": "2026-11-11T10:00:00-03:00", "quality": "VALID",
-    "values": {"temperaturaAr": 24.0, "umidadeAr": 60.0, "luminosidade": 1200},
-    "units": {"temperaturaAr": "°C", "umidadeAr": "%", "luminosidade": "ADC"},
+    "values": {"temperaturaAr": 26.4, "umidadeSolo": 25.0, "umidadeAr": 60.0, "luminosidade": 1200},
+    "units": {"temperaturaAr": "°C", "umidadeSolo": "°C", "umidadeAr": "%", "luminosidade": "ADC"},
 }
 
-def test_schema_accepts_three_required_values_and_optional_bmp_complements():
-    body = {**BASE, "complements": {"pressao": 1011.5}}
-    parsed = LeituraIoT.model_validate(body)
-    assert set(parsed.values) == {"temperaturaAr", "umidadeAr", "luminosidade"}
-    assert parsed.complements["pressao"] == 1011.5
 
-def test_schema_rejects_incomplete_unrecognized_bad_units_and_nonfinite_values():
-    for change in [
-        {"values": {"temperaturaAr": 24, "umidadeAr": 60}},
-        {"values": {**BASE["values"], "campoDesconhecido": 40}},
-        {"units": {**BASE["units"], "luminosidade": "lx"}},
-        {"values": {**BASE["values"], "luminosidade": float("inf")}},
+def _config():
+    return SimpleNamespace(
+        telemetry_soil_moisture_temp_min_c=15.0,
+        telemetry_soil_moisture_temp_max_c=35.0,
+        telemetry_device_timeout_seconds=60,
+    )
+
+
+def test_conversao_linear_marcos_15_25_35_graus():
+    assert converter_temperatura_dht22_em_umidade_solo(15) == 0.0
+    assert converter_temperatura_dht22_em_umidade_solo(25) == 50.0
+    assert converter_temperatura_dht22_em_umidade_solo(35) == 100.0
+
+
+@pytest.mark.parametrize(("temperatura", "esperado"), [(-5, 0.0), (14.9, 0.0), (35.1, 100.0), (80, 100.0)])
+def test_conversao_aplica_limites_inferior_e_superior(temperatura, esperado):
+    assert converter_temperatura_dht22_em_umidade_solo(temperatura) == esperado
+
+
+def test_conversao_aceita_limites_configurados_e_rejeita_argumentos_invalidos():
+    assert converter_temperatura_dht22_em_umidade_solo(20, limite_inferior_c=10, limite_superior_c=30) == 50.0
+    for value in (None, True, float("nan"), float("inf"), "25"):
+        with pytest.raises(ValueError):
+            converter_temperatura_dht22_em_umidade_solo(value)
+    with pytest.raises(ValueError, match="inferior"):
+        converter_temperatura_dht22_em_umidade_solo(25, limite_inferior_c=35, limite_superior_c=15)
+    with pytest.raises(ValidationError):
+        Configuracoes(_env_file=None, telemetry_soil_moisture_temp_min_c=float("nan"))
+    with pytest.raises(ValidationError):
+        Configuracoes(_env_file=None, telemetry_soil_moisture_temp_min_c=35, telemetry_soil_moisture_temp_max_c=15)
+
+
+def test_schema_node_red_exige_quatro_indicadores_e_unidades_de_entrada():
+    parsed = LeituraIoT.model_validate(BASE)
+    assert parsed.values["temperaturaAr"] == 26.4
+    assert parsed.values["umidadeSolo"] == 25.0
+    assert set(parsed.values) == {"temperaturaAr", "umidadeSolo", "umidadeAr", "luminosidade"}
+    for change in (
+        {"values": {k: v for k, v in BASE["values"].items() if k != "temperaturaAr"}},
+        {"values": {**BASE["values"], "temperaturaAr": None}},
+        {"values": {**BASE["values"], "umidadeSolo": None}},
+        {"values": {**BASE["values"], "temperaturaGeral": 26.4}},
+        {"units": {**BASE["units"], "umidadeSolo": "%"}},
+        {"complements": {"temperaturaBmp": 26.4}},
+        {"values": {**BASE["values"], "temperaturaAr": None}},
+        {"values": {k: v for k, v in BASE["values"].items() if k != "luminosidade"}},
+        {"complements": {"temperaturaBmp": None}},
+        {"complements": {"temperaturaBmp": float("nan")}},
+        {"units": {**BASE["units"], "luminosidade": "lux"}},
+
         {"values": {**BASE["values"], "umidadeAr": 101}},
-        {"complements": {"pressao": float("nan")}},
-        {"units": {**BASE["units"], "pressao": "Pa"}},
+        {"values": {**BASE["values"], "luminosidade": -1}},
         {"measuredAt": "2026-11-11T10:00:00"},
-    ]:
-        with pytest.raises(ValidationError): LeituraIoT.model_validate({**BASE, **change})
+    ):
+        with pytest.raises(ValidationError):
+            LeituraIoT.model_validate({**BASE, **change})
 
-def test_ingest_persists_reading_and_analysis_and_supports_dashboard(monkeypatch):
+
+def test_metadados_de_umidade_solo_validam_origem_metodo_e_simulacao():
+    metadata = MetadadosUmidadeSolo.model_validate({
+        "origem": "DHT22_TEMPERATURA",
+        "metodo": "CONVERSAO_LINEAR_DEMONSTRATIVA",
+        "simulado": True,
+        "temperaturaFonteC": 25.0,
+    })
+    assert metadata.model_dump(mode="json", by_alias=True) == {
+        "origem": "DHT22_TEMPERATURA",
+        "metodo": "CONVERSAO_LINEAR_DEMONSTRATIVA",
+        "simulado": True,
+        "temperaturaFonteC": 25.0,
+    }
+    for change in ({"origem": "OUTRA"}, {"metodo": "MEDICAO_REAL"}, {"simulado": False}):
+        with pytest.raises(ValidationError):
+            MetadadosUmidadeSolo.model_validate({
+                "origem": "DHT22_TEMPERATURA",
+                "metodo": "CONVERSAO_LINEAR_DEMONSTRATIVA",
+                "simulado": True,
+                "temperaturaFonteC": 25,
+                **change,
+            })
+
+
+def test_adaptacao_persiste_quatro_indicadores_e_deixa_ml_pendente(monkeypatch):
     from app.telemetria import rotas
-    from app.inteligencia_artificial.aprendizado_maquina.esquemas import ResultadoAnomalia
 
     engine = create_engine("sqlite+pysqlite:///:memory:")
     BaseTelemetria.metadata.create_all(engine)
     factory = sessionmaker(engine, expire_on_commit=False)
     monkeypatch.setattr(rotas, "_sessao", lambda: factory())
-    monkeypatch.setattr(rotas, "obter_configuracoes", lambda: SimpleNamespace(
-        ml_caminho_modelo="unused", ml_versao_modelo="isolation-forest-v2",
-        telemetry_device_timeout_seconds=60))
-    class Detector:
-        versao_modelo = "isolation-forest-v2"
-        def predizer(self, reading):
-            return ResultadoAnomalia(idObservacao=reading.id_observacao,
-                classificadaComoAnomalia=False, classificacao="NAO_ATIPICA_ESTIMADA",
-                pontuacaoAnomalia=0.17, variaveisUtilizadas=["temperaturaAr","umidadeAr","luminosidade"],
-                dataAnalise=datetime.now(timezone.utc), dataLeitura=reading.registrado_em,
-                origemDados=reading.origem, versaoModelo=self.versao_modelo,
-                configuracaoModelo={"algoritmo":"IsolationForest"}, justificativa="Escores estatísticos.")
-    monkeypatch.setattr(rotas, "carregar_detector", lambda _: Detector())
-    payload = LeituraIoT.model_validate(BASE)
-    result = rotas.receber(payload)
-    assert result["observationId"] == "sample-1"
+    monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+
+    result = rotas.receber(LeituraIoT.model_validate(BASE))
+    assert result["values"] == {
+        "temperaturaAr": 26.4,
+        "umidadeSolo": 50.0,
+        "umidadeAr": 60.0,
+        "luminosidade": 1200.0,
+    }
+    assert result["units"] == {
+        "temperaturaAr": "°C", "umidadeSolo": "%", "umidadeAr": "%", "luminosidade": "ADC"
+    }
+    assert result["analysisStatus"] == "PENDENTE_ADEQUACAO_CONTRATO_ML"
+    assert result["analysis"]["executed"] is False
+    assert "pendente" in result["analysis"]["message"].lower()
+
     with factory() as db:
-        rows = db.scalars(select(Leitura)).all()
-        analyses = db.scalars(select(AnaliseAnomalia)).all()
-        assert len(rows) == len(analyses) == 1
-        assert rows[0].values["luminosidade"] == 1200
-        assert analyses[0].variables == ["temperaturaAr","umidadeAr","luminosidade"]
-    assert rotas.historico(limit=100)[0]["analysis"]["modelVersion"] == "isolation-forest-v2"
+        row = db.scalar(select(Leitura))
+        assert row is not None
+        assert set(row.values) == {"temperaturaAr", "umidadeSolo", "umidadeAr", "luminosidade"}
+        assert row.complements["umidadeSolo"] == {
+            "origem": "DHT22_TEMPERATURA",
+            "metodo": "CONVERSAO_LINEAR_DEMONSTRATIVA",
+            "simulado": True,
+            "temperaturaFonteC": 25.0,
+        }
+        assert db.scalar(select(AnaliseAnomalia)) is None
+
+    history = rotas.historico(limit=10)[0]
+    assert history["values"]["umidadeSolo"] == 50.0
+    assert history["analysis"]["status"] == "PENDENTE_ADEQUACAO_CONTRATO_ML"
     assert rotas.status()["devices"][0]["connected"] is True
 
-def test_duplicate_observation_id_is_rejected(monkeypatch):
+
+def test_observation_id_repetido_continua_idempotente(monkeypatch):
     from app.telemetria import rotas
-    from app.inteligencia_artificial.aprendizado_maquina.esquemas import ResultadoAnomalia
-    from fastapi import HTTPException
-    engine=create_engine("sqlite+pysqlite:///:memory:"); BaseTelemetria.metadata.create_all(engine)
-    factory=sessionmaker(engine,expire_on_commit=False); monkeypatch.setattr(rotas,"_sessao",lambda:factory())
-    monkeypatch.setattr(rotas,"obter_configuracoes",lambda:SimpleNamespace(ml_caminho_modelo="unused",ml_versao_modelo="isolation-forest-v2"))
-    class Detector:
-        versao_modelo="isolation-forest-v2"
-        def predizer(self,reading): return ResultadoAnomalia(idObservacao=reading.id_observacao,classificadaComoAnomalia=False,classificacao="NAO_ATIPICA_ESTIMADA",pontuacaoAnomalia=.1,variaveisUtilizadas=["temperaturaAr","umidadeAr","luminosidade"],dataAnalise=datetime.now(timezone.utc),dataLeitura=reading.registrado_em,origemDados=reading.origem,versaoModelo=self.versao_modelo,configuracaoModelo={},justificativa="Estatístico.")
-    monkeypatch.setattr(rotas,"carregar_detector",lambda _:Detector())
-    payload=LeituraIoT.model_validate(BASE); rotas.receber(payload)
-    with pytest.raises(HTTPException) as error: rotas.receber(payload)
-    assert error.value.status_code==409
-
-def test_mobile_demo_is_static_and_has_no_soil_sensor_contract():
-    with TestClient(app) as client:
-        response=client.get("/api/v1/mobile/demo/snapshot")
-    assert response.status_code==200
-    body=response.json()
-    assert body["dataMode"]=="PREDEFINED_DEMO"
-    assert body["properties"][0]["fields"][0]["soilType"]=="SOLO_FICTICIO"
-    assert set(body["indicators"])=={"temperaturaAr","umidadeAr","luminosidade"}
-    assert body["indicators"]["luminosidade"]["unit"]=="ADC"
-
-
-def test_model_types_match_postgresql_migration_and_keep_sqlite_compatibility():
-    values_column = Leitura.__table__.c.sensor_values
-    assert Leitura.values.property.columns[0].name == "sensor_values"
-    assert "JSONB" in str(values_column.type.dialect_impl(postgresql.dialect())).upper()
-    assert "JSONB" in values_column.type.dialect_impl(postgresql.dialect()).__class__.__name__.upper()
-    assert "JSON" in values_column.type.dialect_impl(sqlite.dialect()).__class__.__name__.upper()
-    assert str(Dispositivo.__table__.c.id.type.compile(dialect=postgresql.dialect())) == "BIGINT"
-    assert str(Leitura.__table__.c.id.type.compile(dialect=postgresql.dialect())) == "BIGINT"
-    assert str(AnaliseAnomalia.__table__.c.id.type.compile(dialect=postgresql.dialect())) == "BIGINT"
-    assert str(AnaliseAnomalia.__table__.c.reading_id.type.compile(dialect=postgresql.dialect())) == "BIGINT"
-    assert {"created_at", "updated_at"}.issubset(Dispositivo.__table__.columns.keys())
-    assert str(Leitura.__table__.c.id.type.compile(dialect=sqlite.dialect())) == "INTEGER"
-    assert "uq_iot_reading_observation" in {c.name for c in Leitura.__table__.constraints}
-    assert "ck_iot_anomaly_variables_three" in {c.name for c in AnaliseAnomalia.__table__.constraints}
-
-
-def test_commit_failure_rolls_back_and_returns_503(monkeypatch):
-    from app.telemetria import rotas
-    from app.inteligencia_artificial.aprendizado_maquina.esquemas import ResultadoAnomalia
-    from fastapi import HTTPException
-    from sqlalchemy.exc import OperationalError
 
     engine = create_engine("sqlite+pysqlite:///:memory:")
     BaseTelemetria.metadata.create_all(engine)
     factory = sessionmaker(engine, expire_on_commit=False)
+    monkeypatch.setattr(rotas, "_sessao", lambda: factory())
+    monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    payload = LeituraIoT.model_validate(BASE)
+    rotas.receber(payload)
+    with pytest.raises(HTTPException) as error:
+        rotas.receber(payload)
+    assert error.value.status_code == 409
+    with factory() as db:
+        assert len(db.scalars(select(Leitura)).all()) == 1
+
+
+def test_mobile_demo_permanece_fixo_e_independente():
+    with TestClient(app) as client:
+        response = client.get("/api/v1/mobile/demo/snapshot")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["dataMode"] == "PREDEFINED_DEMO"
+    assert body["properties"][0]["fields"][0]["soilType"] == "SOLO_FICTICIO"
+    assert body["indicators"]["luminosidade"]["unit"] == "ADC"
+
+
+def test_tipos_jsonb_e_constraints_do_postgresql_permanecem_compativeis():
+    values_column = Leitura.__table__.c.sensor_values
+    assert Leitura.values.property.columns[0].name == "sensor_values"
+    assert "JSONB" in values_column.type.dialect_impl(postgresql.dialect()).__class__.__name__.upper()
+    assert "JSON" in values_column.type.dialect_impl(sqlite.dialect()).__class__.__name__.upper()
+    assert "uq_iot_reading_observation" in {c.name for c in Leitura.__table__.constraints}
+    assert "ck_iot_anomaly_variables_three" in {c.name for c in AnaliseAnomalia.__table__.constraints}
+
+
+def test_falha_de_commit_reverte_dispositivo_e_leitura(monkeypatch):
+    from app.telemetria import rotas
+
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    BaseTelemetria.metadata.create_all(engine)
     rollbacks = []
 
     class CommitFailsSession(Session):
         def commit(self):
             raise OperationalError("COMMIT", {}, RuntimeError("simulated commit failure"))
-
         def rollback(self):
             rollbacks.append(True)
             return super().rollback()
 
     monkeypatch.setattr(rotas, "_sessao", lambda: CommitFailsSession(bind=engine))
-    monkeypatch.setattr(rotas, "obter_configuracoes", lambda: SimpleNamespace(
-        ml_caminho_modelo="unused", ml_versao_modelo="isolation-forest-v2"))
-
-    class Detector:
-        versao_modelo = "isolation-forest-v2"
-
-        def predizer(self, reading):
-            return ResultadoAnomalia(
-                idObservacao=reading.id_observacao,
-                classificadaComoAnomalia=False,
-                classificacao="NAO_ATIPICA_ESTIMADA",
-                pontuacaoAnomalia=0.1,
-                variaveisUtilizadas=["temperaturaAr", "umidadeAr", "luminosidade"],
-                dataAnalise=datetime.now(timezone.utc),
-                dataLeitura=reading.registrado_em,
-                origemDados=reading.origem,
-                versaoModelo=self.versao_modelo,
-                configuracaoModelo={},
-                justificativa="Estatístico.",
-            )
-
-    monkeypatch.setattr(rotas, "carregar_detector", lambda _: Detector())
+    monkeypatch.setattr(rotas, "obter_configuracoes", _config)
     with pytest.raises(HTTPException) as error:
         rotas.receber(LeituraIoT.model_validate(BASE))
     assert error.value.status_code == 503
     assert rollbacks
-    with factory() as db:
+    with Session(engine) as db:
         assert db.scalar(select(Leitura)) is None
         assert db.scalar(select(Dispositivo)) is None

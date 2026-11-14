@@ -1,26 +1,23 @@
 from datetime import datetime, timezone
-from functools import lru_cache
-
 from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy import desc, select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import VARIAVEIS_MODELO
-from app.inteligencia_artificial.aprendizado_maquina.detector_anomalias import DetectorAnomalias
-from app.inteligencia_artificial.aprendizado_maquina.esquemas import LeituraParaModelo
 from app.nucleo.configuracoes import obter_configuracoes
 from app.telemetria.banco import obter_fabrica_sessoes
-from app.telemetria.esquemas import LeituraIoT
+from app.telemetria.conversoes import converter_temperatura_dht22_em_umidade_solo
+from app.telemetria.esquemas import LeituraIoT, MetadadosUmidadeSolo, UNIDADES_CANONICAS
 from app.telemetria.modelos import AnaliseAnomalia, Dispositivo, Leitura
 
 roteador_telemetria = APIRouter(prefix="/api/v1/iot", tags=["Demonstração IoT"])
 roteador_dashboard = APIRouter(prefix="/api/v1/dashboard", tags=["Dashboard IoT"])
 
 
-@lru_cache(maxsize=4)
-def carregar_detector(caminho: str) -> DetectorAnomalias:
-    return DetectorAnomalias.carregar(caminho)
-
+STATUS_ML_PENDENTE = "PENDENTE_ADEQUACAO_CONTRATO_ML"
+MENSAGEM_ML_PENDENTE = (
+    "A captura foi persistida. A análise ML está pendente de adequação do Isolation Forest "
+    "ao contrato de quatro indicadores."
+)
 
 def _sessao():
     fabrica = obter_fabrica_sessoes()
@@ -28,18 +25,28 @@ def _sessao():
         raise HTTPException(status_code=503, detail="Banco de telemetria não configurado.")
     return fabrica()
 
-
-def _leitura_modelo(payload: LeituraIoT) -> LeituraParaModelo:
-    return LeituraParaModelo(
-        idObservacao=payload.observationId,
-        idDispositivo=payload.deviceId,
-        registradoEm=payload.measuredAt,
-        valores={nome: payload.values[nome] for nome in VARIAVEIS_MODELO},
-        unidades={nome: payload.units[nome] for nome in VARIAVEIS_MODELO},
-        qualidade="VALIDA",
-        origem=payload.source,
+def adaptar_para_indicadores(payload: LeituraIoT, limite_inferior_c: float = 15.0, limite_superior_c: float = 35.0) -> tuple[dict[str, float], dict[str, str], dict[str, object]]:
+    """Converte a temperatura DHT22 enviada em umidadeSolo para percentual."""
+    temperatura_dht = float(payload.values["umidadeSolo"])
+    umidade_solo = converter_temperatura_dht22_em_umidade_solo(
+        temperatura_dht,
+        limite_inferior_c=limite_inferior_c,
+        limite_superior_c=limite_superior_c,
     )
-
+    metadados_solo = MetadadosUmidadeSolo(
+        origem="DHT22_TEMPERATURA",
+        metodo="CONVERSAO_LINEAR_DEMONSTRATIVA",
+        simulado=True,
+        temperatura_fonte_c=temperatura_dht,
+    ).model_dump(mode="json", by_alias=True)
+    valores = {
+        "temperaturaAr": float(payload.values["temperaturaAr"]),
+        "umidadeSolo": umidade_solo,
+        "umidadeAr": float(payload.values["umidadeAr"]),
+        "luminosidade": float(payload.values["luminosidade"]),
+    }
+    complementos: dict[str, object] = {"umidadeSolo": metadados_solo}
+    return valores, dict(UNIDADES_CANONICAS), complementos
 
 def _violacao_unicidade_observacao(erro: IntegrityError) -> bool:
     original = erro.orig
@@ -54,22 +61,16 @@ def _violacao_unicidade_observacao(erro: IntegrityError) -> bool:
 
 @roteador_telemetria.post(
     "/readings", status_code=201,
-    summary="Recebe um conjunto coerente agrupado pelo Node-RED",
+    summary="Recebe e persiste uma captura IoT de quatro indicadores",
 )
 def receber(payload: LeituraIoT):
     configuracoes = obter_configuracoes()
     try:
-        detector = carregar_detector(str(configuracoes.ml_caminho_modelo))
-    except (OSError, ValueError, KeyError) as erro:
-        raise HTTPException(
-            status_code=503,
-            detail="Modelo v2 de três variáveis ausente ou incompatível; treine novamente.",
-        ) from erro
-    if detector.versao_modelo != configuracoes.ml_versao_modelo:
-        raise HTTPException(status_code=503, detail="Versão do modelo divergente da configuração.")
-
-    try:
-        resultado = detector.predizer(_leitura_modelo(payload))
+        valores, unidades, complementos = adaptar_para_indicadores(
+            payload,
+            limite_inferior_c=configuracoes.telemetry_soil_moisture_temp_min_c,
+            limite_superior_c=configuracoes.telemetry_soil_moisture_temp_max_c,
+        )
     except ValueError as erro:
         raise HTTPException(status_code=422, detail=str(erro)) from erro
 
@@ -90,29 +91,26 @@ def receber(payload: LeituraIoT):
                 measured_at=payload.measuredAt,
                 source=payload.source,
                 quality=payload.quality,
-                values=payload.values,
-                units=payload.units,
-                complements=payload.complements,
+                values=valores,
+                units=unidades,
+                complements=complementos,
             )
             db.add(leitura)
-            db.flush()
-
-            db.add(AnaliseAnomalia(
-                reading_id=leitura.id,
-                model_version=resultado.versao_modelo,
-                is_anomaly=resultado.classificada_como_anomalia,
-                score=resultado.pontuacao_anomalia,
-                analyzed_at=resultado.data_analise,
-                variables=resultado.variaveis_utilizadas,
-                explanation=resultado.justificativa,
-            ))
             db.commit()
             return {
                 "observationId": leitura.observation_id,
                 "deviceId": leitura.device_id,
                 "quality": leitura.quality,
                 "receivedAt": leitura.received_at,
-                "analysis": resultado.model_dump(mode="json", by_alias=True),
+                "values": valores,
+                "units": unidades,
+                "complements": complementos,
+                "analysisStatus": STATUS_ML_PENDENTE,
+                "analysis": {
+                    "status": STATUS_ML_PENDENTE,
+                    "executed": False,
+                    "message": MENSAGEM_ML_PENDENTE,
+                },
             }
         except IntegrityError as erro:
             db.rollback()
@@ -134,7 +132,6 @@ def receber(payload: LeituraIoT):
         except Exception:
             db.rollback()
             raise
-
 
 
 @roteador_dashboard.get("/status")
@@ -186,8 +183,13 @@ def historico(
                 "values": leitura.values,
                 "units": leitura.units,
                 "complements": leitura.complements,
+                "analysisStatus": (
+                    "CONCLUIDA" if leitura.anomaly else STATUS_ML_PENDENTE
+                ),
                 "analysis": (
                     {
+                        "status": "CONCLUIDA",
+                        "executed": True,
                         "isAnomaly": leitura.anomaly.is_anomaly,
                         "score": leitura.anomaly.score,
                         "modelVersion": leitura.anomaly.model_version,
@@ -195,7 +197,11 @@ def historico(
                         "variables": leitura.anomaly.variables,
                         "explanation": leitura.anomaly.explanation,
                     }
-                    if leitura.anomaly else None
+                    if leitura.anomaly else {
+                        "status": STATUS_ML_PENDENTE,
+                        "executed": False,
+                        "message": MENSAGEM_ML_PENDENTE,
+                    }
                 ),
             }
             for leitura in leituras
