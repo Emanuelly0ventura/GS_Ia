@@ -1,4 +1,6 @@
 from datetime import datetime, timezone
+import json
+import math
 from pathlib import Path
 import os
 import tempfile
@@ -11,22 +13,23 @@ from sklearn.ensemble import IsolationForest
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import VARIAVEIS_MODELO
+from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import (
+    UNIDADES_MODELO,
+    VARIAVEIS_MODELO,
+    VERSAO_FEATURES,
+    VERSAO_PREPROCESSAMENTO,
+)
 from app.inteligencia_artificial.aprendizado_maquina.esquemas import LeituraParaModelo, ResultadoAnomalia
 from app.inteligencia_artificial.aprendizado_maquina.preparacao import preparar_leituras
 
-class DetectorAnomalias:
-    """Treina e executa um pipeline Isolation Forest; não treina durante inferência."""
-    FORMATO_ARTEFATO = 2
 
-    def __init__(
-        self,
-        numero_estimadores: int = 200,
-        contaminacao: float = 0.05,
-        semente_aleatoria: int = 42,
-        minimo_observacoes: int = 32,
-        versao_modelo: str = "isolation-forest-v2",
-    ) -> None:
+class DetectorAnomalias:
+    """Pipeline versionado de StandardScaler e Isolation Forest."""
+
+    FORMATO_ARTEFATO = 3
+
+    def __init__(self, numero_estimadores=200, contaminacao=0.05, semente_aleatoria=42,
+                 minimo_observacoes=32, versao_modelo="isolation-forest-v3"):
         if numero_estimadores < 10:
             raise ValueError("numero_estimadores deve ser pelo menos 10.")
         if not 0 < contaminacao <= 0.5:
@@ -46,13 +49,17 @@ class DetectorAnomalias:
     def treinado(self) -> bool:
         return self._modelo is not None
 
-    def treinar(self, leituras: list[LeituraParaModelo]) -> dict[str, Any]:
-        conjunto = preparar_leituras(leituras)
+    def treinar(self, leituras, *, identificador_dados: str | None = None):
+        conjunto = preparar_leituras(leituras, unidades_esperadas=UNIDADES_MODELO)
         if len(conjunto.leituras) < self.minimo_observacoes:
             raise ValueError(
                 f"Dados insuficientes: {len(conjunto.leituras)} observações válidas; "
                 f"mínimo configurado: {self.minimo_observacoes}."
             )
+        if conjunto.matriz.shape[1] != len(VARIAVEIS_MODELO):
+            raise ValueError("A matriz de treino não corresponde à ordem e quantidade de features oficiais.")
+        if not np.isfinite(conjunto.matriz).all():
+            raise ValueError("A matriz de treino contém valores não finitos.")
 
         modelo = Pipeline(steps=[
             ("padronizador", StandardScaler()),
@@ -66,15 +73,25 @@ class DetectorAnomalias:
         modelo.fit(conjunto.matriz)
         origens = sorted({leitura.origem for leitura in conjunto.leituras})
         self._modelo = modelo
-        self._unidades = conjunto.unidades
+        self._unidades = dict(UNIDADES_MODELO)
         self._metadados = {
             "formato_artefato": self.FORMATO_ARTEFATO,
             "versao_modelo": self.versao_modelo,
-            "versao_scikit_learn": sklearn.__version__,
+            "algoritmo": "IsolationForest",
+            "versao_features": VERSAO_FEATURES,
+            "features": list(VARIAVEIS_MODELO),
             "variaveis": list(VARIAVEIS_MODELO),
             "quantidade_caracteristicas": len(VARIAVEIS_MODELO),
-            "unidades": dict(conjunto.unidades),
+            "unidades": dict(UNIDADES_MODELO),
+            "versao_preprocessamento": VERSAO_PREPROCESSAMENTO,
+            "preprocessamento": {
+                "algoritmo": "StandardScaler",
+                "with_mean": True,
+                "with_std": True,
+            },
+            "versao_scikit_learn": sklearn.__version__,
             "origens_treinamento": origens,
+            "identificador_dados_treinamento": identificador_dados,
             "dados_sinteticos": bool(origens) and all(origem == "SIMULADO_TESTE" for origem in origens),
             "quantidade_treinamento": len(conjunto.leituras),
             "quantidade_descartada": len(conjunto.descartadas),
@@ -83,7 +100,7 @@ class DetectorAnomalias:
         }
         return dict(self._metadados)
 
-    def configuracao(self) -> dict[str, object]:
+    def configuracao(self):
         return {
             "algoritmo": "IsolationForest",
             "numeroEstimadores": self.numero_estimadores,
@@ -100,9 +117,10 @@ class DetectorAnomalias:
         if len(conjunto.leituras) != 1:
             motivos = "; ".join(item["motivo"] for item in conjunto.descartadas)
             raise ValueError("Dados insuficientes ou inválidos para inferência: " + motivos)
-
         classificacao_bruta = int(self._modelo.predict(conjunto.matriz)[0])
         pontuacao = float(-self._modelo.score_samples(conjunto.matriz)[0])
+        if not math.isfinite(pontuacao):
+            raise ValueError("O modelo produziu um score não finito.")
         anomalia = classificacao_bruta == -1
         explicacao = (
             "O Isolation Forest classificou a observação como estatisticamente atípica em relação ao conjunto de treinamento."
@@ -137,17 +155,27 @@ class DetectorAnomalias:
             raise RuntimeError("Não é possível salvar um modelo ainda não treinado.")
         destino = Path(caminho)
         destino.parent.mkdir(parents=True, exist_ok=True)
+        manifesto_path = destino.with_suffix(".manifest.json")
         artefato = {**self._metadados, "pipeline": self._modelo}
-        temporario: str | None = None
+        temporarios: list[str] = []
         try:
-            with tempfile.NamedTemporaryFile(prefix=destino.stem + ".", suffix=".tmp", dir=destino.parent, delete=False) as arquivo:
-                temporario = arquivo.name
-            joblib.dump(artefato, temporario, compress=3)
-            os.replace(temporario, destino)
-            temporario = None
+            with tempfile.NamedTemporaryFile(prefix=destino.stem + ".", suffix=".tmp", dir=destino.parent, delete=False) as arquivo_modelo:
+                temporario_modelo = arquivo_modelo.name
+                temporarios.append(temporario_modelo)
+            with tempfile.NamedTemporaryFile(prefix=manifesto_path.stem + ".", suffix=".tmp", dir=destino.parent, mode="w", encoding="utf-8", delete=False) as arquivo_manifesto:
+                temporario_manifesto = arquivo_manifesto.name
+                temporarios.append(temporario_manifesto)
+                json.dump(self._metadados, arquivo_manifesto, ensure_ascii=False, indent=2)
+                arquivo_manifesto.write("\n")
+            joblib.dump(artefato, temporario_modelo, compress=3)
+            os.replace(temporario_manifesto, manifesto_path)
+            temporarios.remove(temporario_manifesto)
+            os.replace(temporario_modelo, destino)
+            temporarios.remove(temporario_modelo)
         finally:
-            if temporario and os.path.exists(temporario):
-                os.unlink(temporario)
+            for temporario in temporarios:
+                if os.path.exists(temporario):
+                    os.unlink(temporario)
         return destino
 
     @classmethod
@@ -161,18 +189,62 @@ class DetectorAnomalias:
             raise ValueError("Não foi possível carregar o artefato local do modelo.") from erro
         if not isinstance(artefato, dict) or artefato.get("formato_artefato") != cls.FORMATO_ARTEFATO:
             raise ValueError("Formato ou versão do artefato incompatível.")
+
+        manifesto_path = origem.with_suffix(".manifest.json")
+        try:
+            manifesto = json.loads(manifesto_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as erro:
+            raise ValueError("Manifesto do artefato ausente ou inválido.") from erro
+        embutido = {chave: valor for chave, valor in artefato.items() if chave != "pipeline"}
+        if manifesto != embutido:
+            raise ValueError("Manifesto externo e metadados do artefato divergem.")
         if artefato.get("versao_scikit_learn") != sklearn.__version__:
             raise ValueError("A versão do Scikit-learn difere da usada no treinamento; retreine o artefato.")
-        if artefato.get("variaveis") != list(VARIAVEIS_MODELO) or artefato.get("quantidade_caracteristicas") != len(VARIAVEIS_MODELO):
-            raise ValueError("O artefato não corresponde às variáveis desta versão da API.")
+        if (
+            artefato.get("versao_features") != VERSAO_FEATURES
+            or artefato.get("features") != list(VARIAVEIS_MODELO)
+            or artefato.get("variaveis") != list(VARIAVEIS_MODELO)
+            or artefato.get("quantidade_caracteristicas") != len(VARIAVEIS_MODELO)
+            or artefato.get("unidades") != UNIDADES_MODELO
+            or artefato.get("versao_preprocessamento") != VERSAO_PREPROCESSAMENTO
+        ):
+            raise ValueError("O artefato não corresponde à versão, ordem ou unidades das features desta API.")
+
         pipeline = artefato.get("pipeline")
+        scaler = pipeline.named_steps.get("padronizador") if isinstance(pipeline, Pipeline) else None
+        modelo_if = pipeline.named_steps.get("isolation_forest") if isinstance(pipeline, Pipeline) else None
+        if (
+            not isinstance(pipeline, Pipeline)
+            or list(pipeline.named_steps) != ["padronizador", "isolation_forest"]
+            or not isinstance(scaler, StandardScaler)
+            or not isinstance(modelo_if, IsolationForest)
+            or getattr(scaler, "n_features_in_", None) != len(VARIAVEIS_MODELO)
+            or getattr(modelo_if, "n_features_in_", None) != len(VARIAVEIS_MODELO)
+            or scaler.with_mean is not True
+            or scaler.with_std is not True
+            or np.asarray(getattr(scaler, "mean_", [])).shape != (len(VARIAVEIS_MODELO),)
+            or np.asarray(getattr(scaler, "scale_", [])).shape != (len(VARIAVEIS_MODELO),)
+            or not np.isfinite(getattr(scaler, "mean_", np.array([np.nan]))).all()
+            or not np.isfinite(getattr(scaler, "scale_", np.array([np.nan]))).all()
+        ):
+            raise ValueError("O artefato não contém scaler e Isolation Forest compatíveis com quatro features.")
+
         configuracao = artefato.get("configuracao")
-        unidades = artefato.get("unidades")
         versao = artefato.get("versao_modelo")
-        if not isinstance(pipeline, Pipeline) or set(pipeline.named_steps) != {"padronizador", "isolation_forest"} or getattr(pipeline.named_steps.get("padronizador"), "n_features_in_", None) != len(VARIAVEIS_MODELO):
-            raise ValueError("O artefato não contém o pipeline Scikit-learn esperado.")
-        if not isinstance(configuracao, dict) or not isinstance(unidades, dict) or not isinstance(versao, str):
+        if not isinstance(configuracao, dict) or not isinstance(versao, str):
             raise ValueError("O manifesto do artefato está incompleto.")
+        if artefato.get("preprocessamento") != {"algoritmo": "StandardScaler", "with_mean": True, "with_std": True}:
+            raise ValueError("A configuração de pré-processamento do manifesto é incompatível.")
+        origens = artefato.get("origens_treinamento")
+        sintetico = artefato.get("dados_sinteticos")
+        if (
+            not isinstance(artefato.get("treinado_em"), str)
+            or not isinstance(origens, list)
+            or not origens
+            or not isinstance(sintetico, bool)
+            or sintetico != all(origem == "SIMULADO_TESTE" for origem in origens)
+        ):
+            raise ValueError("A origem, flag sintética ou data do treinamento está ausente/inconsistente no manifesto.")
         try:
             detector = cls(
                 numero_estimadores=int(configuracao["numeroEstimadores"]),
@@ -183,7 +255,13 @@ class DetectorAnomalias:
             )
         except (KeyError, TypeError, ValueError) as erro:
             raise ValueError("A configuração persistida do modelo é inválida.") from erro
+        if (
+            modelo_if.n_estimators != detector.numero_estimadores
+            or modelo_if.contamination != detector.contaminacao
+            or modelo_if.random_state != detector.semente_aleatoria
+        ):
+            raise ValueError("Parâmetros do Isolation Forest não correspondem ao manifesto.")
         detector._modelo = pipeline
-        detector._unidades = {str(chave): str(valor) for chave, valor in unidades.items()}
-        detector._metadados = {chave: valor for chave, valor in artefato.items() if chave != "pipeline"}
+        detector._unidades = dict(UNIDADES_MODELO)
+        detector._metadados = embutido
         return detector

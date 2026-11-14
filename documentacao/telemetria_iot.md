@@ -64,7 +64,7 @@ Registro persistido (para o exemplo acima):
 }
 ```
 
-A análise do Isolation Forest permanece `PENDENTE_ADEQUACAO_CONTRATO_ML`, com `analysis.executed=false`; esta ingestão não executa o modelo legado de três variáveis. Capturas repetidas com o mesmo `deviceId` e `observationId` retornam HTTP 409. O dashboard usa os quatro campos persistidos em `/api/v1/dashboard/readings`; o snapshot mobile continua predefinido e independente do banco de telemetria.
+Após o commit da captura, a API relê do PostgreSQL os quatro valores canônicos e executa o Isolation Forest v3. Em sucesso, retorna `analysisStatus=CONCLUIDA`, classificação e score, e grava o resultado em `iot_anomaly_analyses`. Se o artefato ou a inferência falhar, a captura permanece salva, o estado fica `FALHA` e `analysis.executed=false`; a exceção é registrada nos logs. Capturas repetidas com o mesmo `deviceId` e `observationId` retornam HTTP 409. O dashboard usa `/api/v1/dashboard/readings` para mostrar classificação, score e estado ML; o snapshot mobile continua predefinido.
 
 ### Agrupamento Node-RED
 
@@ -93,7 +93,7 @@ Os valores entre aspas acima descrevem as fontes, não são strings válidas no 
 
 ## Persistência e aprendizado
 
-A tabela `iot_readings` guarda `values`, `units` e `complements` em JSONB; não foi necessária nova migration. O dashboard exibe `umidadeSolo` com indicação de valor simulado. O modelo Isolation Forest, seu scaler e seu artefato não foram adaptados nem executados para este contrato.
+A tabela `iot_readings` guarda `values`, `units` e `complements` em JSONB; a migration 003 adiciona `analysis_status` e atualiza a constraint das quatro features analisadas. O dashboard exibe `umidadeSolo` como simulada. O Isolation Forest v3 usa as quatro features e seu score não é probabilidade. Consulte `documentacao/aprendizado_maquina.md` para o pipeline e limitações.
 
 ## Banco isolado
 
@@ -109,14 +109,14 @@ Use o banco PostgreSQL local próprio do módulo de IA configurado por `TELEMETR
 
 ## Modelo
 
-Treinamento: `python scripts/treinar_modelo.py`. Avaliação: `python scripts/avaliar_modelo.py`. A fixture `SIMULADO_TESTE` separa 120 registros de treino e 64 de avaliação; seus valores e faixas são sintéticos, com unidades declaradas para exercitar validação, sem evidência agrícola. Parâmetros padrão: 200 estimadores, contamination=0,05, semente=42, StandardScaler. Avaliação mostra precisão, revocação, F1 e matriz de confusão apenas no conjunto sintético. O score `-score_samples` não é probabilidade, risco, severidade agronômica nem diagnóstico. O formato de artefato mudou para 2 e a versão é `isolation-forest-v2`; artefatos antigos são rejeitados.
+A versão e os procedimentos de treino, avaliação, manifesto e interpretação estão em [`aprendizado_maquina.md`](aprendizado_maquina.md). O dataset de demonstração contém dados sintéticos identificados, nunca capturas reais.
 
 ## Execução local
 
 1. Instale dependências pelo fluxo do README e configure `.env`.
 2. Provisione PostgreSQL separado e aplique a migração manual.
-3. Treine o modelo v2.
+3. Aplique também `003_anomaly_four_features.sql` após as migrations 001 e 002 e treine o modelo v3.
 4. Inicie `uvicorn app.principal:app --reload`; abra `/dashboard`. Em Docker, monte `modelos_treinados` como somente leitura em `/app/modelos_treinados` e passe `TELEMETRY_DATABASE_URL` ao container; a imagem não contém artefato nem credenciais.
-5. No Node-RED, use um agregador por captura para os tópicos `estufa/dht22/temperatura`, `estufa/dht22/umidade`, `estufa/ldr/luminosidade`; envie JSON por HTTP para `/api/v1/iot/readings`. Para o firmware atual, confirme previamente que ele corresponde aos sensores DHT22/LDR: o arquivo externo `Sensores.c++` inspecionado é outro programa (ultrassônico PetCore), portanto não fornece esses tópicos.
+5. No Node-RED, use um agregador por captura para os tópicos `estufa/bmp180/temperatura`, `estufa/dht22/temperatura`, `estufa/dht22/umidade`, `estufa/ldr/luminosidade`; envie JSON por HTTP para `/api/v1/iot/readings`. Para o firmware atual, confirme previamente que ele corresponde aos sensores DHT22/LDR: o arquivo externo `Sensores.c++` inspecionado é outro programa (ultrassônico PetCore), portanto não fornece esses tópicos.
 
-Nenhuma migration foi aplicada a banco. O seed SQL da equipe mobile é outro arquivo e outra base; nenhuma conexão com ela foi aberta.
+A API não executa migrations no startup. Aplique 001, 002 e 003 manualmente no PostgreSQL local. O seed SQL da equipe mobile é outro arquivo e outra base; esta integração ML não se conecta a ela.

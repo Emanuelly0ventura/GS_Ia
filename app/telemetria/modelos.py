@@ -47,6 +47,10 @@ class Leitura(BaseTelemetria):
     __table_args__ = (
         UniqueConstraint("device_id", "observation_id", name="uq_iot_reading_observation"),
         CheckConstraint("quality = 'VALID'", name="ck_iot_readings_quality"),
+        CheckConstraint(
+            "analysis_status IN ('PENDENTE', 'CONCLUIDA', 'FALHA')",
+            name="ck_iot_readings_analysis_status",
+        ),
     )
 
     id: Mapped[int] = mapped_column(ID_COMPAT, primary_key=True)
@@ -58,6 +62,9 @@ class Leitura(BaseTelemetria):
     received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     source: Mapped[str] = mapped_column(String(80))
     quality: Mapped[str] = mapped_column(String(30))
+    analysis_status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="PENDENTE", server_default="PENDENTE"
+    )
     values: Mapped[dict] = mapped_column("sensor_values", JSON_COMPAT, nullable=False)
     units: Mapped[dict] = mapped_column(JSON_COMPAT, nullable=False)
     complements: Mapped[dict] = mapped_column(
@@ -73,8 +80,8 @@ class AnaliseAnomalia(BaseTelemetria):
     __tablename__ = "iot_anomaly_analyses"
     __table_args__ = (
         CheckConstraint(
-            "jsonb_array_length(variables) = 3",
-            name="ck_iot_anomaly_variables_three",
+            "jsonb_array_length(variables) = 4",
+            name="ck_iot_anomaly_variables_four",
         ).ddl_if(dialect="postgresql"),
     )
 

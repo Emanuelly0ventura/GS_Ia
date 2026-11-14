@@ -30,6 +30,8 @@ def _config():
         telemetry_soil_moisture_temp_min_c=15.0,
         telemetry_soil_moisture_temp_max_c=35.0,
         telemetry_device_timeout_seconds=60,
+        ml_versao_modelo="isolation-forest-v3",
+        ml_caminho_modelo="unused-test-artifact.joblib",
     )
 
 
@@ -107,7 +109,24 @@ def test_metadados_de_umidade_solo_validam_origem_metodo_e_simulacao():
             })
 
 
-def test_adaptacao_persiste_quatro_indicadores_e_deixa_ml_pendente(monkeypatch):
+def MetadadosAnomaliaStub(leitura):
+    from app.inteligencia_artificial.aprendizado_maquina.esquemas import ResultadoAnomalia
+    return ResultadoAnomalia(
+        id_observacao=leitura.id_observacao,
+        classificada_como_anomalia=False,
+        classificacao="NAO_ATIPICA_ESTIMADA",
+        pontuacao_anomalia=0.123,
+        variaveis_utilizadas=["temperaturaAr", "umidadeSolo", "umidadeAr", "luminosidade"],
+        data_analise=datetime.now(timezone.utc),
+        data_leitura=leitura.registrado_em,
+        origem_dados=leitura.origem,
+        versao_modelo="isolation-forest-v3",
+        configuracao_modelo={"algoritmo":"IsolationForest"},
+        justificativa="Resultado técnico controlado em teste.",
+    )
+
+
+def test_adaptacao_persiste_quatro_indicadores_e_analise_ml(monkeypatch):
     from app.telemetria import rotas
 
     engine = create_engine("sqlite+pysqlite:///:memory:")
@@ -115,6 +134,21 @@ def test_adaptacao_persiste_quatro_indicadores_e_deixa_ml_pendente(monkeypatch):
     factory = sessionmaker(engine, expire_on_commit=False)
     monkeypatch.setattr(rotas, "_sessao", lambda: factory())
     monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    received = {}
+
+    class DetectorStub:
+        versao_modelo = "isolation-forest-v3"
+        def predizer(self, leitura):
+            with factory() as observer:
+                persisted = observer.scalar(select(Leitura).where(
+                    Leitura.device_id == leitura.id_dispositivo,
+                    Leitura.observation_id == leitura.id_observacao,
+                ))
+            received["persisted_before_analysis"] = persisted is not None
+            received["leitura"] = leitura
+            return MetadadosAnomaliaStub(leitura)
+
+    monkeypatch.setattr(rotas, "carregar_detector_telemetria", lambda _: DetectorStub())
 
     result = rotas.receber(LeituraIoT.model_validate(BASE))
     assert result["values"] == {
@@ -126,9 +160,13 @@ def test_adaptacao_persiste_quatro_indicadores_e_deixa_ml_pendente(monkeypatch):
     assert result["units"] == {
         "temperaturaAr": "°C", "umidadeSolo": "%", "umidadeAr": "%", "luminosidade": "ADC"
     }
-    assert result["analysisStatus"] == "PENDENTE_ADEQUACAO_CONTRATO_ML"
-    assert result["analysis"]["executed"] is False
-    assert "pendente" in result["analysis"]["message"].lower()
+    assert result["analysisStatus"] == "CONCLUIDA"
+    assert result["analysis"]["executed"] is True
+    assert result["analysis"]["isAnomaly"] is False
+    assert result["analysis"]["score"] == 0.123
+    assert received["persisted_before_analysis"] is True
+    assert received["leitura"].valores["umidadeSolo"] == 50.0
+    assert received["leitura"].unidades["umidadeSolo"] == "%"
 
     with factory() as db:
         row = db.scalar(select(Leitura))
@@ -140,12 +178,41 @@ def test_adaptacao_persiste_quatro_indicadores_e_deixa_ml_pendente(monkeypatch):
             "simulado": True,
             "temperaturaFonteC": 25.0,
         }
-        assert db.scalar(select(AnaliseAnomalia)) is None
+        assert row.analysis_status == "CONCLUIDA"
+        analysis = db.scalar(select(AnaliseAnomalia))
+        assert analysis is not None
+        assert analysis.variables == ["temperaturaAr", "umidadeSolo", "umidadeAr", "luminosidade"]
+        assert analysis.score == 0.123
 
     history = rotas.historico(limit=10)[0]
     assert history["values"]["umidadeSolo"] == 50.0
-    assert history["analysis"]["status"] == "PENDENTE_ADEQUACAO_CONTRATO_ML"
+    assert history["analysis"]["status"] == "CONCLUIDA"
     assert rotas.status()["devices"][0]["connected"] is True
+
+
+
+def test_falha_ml_nao_remove_captura_persistida(monkeypatch, caplog):
+    from app.telemetria import rotas
+
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    BaseTelemetria.metadata.create_all(engine)
+    factory = sessionmaker(engine, expire_on_commit=False)
+    monkeypatch.setattr(rotas, "_sessao", lambda: factory())
+    monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    def modelo_indisponivel(_):
+        raise FileNotFoundError("fixture: artefato indisponível")
+    monkeypatch.setattr(rotas, "carregar_detector_telemetria", modelo_indisponivel)
+
+    result = rotas.receber(LeituraIoT.model_validate(BASE))
+    assert result["analysisStatus"] == "FALHA"
+    assert result["analysis"]["executed"] is False
+    assert "consulte os logs" in result["analysis"]["message"].lower()
+    assert "Falha na análise ML após persistir captura" in caplog.text
+    with factory() as db:
+        row = db.scalar(select(Leitura))
+        assert row is not None
+        assert row.analysis_status == "FALHA"
+        assert db.scalar(select(AnaliseAnomalia)) is None
 
 
 def test_observation_id_repetido_continua_idempotente(monkeypatch):
@@ -156,6 +223,7 @@ def test_observation_id_repetido_continua_idempotente(monkeypatch):
     factory = sessionmaker(engine, expire_on_commit=False)
     monkeypatch.setattr(rotas, "_sessao", lambda: factory())
     monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    monkeypatch.setattr(rotas, "carregar_detector_telemetria", lambda _: type("Detector", (), {"versao_modelo":"isolation-forest-v3", "predizer":staticmethod(MetadadosAnomaliaStub)})())
     payload = LeituraIoT.model_validate(BASE)
     rotas.receber(payload)
     with pytest.raises(HTTPException) as error:
@@ -181,7 +249,7 @@ def test_tipos_jsonb_e_constraints_do_postgresql_permanecem_compativeis():
     assert "JSONB" in values_column.type.dialect_impl(postgresql.dialect()).__class__.__name__.upper()
     assert "JSON" in values_column.type.dialect_impl(sqlite.dialect()).__class__.__name__.upper()
     assert "uq_iot_reading_observation" in {c.name for c in Leitura.__table__.constraints}
-    assert "ck_iot_anomaly_variables_three" in {c.name for c in AnaliseAnomalia.__table__.constraints}
+    assert "ck_iot_anomaly_variables_four" in {c.name for c in AnaliseAnomalia.__table__.constraints}
 
 
 def test_falha_de_commit_reverte_dispositivo_e_leitura(monkeypatch):

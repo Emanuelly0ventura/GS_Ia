@@ -32,7 +32,7 @@ class Configuracoes(BaseSettings):
     ml_semente_aleatoria: int = 42
     ml_minimo_observacoes: int = Field(default=32, ge=2)
     ml_caminho_modelo: Path = Path("modelos_treinados/isolation_forest.joblib")
-    ml_versao_modelo: str = "isolation-forest-v2"
+    ml_versao_modelo: str = "isolation-forest-v3"
     rag_diretorio_documentos: Path = Path("base_conhecimento/documentos")
     rag_diretorio_indice: Path = Path("base_conhecimento/indice")
     rag_caminho_embeddings: Path = Path("modelos_embeddings/multilingual-e5-small")

@@ -5,7 +5,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic.alias_generators import to_camel
 
-from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import VARIAVEIS_MODELO
+from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import UNIDADES_MODELO, VARIAVEIS_MODELO
 
 class LeituraParaModelo(BaseModel):
     """Contrato interno provisório; o adaptador externo fará o mapeamento futuro."""
@@ -41,11 +41,16 @@ class LeituraParaModelo(BaseModel):
     @field_validator("unidades")
     @classmethod
     def validar_unidades(cls, valor: dict[str, str]) -> dict[str, str]:
-        if set(valor) - set(VARIAVEIS_MODELO):
+        desconhecidas = set(valor) - set(VARIAVEIS_MODELO)
+        if desconhecidas:
             raise ValueError("unidades contém variáveis não reconhecidas pelo contrato interno.")
         if any(not isinstance(unidade, str) or not unidade.strip() for unidade in valor.values()):
             raise ValueError("Cada unidade informada deve ser uma string não vazia.")
-        return {nome: unidade.strip() for nome, unidade in valor.items()}
+        normalizadas = {nome: unidade.strip() for nome, unidade in valor.items()}
+        incompatíveis = [nome for nome, unidade in normalizadas.items() if unidade != UNIDADES_MODELO[nome]]
+        if incompatíveis:
+            raise ValueError("Unidade incompatível para: " + ", ".join(incompatíveis))
+        return normalizadas
 
     @field_validator("origem")
     @classmethod

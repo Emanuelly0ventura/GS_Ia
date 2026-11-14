@@ -1,0 +1,48 @@
+{
+  "formato_artefato": 3,
+  "versao_modelo": "isolation-forest-v3",
+  "algoritmo": "IsolationForest",
+  "versao_features": "iot-4-indicadores-v1",
+  "features": [
+    "temperaturaAr",
+    "umidadeSolo",
+    "umidadeAr",
+    "luminosidade"
+  ],
+  "variaveis": [
+    "temperaturaAr",
+    "umidadeSolo",
+    "umidadeAr",
+    "luminosidade"
+  ],
+  "quantidade_caracteristicas": 4,
+  "unidades": {
+    "temperaturaAr": "°C",
+    "umidadeSolo": "%",
+    "umidadeAr": "%",
+    "luminosidade": "ADC"
+  },
+  "versao_preprocessamento": "standard-scaler-ordem-canonica-v1",
+  "preprocessamento": {
+    "algoritmo": "StandardScaler",
+    "with_mean": true,
+    "with_std": true
+  },
+  "versao_scikit_learn": "1.9.1",
+  "origens_treinamento": [
+    "SIMULADO_TESTE"
+  ],
+  "identificador_dados_treinamento": "tests/fixtures/isolation_forest_rotulado.json",
+  "dados_sinteticos": true,
+  "quantidade_treinamento": 120,
+  "quantidade_descartada": 0,
+  "treinado_em": "2026-11-14T01:05:12.825423+00:00",
+  "configuracao": {
+    "algoritmo": "IsolationForest",
+    "numeroEstimadores": 200,
+    "contaminacao": 0.05,
+    "sementeAleatoria": 42,
+    "minimoObservacoes": 32,
+    "padronizacao": "StandardScaler"
+  }
+}

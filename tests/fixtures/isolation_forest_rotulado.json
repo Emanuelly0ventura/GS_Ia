@@ -1,19 +1,22 @@
 {
   "metadados": {
     "origem": "SIMULADO_TESTE",
-    "versao": "iforest-sintetico-3-variaveis-v2",
+    "versao": "iforest-sintetico-4-variaveis-v3",
     "sementeGeracao": 20261109,
     "unidades": {
       "temperaturaAr": "°C",
+      "umidadeSolo": "%",
       "umidadeAr": "%",
       "luminosidade": "ADC"
     },
-    "nota": "Dados inteiramente sintéticos gerados com faixas apenas demonstrativas; não representam observações reais nem limites agrícolas.",
+    "nota": "Dados inteiramente sintéticos, incluindo umidadeSolo percentual demonstrativa; não representam observações reais nem limites agronômicos. Os 24 rótulos anômalos da avaliação são cenários artificiais controlados.",
     "variaveis": [
       "temperaturaAr",
+      "umidadeSolo",
       "umidadeAr",
       "luminosidade"
-    ]
+    ],
+    "sementeGeracaoUmidadeSolo": 20261113
   },
   "treinamento": [
     {
@@ -22,11 +25,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.785,
+        "umidadeSolo": 63.184,
         "umidadeAr": 74.73,
         "luminosidade": 1453.436
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -39,11 +44,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.284,
+        "umidadeSolo": 17.58,
         "umidadeAr": 72.002,
         "luminosidade": 2968.076
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -56,11 +63,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 33.662,
+        "umidadeSolo": 46.546,
         "umidadeAr": 35.284,
         "luminosidade": 2011.999
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -73,11 +82,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 27.532,
+        "umidadeSolo": 55.654,
         "umidadeAr": 69.034,
         "luminosidade": 1847.335
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -90,11 +101,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.767,
+        "umidadeSolo": 39.971,
         "umidadeAr": 43.22,
         "luminosidade": 1478.322
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -107,11 +120,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 33.069,
+        "umidadeSolo": 80.388,
         "umidadeAr": 53.666,
         "luminosidade": 2325.911
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -124,11 +139,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 21.516,
+        "umidadeSolo": 65.083,
         "umidadeAr": 56.046,
         "luminosidade": 1427.863
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -141,11 +158,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 15.363,
+        "umidadeSolo": 42.825,
         "umidadeAr": 69.083,
         "luminosidade": 2728.691
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -158,11 +177,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 28.977,
+        "umidadeSolo": 38.784,
         "umidadeAr": 81.5,
         "luminosidade": 2239.26
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -175,11 +196,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 27.459,
+        "umidadeSolo": 41.019,
         "umidadeAr": 48.305,
         "luminosidade": 1165.24
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -192,11 +215,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.326,
+        "umidadeSolo": 62.667,
         "umidadeAr": 65.686,
         "luminosidade": 2451.479
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -209,11 +234,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 33.804,
+        "umidadeSolo": 35.803,
         "umidadeAr": 67.884,
         "luminosidade": 2056.065
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -226,11 +253,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.596,
+        "umidadeSolo": 47.043,
         "umidadeAr": 50.129,
         "luminosidade": 2317.012
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -243,11 +272,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.066,
+        "umidadeSolo": 59.601,
         "umidadeAr": 72.509,
         "luminosidade": 837.752
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -260,11 +291,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 30.039,
+        "umidadeSolo": 48.369,
         "umidadeAr": 57.287,
         "luminosidade": 1408.803
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -277,11 +310,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.216,
+        "umidadeSolo": 55.11,
         "umidadeAr": 55.034,
         "luminosidade": 1020.242
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -294,11 +329,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.217,
+        "umidadeSolo": 57.089,
         "umidadeAr": 48.058,
         "luminosidade": 2432.117
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -311,11 +348,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.745,
+        "umidadeSolo": 27.157,
         "umidadeAr": 65.639,
         "luminosidade": 2301.109
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -328,11 +367,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.612,
+        "umidadeSolo": 41.057,
         "umidadeAr": 58.9,
         "luminosidade": 2180.27
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -345,11 +386,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 24.531,
+        "umidadeSolo": 40.224,
         "umidadeAr": 58.311,
         "luminosidade": 2024.585
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -362,11 +405,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.922,
+        "umidadeSolo": 43.681,
         "umidadeAr": 67.043,
         "luminosidade": 1599.465
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -379,11 +424,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 31.372,
+        "umidadeSolo": 46.029,
         "umidadeAr": 50.744,
         "luminosidade": 1962.283
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -396,11 +443,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.544,
+        "umidadeSolo": 32.063,
         "umidadeAr": 51.541,
         "luminosidade": 1995.04
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -413,11 +462,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 17.375,
+        "umidadeSolo": 46.555,
         "umidadeAr": 61.891,
         "luminosidade": 2357.276
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -430,11 +481,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 19.813,
+        "umidadeSolo": 57.194,
         "umidadeAr": 61.841,
         "luminosidade": 2231.717
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -447,11 +500,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 24.377,
+        "umidadeSolo": 46.07,
         "umidadeAr": 68.339,
         "luminosidade": 1477.258
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -464,11 +519,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 30.643,
+        "umidadeSolo": 36.293,
         "umidadeAr": 65.847,
         "luminosidade": 1866.527
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -481,11 +538,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 18.134,
+        "umidadeSolo": 24.727,
         "umidadeAr": 59.231,
         "luminosidade": 2440.433
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -498,11 +557,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.81,
+        "umidadeSolo": 55.776,
         "umidadeAr": 52.689,
         "luminosidade": 1737.838
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -515,11 +576,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 17.723,
+        "umidadeSolo": 55.034,
         "umidadeAr": 71.743,
         "luminosidade": 2171.822
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -532,11 +595,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 30.948,
+        "umidadeSolo": 56.76,
         "umidadeAr": 44.632,
         "luminosidade": 1954.948
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -549,11 +614,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.213,
+        "umidadeSolo": 69.54,
         "umidadeAr": 31.286,
         "luminosidade": 2143.623
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -566,11 +633,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 32.425,
+        "umidadeSolo": 34.163,
         "umidadeAr": 64.737,
         "luminosidade": 2567.763
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -583,11 +652,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 27.036,
+        "umidadeSolo": 32.884,
         "umidadeAr": 81.591,
         "luminosidade": 1517.356
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -600,11 +671,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 29.638,
+        "umidadeSolo": 69.409,
         "umidadeAr": 56.546,
         "luminosidade": 2602.976
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -617,11 +690,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 32.73,
+        "umidadeSolo": 53.583,
         "umidadeAr": 38.928,
         "luminosidade": 2857.716
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -634,11 +709,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.845,
+        "umidadeSolo": 81.545,
         "umidadeAr": 71.34,
         "luminosidade": 1164.585
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -651,11 +728,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 14.201,
+        "umidadeSolo": 50.958,
         "umidadeAr": 62.677,
         "luminosidade": 2311.552
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -668,11 +747,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.31,
+        "umidadeSolo": 57.181,
         "umidadeAr": 59.221,
         "luminosidade": 1598.752
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -685,11 +766,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.899,
+        "umidadeSolo": 51.089,
         "umidadeAr": 41.943,
         "luminosidade": 1944.476
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -702,11 +785,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 29.512,
+        "umidadeSolo": 58.54,
         "umidadeAr": 60.781,
         "luminosidade": 1302.467
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -719,11 +804,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 23.675,
+        "umidadeSolo": 87.573,
         "umidadeAr": 53.999,
         "luminosidade": 1568.851
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -736,11 +823,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 19.96,
+        "umidadeSolo": 79.208,
         "umidadeAr": 57.058,
         "luminosidade": 2210.0
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -753,11 +842,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 17.831,
+        "umidadeSolo": 46.439,
         "umidadeAr": 49.257,
         "luminosidade": 1237.489
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -770,11 +861,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.165,
+        "umidadeSolo": 21.131,
         "umidadeAr": 58.146,
         "luminosidade": 1334.355
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -787,11 +880,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.75,
+        "umidadeSolo": 38.993,
         "umidadeAr": 58.571,
         "luminosidade": 2261.795
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -804,11 +899,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.762,
+        "umidadeSolo": 47.513,
         "umidadeAr": 59.137,
         "luminosidade": 2402.179
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -821,11 +918,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 21.258,
+        "umidadeSolo": 43.598,
         "umidadeAr": 47.371,
         "luminosidade": 2420.35
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -838,11 +937,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.158,
+        "umidadeSolo": 50.945,
         "umidadeAr": 55.409,
         "luminosidade": 1589.882
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -855,11 +956,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 32.161,
+        "umidadeSolo": 50.92,
         "umidadeAr": 68.166,
         "luminosidade": 1354.863
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -872,11 +975,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 21.867,
+        "umidadeSolo": 27.573,
         "umidadeAr": 66.793,
         "luminosidade": 824.175
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -889,11 +994,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.719,
+        "umidadeSolo": 55.213,
         "umidadeAr": 79.57,
         "luminosidade": 1270.68
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -906,11 +1013,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 28.576,
+        "umidadeSolo": 59.136,
         "umidadeAr": 78.155,
         "luminosidade": 1187.341
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -923,11 +1032,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.334,
+        "umidadeSolo": 49.384,
         "umidadeAr": 73.069,
         "luminosidade": 1897.165
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -940,11 +1051,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 19.722,
+        "umidadeSolo": 27.137,
         "umidadeAr": 91.969,
         "luminosidade": 1813.317
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -957,11 +1070,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.921,
+        "umidadeSolo": 29.896,
         "umidadeAr": 55.125,
         "luminosidade": 1851.341
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -974,11 +1089,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.91,
+        "umidadeSolo": 53.106,
         "umidadeAr": 62.549,
         "luminosidade": 2748.734
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -991,11 +1108,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 21.153,
+        "umidadeSolo": 47.154,
         "umidadeAr": 68.438,
         "luminosidade": 2161.027
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1008,11 +1127,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 32.437,
+        "umidadeSolo": 46.465,
         "umidadeAr": 75.535,
         "luminosidade": 2359.25
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1025,11 +1146,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 28.513,
+        "umidadeSolo": 41.252,
         "umidadeAr": 40.652,
         "luminosidade": 1958.218
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1042,11 +1165,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 32.086,
+        "umidadeSolo": 25.392,
         "umidadeAr": 91.793,
         "luminosidade": 1704.491
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1059,11 +1184,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 21.437,
+        "umidadeSolo": 61.403,
         "umidadeAr": 36.167,
         "luminosidade": 2384.666
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1076,11 +1203,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 33.316,
+        "umidadeSolo": 57.03,
         "umidadeAr": 58.62,
         "luminosidade": 1895.738
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1093,11 +1222,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.99,
+        "umidadeSolo": 22.486,
         "umidadeAr": 68.066,
         "luminosidade": 2519.186
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1110,11 +1241,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.371,
+        "umidadeSolo": 16.916,
         "umidadeAr": 67.542,
         "luminosidade": 2222.76
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1127,11 +1260,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 28.857,
+        "umidadeSolo": 40.093,
         "umidadeAr": 74.057,
         "luminosidade": 1978.274
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1144,11 +1279,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 28.341,
+        "umidadeSolo": 52.35,
         "umidadeAr": 50.703,
         "luminosidade": 2085.26
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1161,11 +1298,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 31.931,
+        "umidadeSolo": 58.517,
         "umidadeAr": 87.364,
         "luminosidade": 1688.082
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1178,11 +1317,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 30.055,
+        "umidadeSolo": 49.724,
         "umidadeAr": 56.765,
         "luminosidade": 1453.719
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1195,11 +1336,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 27.681,
+        "umidadeSolo": 40.037,
         "umidadeAr": 51.056,
         "luminosidade": 1416.891
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1212,11 +1355,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 24.652,
+        "umidadeSolo": 44.277,
         "umidadeAr": 62.636,
         "luminosidade": 1538.147
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1229,11 +1374,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.669,
+        "umidadeSolo": 63.651,
         "umidadeAr": 60.881,
         "luminosidade": 1064.543
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1246,11 +1393,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 28.012,
+        "umidadeSolo": 46.525,
         "umidadeAr": 53.063,
         "luminosidade": 2318.046
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1263,11 +1412,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 31.298,
+        "umidadeSolo": 55.685,
         "umidadeAr": 47.194,
         "luminosidade": 2396.244
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1280,11 +1431,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.266,
+        "umidadeSolo": 49.423,
         "umidadeAr": 86.384,
         "luminosidade": 2009.17
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1297,11 +1450,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.965,
+        "umidadeSolo": 39.935,
         "umidadeAr": 39.881,
         "luminosidade": 780.539
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1314,11 +1469,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 29.219,
+        "umidadeSolo": 63.893,
         "umidadeAr": 75.448,
         "luminosidade": 2790.485
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1331,11 +1488,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.104,
+        "umidadeSolo": 87.944,
         "umidadeAr": 58.628,
         "luminosidade": 538.932
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1348,11 +1507,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 17.447,
+        "umidadeSolo": 26.716,
         "umidadeAr": 60.246,
         "luminosidade": 962.095
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1365,11 +1526,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 21.05,
+        "umidadeSolo": 46.63,
         "umidadeAr": 40.299,
         "luminosidade": 2950.649
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1382,11 +1545,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 27.365,
+        "umidadeSolo": 64.954,
         "umidadeAr": 49.055,
         "luminosidade": 2413.382
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1399,11 +1564,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.455,
+        "umidadeSolo": 48.037,
         "umidadeAr": 54.679,
         "luminosidade": 2327.561
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1416,11 +1583,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 27.379,
+        "umidadeSolo": 65.339,
         "umidadeAr": 70.105,
         "luminosidade": 2407.888
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1433,11 +1602,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.335,
+        "umidadeSolo": 70.513,
         "umidadeAr": 63.618,
         "luminosidade": 2279.39
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1450,11 +1621,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.827,
+        "umidadeSolo": 33.311,
         "umidadeAr": 55.462,
         "luminosidade": 2408.447
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1467,11 +1640,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.277,
+        "umidadeSolo": 35.674,
         "umidadeAr": 52.183,
         "luminosidade": 1609.062
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1484,11 +1659,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 23.116,
+        "umidadeSolo": 40.223,
         "umidadeAr": 64.238,
         "luminosidade": 1920.464
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1501,11 +1678,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.007,
+        "umidadeSolo": 43.563,
         "umidadeAr": 60.096,
         "luminosidade": 1980.986
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1518,11 +1697,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.325,
+        "umidadeSolo": 33.707,
         "umidadeAr": 81.86,
         "luminosidade": 1437.593
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1535,11 +1716,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.26,
+        "umidadeSolo": 42.224,
         "umidadeAr": 68.706,
         "luminosidade": 1479.919
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1552,11 +1735,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 19.898,
+        "umidadeSolo": 32.496,
         "umidadeAr": 67.658,
         "luminosidade": 1979.363
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1569,11 +1754,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 23.077,
+        "umidadeSolo": 54.761,
         "umidadeAr": 51.593,
         "luminosidade": 1776.299
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1586,11 +1773,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.934,
+        "umidadeSolo": 36.32,
         "umidadeAr": 36.092,
         "luminosidade": 2252.285
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1603,11 +1792,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.798,
+        "umidadeSolo": 52.783,
         "umidadeAr": 50.008,
         "luminosidade": 2347.351
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1620,11 +1811,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.017,
+        "umidadeSolo": 37.404,
         "umidadeAr": 52.515,
         "luminosidade": 2196.397
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1637,11 +1830,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 31.031,
+        "umidadeSolo": 53.567,
         "umidadeAr": 65.133,
         "luminosidade": 967.321
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1654,11 +1849,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 18.079,
+        "umidadeSolo": 35.108,
         "umidadeAr": 70.644,
         "luminosidade": 2330.648
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1671,11 +1868,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 24.133,
+        "umidadeSolo": 65.588,
         "umidadeAr": 74.981,
         "luminosidade": 1159.547
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1688,11 +1887,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.66,
+        "umidadeSolo": 74.36,
         "umidadeAr": 86.009,
         "luminosidade": 861.696
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1705,11 +1906,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 29.561,
+        "umidadeSolo": 45.708,
         "umidadeAr": 64.882,
         "luminosidade": 2576.361
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1722,11 +1925,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 23.648,
+        "umidadeSolo": 93.104,
         "umidadeAr": 65.545,
         "luminosidade": 2378.568
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1739,11 +1944,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.037,
+        "umidadeSolo": 21.462,
         "umidadeAr": 64.18,
         "luminosidade": 1485.879
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1756,11 +1963,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 20.613,
+        "umidadeSolo": 46.449,
         "umidadeAr": 49.641,
         "luminosidade": 1898.549
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1773,11 +1982,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 27.522,
+        "umidadeSolo": 67.306,
         "umidadeAr": 59.555,
         "luminosidade": 1228.839
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1790,11 +2001,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 23.251,
+        "umidadeSolo": 58.983,
         "umidadeAr": 58.049,
         "luminosidade": 2449.786
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1807,11 +2020,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 23.202,
+        "umidadeSolo": 53.05,
         "umidadeAr": 85.831,
         "luminosidade": 2620.696
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1824,11 +2039,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 18.08,
+        "umidadeSolo": 38.082,
         "umidadeAr": 45.654,
         "luminosidade": 2157.041
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1841,11 +2058,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.162,
+        "umidadeSolo": 52.085,
         "umidadeAr": 72.751,
         "luminosidade": 1961.32
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1858,11 +2077,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 25.167,
+        "umidadeSolo": 49.1,
         "umidadeAr": 44.33,
         "luminosidade": 1744.492
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1875,11 +2096,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.141,
+        "umidadeSolo": 44.713,
         "umidadeAr": 39.541,
         "luminosidade": 1989.587
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1892,11 +2115,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 31.027,
+        "umidadeSolo": 58.599,
         "umidadeAr": 65.339,
         "luminosidade": 1299.303
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1909,11 +2134,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 26.217,
+        "umidadeSolo": 63.705,
         "umidadeAr": 66.129,
         "luminosidade": 522.095
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1926,11 +2153,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 17.049,
+        "umidadeSolo": 72.548,
         "umidadeAr": 45.74,
         "luminosidade": 1973.677
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1943,11 +2172,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 28.782,
+        "umidadeSolo": 63.76,
         "umidadeAr": 41.049,
         "luminosidade": 2653.911
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1960,11 +2191,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 22.929,
+        "umidadeSolo": 55.677,
         "umidadeAr": 57.567,
         "luminosidade": 1723.447
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1977,11 +2210,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 32.229,
+        "umidadeSolo": 46.685,
         "umidadeAr": 61.294,
         "luminosidade": 1139.122
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -1994,11 +2229,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 21.578,
+        "umidadeSolo": 38.128,
         "umidadeAr": 45.028,
         "luminosidade": 1638.895
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -2011,11 +2248,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 24.879,
+        "umidadeSolo": 48.893,
         "umidadeAr": 56.683,
         "luminosidade": 760.004
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -2028,11 +2267,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 29.209,
+        "umidadeSolo": 32.92,
         "umidadeAr": 59.089,
         "luminosidade": 2851.652
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -2045,11 +2286,13 @@
       "registradoEm": null,
       "valores": {
         "temperaturaAr": 23.093,
+        "umidadeSolo": 57.628,
         "umidadeAr": 63.689,
         "luminosidade": 2295.391
       },
       "unidades": {
         "temperaturaAr": "°C",
+        "umidadeSolo": "%",
         "umidadeAr": "%",
         "luminosidade": "ADC"
       },
@@ -2065,11 +2308,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 23.314,
+          "umidadeSolo": 35.784,
           "umidadeAr": 63.64,
           "luminosidade": 1645.388
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2085,11 +2330,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 24.105,
+          "umidadeSolo": 63.266,
           "umidadeAr": 66.033,
           "luminosidade": 1123.16
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2105,11 +2352,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 27.197,
+          "umidadeSolo": 55.941,
           "umidadeAr": 60.759,
           "luminosidade": 3144.862
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2125,11 +2374,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 20.902,
+          "umidadeSolo": 38.856,
           "umidadeAr": 42.461,
           "luminosidade": 1892.353
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2145,11 +2396,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 19.83,
+          "umidadeSolo": 55.663,
           "umidadeAr": 81.479,
           "luminosidade": 1814.797
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2165,11 +2418,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 31.084,
+          "umidadeSolo": 59.473,
           "umidadeAr": 48.157,
           "luminosidade": 2626.406
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2185,11 +2440,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 36.254,
+          "umidadeSolo": 58.729,
           "umidadeAr": 51.699,
           "luminosidade": 2234.146
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2205,11 +2462,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 25.265,
+          "umidadeSolo": 39.425,
           "umidadeAr": 61.361,
           "luminosidade": 2489.964
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2225,11 +2484,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 27.393,
+          "umidadeSolo": 66.941,
           "umidadeAr": 79.515,
           "luminosidade": 1756.498
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2245,11 +2506,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 20.354,
+          "umidadeSolo": 55.767,
           "umidadeAr": 65.159,
           "luminosidade": 1614.777
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2265,11 +2528,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 22.993,
+          "umidadeSolo": 30.537,
           "umidadeAr": 66.985,
           "luminosidade": 1685.926
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2285,11 +2550,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 29.087,
+          "umidadeSolo": 43.757,
           "umidadeAr": 85.706,
           "luminosidade": 1717.442
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2305,11 +2572,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 22.308,
+          "umidadeSolo": 18.559,
           "umidadeAr": 80.901,
           "luminosidade": 1771.305
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2325,11 +2594,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 27.301,
+          "umidadeSolo": 50.054,
           "umidadeAr": 74.039,
           "luminosidade": 1362.117
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2345,11 +2616,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 33.609,
+          "umidadeSolo": 45.139,
           "umidadeAr": 57.03,
           "luminosidade": 2265.145
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2365,11 +2638,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 27.02,
+          "umidadeSolo": 53.976,
           "umidadeAr": 58.919,
           "luminosidade": 1845.507
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2385,11 +2660,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 26.384,
+          "umidadeSolo": 44.229,
           "umidadeAr": 29.352,
           "luminosidade": 1816.403
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2405,11 +2682,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 23.556,
+          "umidadeSolo": 75.251,
           "umidadeAr": 50.328,
           "luminosidade": 1277.729
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2425,11 +2704,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 26.812,
+          "umidadeSolo": 47.752,
           "umidadeAr": 54.332,
           "luminosidade": 2734.648
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2445,11 +2726,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 29.096,
+          "umidadeSolo": 39.434,
           "umidadeAr": 66.488,
           "luminosidade": 1839.103
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2465,11 +2748,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 21.761,
+          "umidadeSolo": 42.919,
           "umidadeAr": 70.368,
           "luminosidade": 2305.615
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2485,11 +2770,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 32.561,
+          "umidadeSolo": 56.123,
           "umidadeAr": 75.954,
           "luminosidade": 1922.95
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2505,11 +2792,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 24.197,
+          "umidadeSolo": 39.269,
           "umidadeAr": 82.661,
           "luminosidade": 1199.048
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2525,11 +2814,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 25.039,
+          "umidadeSolo": 61.855,
           "umidadeAr": 63.013,
           "luminosidade": 1676.743
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2545,11 +2836,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 24.754,
+          "umidadeSolo": 65.859,
           "umidadeAr": 73.687,
           "luminosidade": 2219.879
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2565,11 +2858,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 22.743,
+          "umidadeSolo": 65.007,
           "umidadeAr": 49.791,
           "luminosidade": 1248.908
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2585,11 +2880,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 20.697,
+          "umidadeSolo": 60.667,
           "umidadeAr": 75.73,
           "luminosidade": 1193.09
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2605,11 +2902,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 26.723,
+          "umidadeSolo": 53.76,
           "umidadeAr": 52.752,
           "luminosidade": 1522.786
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2625,11 +2924,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 25.659,
+          "umidadeSolo": 80.045,
           "umidadeAr": 71.206,
           "luminosidade": 2603.179
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2645,11 +2946,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 25.171,
+          "umidadeSolo": 60.266,
           "umidadeAr": 65.622,
           "luminosidade": 2369.133
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2665,11 +2968,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 19.432,
+          "umidadeSolo": 71.385,
           "umidadeAr": 57.441,
           "luminosidade": 2557.412
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2685,11 +2990,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 23.881,
+          "umidadeSolo": 63.93,
           "umidadeAr": 67.623,
           "luminosidade": 1435.447
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2705,11 +3012,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 29.022,
+          "umidadeSolo": 60.011,
           "umidadeAr": 67.242,
           "luminosidade": 758.376
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2725,11 +3034,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 25.325,
+          "umidadeSolo": 63.962,
           "umidadeAr": 42.878,
           "luminosidade": 1519.527
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2745,11 +3056,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 25.755,
+          "umidadeSolo": 45.175,
           "umidadeAr": 52.378,
           "luminosidade": 2477.698
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2765,11 +3078,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 21.68,
+          "umidadeSolo": 25.617,
           "umidadeAr": 50.34,
           "luminosidade": 2229.801
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2785,11 +3100,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 22.048,
+          "umidadeSolo": 47.433,
           "umidadeAr": 66.539,
           "luminosidade": 629.882
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2805,11 +3122,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 27.153,
+          "umidadeSolo": 53.03,
           "umidadeAr": 65.496,
           "luminosidade": 564.525
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2825,11 +3144,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 22.79,
+          "umidadeSolo": 66.171,
           "umidadeAr": 52.179,
           "luminosidade": 1514.43
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2845,11 +3166,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 20.483,
+          "umidadeSolo": 60.838,
           "umidadeAr": 64.428,
           "luminosidade": 1772.176
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2865,11 +3188,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.071,
+          "umidadeSolo": 100.0,
           "umidadeAr": 10.043,
           "luminosidade": 3956.515
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2885,11 +3210,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.044,
+          "umidadeSolo": 0.0,
           "umidadeAr": 95.915,
           "luminosidade": 101.456
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2905,11 +3232,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 4.965,
+          "umidadeSolo": 0.0,
           "umidadeAr": 94.964,
           "luminosidade": 4043.348
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2925,11 +3254,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 4.934,
+          "umidadeSolo": 100.0,
           "umidadeAr": 10.094,
           "luminosidade": 100.244
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2945,11 +3276,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.048,
+          "umidadeSolo": 100.0,
           "umidadeAr": 9.883,
           "luminosidade": 3969.668
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2965,11 +3298,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 4.928,
+          "umidadeSolo": 100.0,
           "umidadeAr": 10.072,
           "luminosidade": 4003.171
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -2985,11 +3320,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.008,
+          "umidadeSolo": 0.0,
           "umidadeAr": 94.916,
           "luminosidade": 100.738
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3005,11 +3342,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 4.928,
+          "umidadeSolo": 100.0,
           "umidadeAr": 94.092,
           "luminosidade": 99.089
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3025,11 +3364,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.065,
+          "umidadeSolo": 100.0,
           "umidadeAr": 10.044,
           "luminosidade": 100.777
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3045,11 +3386,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 44.457,
+          "umidadeSolo": 0.0,
           "umidadeAr": 95.851,
           "luminosidade": 4026.543
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3065,11 +3408,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.016,
+          "umidadeSolo": 100.0,
           "umidadeAr": 95.317,
           "luminosidade": 4042.093
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3085,11 +3430,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 44.392,
+          "umidadeSolo": 0.0,
           "umidadeAr": 95.968,
           "luminosidade": 99.742
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3105,11 +3452,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 45.492,
+          "umidadeSolo": 0.0,
           "umidadeAr": 93.914,
           "luminosidade": 4055.071
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3125,11 +3474,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.0,
+          "umidadeSolo": 100.0,
           "umidadeAr": 9.973,
           "luminosidade": 4054.916
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3145,11 +3496,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 44.507,
+          "umidadeSolo": 0.0,
           "umidadeAr": 10.144,
           "luminosidade": 99.598
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3165,11 +3518,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.007,
+          "umidadeSolo": 0.0,
           "umidadeAr": 93.608,
           "luminosidade": 101.404
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3185,11 +3540,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.048,
+          "umidadeSolo": 100.0,
           "umidadeAr": 95.923,
           "luminosidade": 3969.398
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3205,11 +3562,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 44.4,
+          "umidadeSolo": 100.0,
           "umidadeAr": 10.062,
           "luminosidade": 99.124
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3225,11 +3584,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 44.781,
+          "umidadeSolo": 100.0,
           "umidadeAr": 9.929,
           "luminosidade": 100.206
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3245,11 +3606,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.063,
+          "umidadeSolo": 100.0,
           "umidadeAr": 9.856,
           "luminosidade": 100.995
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3265,11 +3628,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.07,
+          "umidadeSolo": 0.0,
           "umidadeAr": 10.115,
           "luminosidade": 99.841
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3285,11 +3650,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 4.951,
+          "umidadeSolo": 0.0,
           "umidadeAr": 10.048,
           "luminosidade": 100.072
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3305,11 +3672,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 44.476,
+          "umidadeSolo": 100.0,
           "umidadeAr": 10.005,
           "luminosidade": 98.805
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },
@@ -3325,11 +3694,13 @@
         "registradoEm": null,
         "valores": {
           "temperaturaAr": 5.005,
+          "umidadeSolo": 100.0,
           "umidadeAr": 94.181,
           "luminosidade": 4054.11
         },
         "unidades": {
           "temperaturaAr": "°C",
+          "umidadeSolo": "%",
           "umidadeAr": "%",
           "luminosidade": "ADC"
         },

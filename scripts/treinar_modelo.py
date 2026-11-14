@@ -19,8 +19,17 @@ def main() -> None:
     parser.add_argument("--saida", type=Path, default=None)
     argumentos = parser.parse_args()
     dados = json.loads(argumentos.dados.read_text(encoding="utf-8"))
-    if dados.get("metadados", {}).get("origem") != "SIMULADO_TESTE":
+    from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import (
+        UNIDADES_MODELO, VARIAVEIS_MODELO, VERSAO_FEATURES,
+    )
+    metadados = dados.get("metadados", {})
+    if metadados.get("origem") != "SIMULADO_TESTE":
         raise SystemExit("Este script de demonstração aceita somente conjuntos SIMULADO_TESTE.")
+    registros_treino = dados.get("treinamento", [])
+    if not registros_treino or any(item.get("origem") != "SIMULADO_TESTE" for item in registros_treino):
+        raise SystemExit("Todos os registros de treino precisam estar identificados como SIMULADO_TESTE.")
+    if metadados.get("variaveis") != list(VARIAVEIS_MODELO) or metadados.get("unidades") != UNIDADES_MODELO:
+        raise SystemExit(f"A fixture não corresponde às features {VERSAO_FEATURES} e unidades oficiais.")
     configuracoes = obter_configuracoes()
     detector = DetectorAnomalias(
         numero_estimadores=configuracoes.ml_numero_estimadores,
@@ -30,7 +39,7 @@ def main() -> None:
         versao_modelo=configuracoes.ml_versao_modelo,
     )
     leituras = [LeituraParaModelo.model_validate(item) for item in dados["treinamento"]]
-    manifesto = detector.treinar(leituras)
+    manifesto = detector.treinar(leituras, identificador_dados=argumentos.dados.resolve().relative_to(RAIZ).as_posix() if argumentos.dados.resolve().is_relative_to(RAIZ) else argumentos.dados.name)
     destino = argumentos.saida or configuracoes.ml_caminho_modelo
     detector.salvar(destino)
     print(json.dumps({"arquivoModelo": str(destino), "manifesto": manifesto}, ensure_ascii=False, indent=2))

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import VARIAVEIS_MODELO
+from app.inteligencia_artificial.aprendizado_maquina.caracteristicas import UNIDADES_MODELO, VARIAVEIS_MODELO
 from app.inteligencia_artificial.aprendizado_maquina.esquemas import LeituraParaModelo
 
 @dataclass(frozen=True)
@@ -36,8 +36,14 @@ def preparar_leituras(
             descartadas.append({"id_observacao": leitura.id_observacao, "motivo": ";".join(motivos)})
             continue
 
+        incompatíveis = [nome for nome in VARIAVEIS_MODELO if leitura.unidades[nome] != UNIDADES_MODELO[nome]]
+        if incompatíveis:
+            raise ValueError(
+                "Unidades incompatíveis com as features do modelo: " + ", ".join(incompatíveis)
+                + ". Não são realizadas conversões automáticas."
+            )
         if not unidades_referencia:
-            unidades_referencia = {nome: leitura.unidades[nome] for nome in VARIAVEIS_MODELO}
+            unidades_referencia = dict(UNIDADES_MODELO)
         divergentes = [nome for nome in VARIAVEIS_MODELO if leitura.unidades[nome] != unidades_referencia.get(nome)]
         if divergentes:
             raise ValueError(
@@ -45,7 +51,11 @@ def preparar_leituras(
                 + ". Não são realizadas conversões automáticas."
             )
 
-        linhas.append([float(leitura.valores[nome]) for nome in VARIAVEIS_MODELO])
+        linha = [float(leitura.valores[nome]) for nome in VARIAVEIS_MODELO]
+        if not np.isfinite(linha).all():
+            descartadas.append({"id_observacao": leitura.id_observacao, "motivo": "valor_nao_finito"})
+            continue
+        linhas.append(linha)
         validas.append(leitura)
 
     matriz = np.asarray(linhas, dtype=np.float64)

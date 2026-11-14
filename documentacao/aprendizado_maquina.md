@@ -1,57 +1,55 @@
-# Fase 3 — Isolation Forest
+# Fase 3 — Isolation Forest com quatro indicadores
 
-## Objetivo e limites
+## Features e dados
 
-O módulo identifica observações estatisticamente atípicas em relação ao conjunto usado no treinamento. Isolation Forest foi escolhido por ser não supervisionado, trabalhar com vetores numéricos tabulares e não exigir rótulo de cada observação para ajustar o baseline. A saída não é diagnóstico agronômico, risco ou probabilidade de falha.
+A definição única em `app/inteligencia_artificial/aprendizado_maquina/caracteristicas.py` fixa a ordem usada por preparação, treinamento e inferência:
 
-## Variáveis e contrato provisório
+| Ordem | Feature persistida | Unidade | Origem |
+|---:|---|---|---|
+| 1 | `temperaturaAr` | °C | BMP180 |
+| 2 | `umidadeSolo` | % | Percentual demonstrativo já convertido pelo backend a partir da temperatura DHT22 |
+| 3 | `umidadeAr` | % | DHT22 |
+| 4 | `luminosidade` | ADC | LDR |
 
-O contrato interno usa `temperaturaAr`, `umidadeAr` e `luminosidade` (nessa ordem). Esses nomes não substituem o contrato do Backend C# e deverão ser mapeados pelo adaptador após a confirmação. O modelo exige valores finitos e uma unidade declarada e consistente por variável. Ele não converte unidades nem infere calibração; linhas sem qualidade canônica `VALIDA`, valores faltantes e unidades ausentes são descartados, e unidades divergentes interrompem a preparação. A enumeração de qualidade também é interna/provisória; o adaptador futuro mapeará códigos externos confirmados.
+A inferência lê os valores canônicos da captura já persistida em PostgreSQL. `umidadeSolo` entra como percentual; o módulo ML não repete a conversão. Os metadados `complements.umidadeSolo` continuam disponíveis na captura para registrar origem, método, simulação e temperatura bruta do DHT22.
 
-## Preparação e pipeline
+A consulta somente leitura ao banco local `agroconnect_ai`, realizada nesta fase, encontrou **0 capturas**. Portanto, não há histórico real suficiente para treinar ou validar o detector. O treino usa exclusivamente `tests/fixtures/isolation_forest_rotulado.json`, identificado como `SIMULADO_TESTE`: 120 linhas sintéticas de treino e 64 de avaliação, com 40 rótulos normais e 24 anômalos criados para o exercício. A fixture marca expressamente que não representa medições nem limites agronômicos.
 
-As observações são ordenadas segundo as três variáveis fixas, convertidas em matriz numérica e padronizadas por `StandardScaler`. Em seguida, um `IsolationForest` é ajustado com `n_estimators`, `contamination` e `random_state` configuráveis. A contaminação controla a fração esperada de outliers no conjunto de ajuste; não é uma métrica de acurácia nem uma probabilidade. A inferência exige as mesmas unidades e não treina novamente.
+## Preparação e modelo
 
-O escore retornado é `-score_samples`, de modo que um valor maior indica maior atipicidade no escore do modelo. A classificação normal/anomalia usa `predict` do Isolation Forest. O escore não é normalizado e não representa confiança probabilística.
+`preparar_leituras` valida qualidade, presença e finitude dos valores e unidades canônicas. Para cada linha, monta uma matriz NumPy `float64` exatamente na ordem centralizada acima; dicts recebidos em outra ordem são reordenados por nome. Linhas incompletas são descartadas no treino; a inferência exige uma linha completa e rejeita valor ausente, nulo, NaN, infinito ou unidade incompatível. Nenhuma transformação de unidade ou segunda conversão de `umidadeSolo` é aplicada.
 
-## Treinamento e artefatos
+O pipeline é `StandardScaler(with_mean=True, with_std=True)` seguido de `IsolationForest`. O scaler calcula média e escala das quatro colunas com o conjunto de treino, e o mesmo pipeline aplica a padronização na inferência. O scaler e o detector ficam no mesmo objeto `Pipeline`, evitando combinações de artefatos distintos.
 
-Treinar somente por script, fora do fluxo HTTP. O manifesto registra versão interna, versão Scikit-learn, variáveis, unidades, origem, quantidades e parâmetros. `joblib` grava em arquivo temporário e substitui o destino atomicamente. O carregador aceita somente artefatos locais no formato esperado e na mesma versão Scikit-learn; nunca carregue modelos enviados por usuários ou fontes desconhecidas. Retreine o artefato após mudanças incompatíveis do ambiente.
+Os parâmetros preservados do modelo anterior são `n_estimators=200`, `contamination=0.05`, `random_state=42` e `n_jobs=1`. `contamination` orienta o limiar interno estimado pelo ajuste; não é uma taxa observada em campo. O conjunto de treino não tem rótulos e o algoritmo continua não supervisionado.
+
+A saída técnica usa `IsolationForest.predict`: `1` é estimada como não atípica e `-1` como anomalia estatística. O score exposto é `-score_samples`; valores maiores indicam maior atipicidade relativa ao conjunto de treino. O score não é probabilidade, confiança, risco, severidade ou diagnóstico agronômico. Não são geradas explicações generativas.
+
+## Artefato, manifesto e versão
+
+A versão ativa é `isolation-forest-v3`, formato de artefato 3, com Scikit-learn 1.9.1 no ambiente de treino. `scripts/treinar_modelo.py` aceita somente fixtures `SIMULADO_TESTE` cuja versão, ordem e unidades coincidam com a definição central. O artefato padrão fica em `modelos_treinados/isolation_forest.joblib`; o manifesto lateral fica em `modelos_treinados/isolation_forest.manifest.json`. O joblib local é ignorado pelo Git; o manifesto JSON permanece como metadado auditável ao lado do artefato. Ambos devem ser fornecidos juntos no runtime.
+
+O manifesto inclui versão do modelo/formato, algoritmo, versão e ordem das features, unidades, versão/configuração do pré-processamento, versão Scikit-learn, origem e identificador do dataset, flag sintética, contagens, data UTC e parâmetros do Isolation Forest. O carregador compara o manifesto lateral com os metadados dentro do joblib e valida a versão do framework, ordem/unidades, etapas e dimensões de scaler/modelo e parâmetros. Artefatos antigos de três features são rejeitados; incompatibilidade ou ausência do manifesto interrompe a inferência.
+
+O artefato anterior de três features foi preservado como `modelos_treinados/isolation_forest-v2-3features-2dd29952.backup.joblib`, com SHA-256 `2dd2995220fc19311bd52006cc10fd22b46a3fab0c585876b0776ca523a081f9`. Esse backup é somente referência e não é aceito para a inferência v3.
+
+Treino e avaliação, executados fora do fluxo HTTP:
 
 ```powershell
-.\.venv-311-x64\Scripts\python.exe scripts\treinar_modelo.py
-.\.venv-311-x64\Scripts\python.exe scripts\avaliar_modelo.py
+python scripts\treinar_modelo.py
+python scripts\avaliar_modelo.py
 ```
 
-O artefato padrão vai para `modelos_treinados/isolation_forest.joblib`, ignorado pelo Git. O treinamento não ocorre no startup nem em requisições.
+## Integração com a API e falhas
 
-## Demonstração HTTP local
+No endpoint `POST /api/v1/iot/readings`, a API valida e normaliza a entrada e commita primeiro a captura, incluindo as quatro features e metadados. Depois recupera a leitura canônica do PostgreSQL e executa inferência. O resultado e o estado `CONCLUIDA` são gravados em `iot_anomaly_analyses` e `iot_readings.analysis_status`. A unicidade de `deviceId` + `observationId` continua impedindo duplicatas; a mesma captura não duplica análise.
 
-Inicie o modelo com o script de treinamento, rode `uvicorn app.principal:app --reload` em ambiente `desenvolvimento` e envie uma observação sintética: 
+Se o artefato estiver ausente, incompatível ou a inferência/persistência da análise falhar, o commit anterior da telemetria é preservado, não é gravado resultado falso, o status vira `FALHA` quando o banco permite e a API informa `analysis.executed=false`. O detalhe diagnóstico é registrado nos logs; a captura permanece consultável. Leituras antigas sem resultado mantêm estado `PENDENTE`.
 
-```powershell
-$corpo = @{
-  idObservacao = "demo-atipica"
-  valores = @{ temperaturaAr = 7.0; umidadeAr = 7.0; luminosidade = 7.0 }
-  unidades = @{ temperaturaAr = "°C"; umidadeAr = "%"; luminosidade = "ADC" }
-  qualidade = "VALIDA"
-  origem = "SIMULADO_TESTE"
-} | ConvertTo-Json -Depth 5
-Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/api/v1/anomalias/analisar-demo -ContentType "application/json" -Body $corpo
-```
+A migration aditiva `migrations/telemetria/003_anomaly_four_features.sql` adiciona o estado da análise e troca a constraint de três para quatro nomes em `iot_anomaly_analyses.variables`. Ela deve ser aplicada depois das migrations 001 e 002. Nenhuma migration roda no startup.
 
-O endpoint só responde em ambiente de desenvolvimento/teste, aceita apenas `SIMULADO_TESTE` e exige um modelo já treinado. Não há endpoint de treinamento.
+## Teste sintético e limitações
 
-## Avaliação reproduzível
+Com a fixture v3, 200 árvores, contamination 0,05 e seed 42, o treino usou 120 linhas. Na avaliação separada de 64 linhas sintéticas, o resultado observado foi precisão 1,00, revocação 1,00, F1 1,00 e matriz `[[40, 0], [0, 24]]`. Os cenários anômalos foram construídos artificialmente; essas métricas verificam execução e regressão, não generalização nem desempenho real.
 
-`tests/fixtures/isolation_forest_rotulado.json` separa 120 observações sintéticas de treinamento de 64 observações rotuladas para avaliação (40 dentro da distribuição artificial e 24 valores extremos artificiais). A unidade é declarada como valores sintéticos em unidades declaradas para teste, sem evidência agrícola. O conjunto não representa leituras reais nem condições normais agronômicas. O script reporta precisão, revocação, F1 e matriz de confusão calculadas nesse conjunto. Esses resultados descrevem somente a fixture sintética e não evidenciam desempenho em campo.
-
-## Limitações
-
-O schema externo, unidades, calibração e códigos de qualidade ainda dependem do Backend C# e dos responsáveis pelos sensores. O modelo não compreende limites da cultura, estação do ano, fase de plantio ou relações causais; alterações sazonais podem mudar o baseline. A avaliação sintética é ilustrativa. Antes de qualquer uso operacional, será necessário obter dados autorizados, definir segmentação por dispositivo/sensor e unidade, validar qualidade temporal e realizar avaliação em dados reais rotulados e revisados por especialistas.
-
-A fixture foi migrada de quatro para três variáveis, mantendo conjuntos independentes: 120 registros de treinamento e 64 de avaliação, todos sintéticos; não há dados reais rotulados. O manifesto declara três características e artefatos formato 1 (legados) são recusados. Para telemetria dinâmica e PostgreSQL separado, consulte [telemetria_iot.md](telemetria_iot.md).
-
-## Resultado reproduzível da fixture v2
-
-Execução local em 11/11/2026 com Scikit-learn 1.9.1, 200 estimadores, contamination 0,05 e semente 42: treino 120; avaliação 64 (40 rótulos normais e 24 extremos gerados). Precisão 1,00, revocação 1,00, F1 1,00; matriz de confusão `[[40, 0], [0, 24]]`. As classes sintéticas foram separadas por geração deliberada de pontos extremos, por isso essas métricas ilustram o script e não demonstram generalização nem desempenho agrícola.
+O detector não foi avaliado com capturas reais da estufa, histórico temporal, safras ou rótulos revisados por especialistas. `umidadeSolo` é demonstrativa e deriva da temperatura DHT22, portanto não é uma medição física de solo. Antes de interpretação operacional, será necessário reunir dados autorizados e rotulados, revisar unidades/calibração e avaliar por períodos/dispositivos sem vazamento entre treino e teste.

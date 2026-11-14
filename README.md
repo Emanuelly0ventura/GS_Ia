@@ -1,6 +1,6 @@
 # AgroConnect AI
 
-API de demonstração do AgroConnect. O projeto contém Isolation Forest com três variáveis, RAG/geração configurável e um fluxo IoT separado para telemetria da demonstração. O snapshot mobile predefinido não depende do simulador. A aplicação usa PostgreSQL local próprio, sem dependência do Backend C# ou Mobile. A base documental começa vazia; não há fontes oficiais, pesos de embeddings ou credenciais incluídos.
+API de demonstração do AgroConnect. O projeto contém Isolation Forest v3 com quatro indicadores canônicos, RAG/geração configurável e um fluxo IoT separado para telemetria da demonstração. O snapshot mobile predefinido não depende do simulador. A aplicação usa PostgreSQL local próprio, sem dependência do Backend C# ou Mobile. A base documental começa vazia; não há fontes oficiais, pesos de embeddings ou credenciais incluídos.
 
 ## Requisitos
 
@@ -75,7 +75,7 @@ docker run --rm -p 8000:8000 -e PORT=8000 -e TELEMETRY_DATABASE_URL=$env:TELEMET
 
 Os pesos do modelo E5 não vêm na imagem; sem modelo, documentos, índice e credenciais, o status RAG permanece incompleto, sem resposta simulada.
 
-Configure variáveis e credenciais no painel do serviço, nunca na imagem ou no Git. Monte/injete o artefato v2 treinado em runtime; ele é ignorado pelo Git. A migration da telemetria continua manual e não roda no startup.
+Configure variáveis e credenciais no painel do serviço, nunca na imagem ou no Git. Monte/injete o artefato v3 e seu manifesto JSON em runtime; ele é ignorado pelo Git. A migration da telemetria continua manual e não roda no startup.
 
 ## Próximas integrações (fora desta etapa)
 
@@ -93,7 +93,7 @@ Os contratos em `app/repositorios/` descrevem uma integração antiga com o Back
 
 ## Machine Learning (demonstração)
 
-O modelo é treinado manualmente por script, não no startup nem em requisições:
+O Isolation Forest v3 usa as quatro features canônicas; o treino é manual, com fixture sintética claramente identificada, e não ocorre no startup nem em requisições:
 
 ```powershell
 .\.venv-313-x64\Scripts\python.exe scripts\treinar_modelo.py
@@ -104,4 +104,4 @@ O endpoint `POST /api/v1/anomalias/analisar-demo` é exclusivo de desenvolviment
 
 ## IoT e dashboard
 
-Consulte [`documentacao/telemetria_iot.md`](documentacao/telemetria_iot.md) para aplicar manualmente o schema isolado, configurar Node-RED, treinar o modelo v2 e usar os endpoints. O dashboard web é servido em `/dashboard`; mobile de demonstração predefinido em `GET /api/v1/mobile/demo/snapshot`. O endpoint `POST /api/v1/iot/readings` persiste `temperaturaAr`, `umidadeSolo`, `umidadeAr` e `luminosidade`; no payload recebido, `umidadeSolo` contém temporariamente a temperatura DHT22 em °C e é convertida para `%` pelo backend. `umidadeSolo` é demonstrativa; o Isolation Forest permanece pendente de adequação ao contrato novo. As consultas do painel ficam em `/api/v1/dashboard/readings` e `/api/v1/dashboard/status`. Nenhuma migration é aplicada no startup. O banco local e seus comandos estão em [`documentacao/postgresql_local.md`](documentacao/postgresql_local.md).
+Consulte [`documentacao/telemetria_iot.md`](documentacao/telemetria_iot.md) para aplicar manualmente o schema isolado, configurar Node-RED, treinar o modelo v3 e usar os endpoints. O dashboard web é servido em `/dashboard`; mobile de demonstração predefinido em `GET /api/v1/mobile/demo/snapshot`. O endpoint `POST /api/v1/iot/readings` persiste `temperaturaAr`, `umidadeSolo`, `umidadeAr` e `luminosidade`; no payload recebido, `umidadeSolo` contém temporariamente a temperatura DHT22 em °C e é convertida para `%` pelo backend. `umidadeSolo` é demonstrativa; o Isolation Forest v3 analisa as quatro features persistidas; o score é estatístico e não representa probabilidade ou diagnóstico. As consultas do painel ficam em `/api/v1/dashboard/readings` e `/api/v1/dashboard/status`. Nenhuma migration é aplicada no startup. O banco local e seus comandos estão em [`documentacao/postgresql_local.md`](documentacao/postgresql_local.md).

@@ -1,8 +1,12 @@
 from datetime import datetime, timezone
+from functools import lru_cache
+import logging
 from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy import desc, select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
+from app.inteligencia_artificial.aprendizado_maquina.detector_anomalias import DetectorAnomalias
+from app.inteligencia_artificial.aprendizado_maquina.esquemas import LeituraParaModelo
 from app.nucleo.configuracoes import obter_configuracoes
 from app.telemetria.banco import obter_fabrica_sessoes
 from app.telemetria.conversoes import converter_temperatura_dht22_em_umidade_solo
@@ -13,11 +17,31 @@ roteador_telemetria = APIRouter(prefix="/api/v1/iot", tags=["Demonstração IoT"
 roteador_dashboard = APIRouter(prefix="/api/v1/dashboard", tags=["Dashboard IoT"])
 
 
-STATUS_ML_PENDENTE = "PENDENTE_ADEQUACAO_CONTRATO_ML"
-MENSAGEM_ML_PENDENTE = (
-    "A captura foi persistida. A análise ML está pendente de adequação do Isolation Forest "
-    "ao contrato de quatro indicadores."
-)
+logger = logging.getLogger("agroconnect.telemetria.ml")
+STATUS_ML_PENDENTE = "PENDENTE"
+STATUS_ML_CONCLUIDA = "CONCLUIDA"
+STATUS_ML_FALHA = "FALHA"
+MENSAGEM_ML_PENDENTE = "A captura foi persistida; a análise ML está pendente."
+MENSAGEM_ML_FALHA = "A captura foi persistida, mas a análise ML falhou. Consulte os logs da API."
+
+
+@lru_cache(maxsize=4)
+def carregar_detector_telemetria(caminho: str) -> DetectorAnomalias:
+    return DetectorAnomalias.carregar(caminho)
+
+
+def _resposta_analise(resultado) -> dict[str, object]:
+    return {
+        "status": STATUS_ML_CONCLUIDA,
+        "executed": True,
+        "isAnomaly": resultado.classificada_como_anomalia,
+        "classification": resultado.classificacao,
+        "score": resultado.pontuacao_anomalia,
+        "variables": resultado.variaveis_utilizadas,
+        "analyzedAt": resultado.data_analise,
+        "modelVersion": resultado.versao_modelo,
+        "explanation": resultado.justificativa,
+    }
 
 def _sessao():
     fabrica = obter_fabrica_sessoes()
@@ -61,7 +85,7 @@ def _violacao_unicidade_observacao(erro: IntegrityError) -> bool:
 
 @roteador_telemetria.post(
     "/readings", status_code=201,
-    summary="Recebe e persiste uma captura IoT de quatro indicadores",
+    summary="Persiste uma captura IoT e tenta analisá-la com Isolation Forest",
 )
 def receber(payload: LeituraIoT):
     configuracoes = obter_configuracoes()
@@ -84,34 +108,20 @@ def receber(payload: LeituraIoT):
                 db.add(dispositivo)
             dispositivo.last_seen_at = datetime.now(timezone.utc)
             dispositivo.source = payload.source
-
             leitura = Leitura(
                 device_id=payload.deviceId,
                 observation_id=payload.observationId,
                 measured_at=payload.measuredAt,
                 source=payload.source,
                 quality=payload.quality,
+                analysis_status=STATUS_ML_PENDENTE,
                 values=valores,
                 units=unidades,
                 complements=complementos,
             )
             db.add(leitura)
             db.commit()
-            return {
-                "observationId": leitura.observation_id,
-                "deviceId": leitura.device_id,
-                "quality": leitura.quality,
-                "receivedAt": leitura.received_at,
-                "values": valores,
-                "units": unidades,
-                "complements": complementos,
-                "analysisStatus": STATUS_ML_PENDENTE,
-                "analysis": {
-                    "status": STATUS_ML_PENDENTE,
-                    "executed": False,
-                    "message": MENSAGEM_ML_PENDENTE,
-                },
-            }
+            reading_id = leitura.id
         except IntegrityError as erro:
             db.rollback()
             if _violacao_unicidade_observacao(erro):
@@ -129,9 +139,82 @@ def receber(payload: LeituraIoT):
                 status_code=503,
                 detail="Banco de telemetria indisponível.",
             ) from erro
+
+        # A captura já foi commitada. A inferência lê novamente os valores canônicos
+        # persistidos e acontece numa transação separada, para uma falha ML não apagá-la.
+        try:
+            persistida = db.scalar(select(Leitura).where(Leitura.id == reading_id))
+            if persistida is None:
+                raise RuntimeError("Captura commitada não foi encontrada para análise.")
+            detector = carregar_detector_telemetria(str(configuracoes.ml_caminho_modelo))
+            if detector.versao_modelo != configuracoes.ml_versao_modelo:
+                raise ValueError("A versão configurada não corresponde ao artefato carregado.")
+            leitura_modelo = LeituraParaModelo(
+                id_observacao=persistida.observation_id,
+                id_dispositivo=persistida.device_id,
+                registrado_em=persistida.measured_at,
+                valores=persistida.values,
+                unidades=persistida.units,
+                qualidade="VALIDA",
+                origem=persistida.source,
+            )
+            resultado = detector.predizer(leitura_modelo)
+            db.add(AnaliseAnomalia(
+                reading_id=persistida.id,
+                model_version=resultado.versao_modelo,
+                is_anomaly=resultado.classificada_como_anomalia,
+                score=resultado.pontuacao_anomalia,
+                analyzed_at=resultado.data_analise,
+                variables=resultado.variaveis_utilizadas,
+                explanation=resultado.justificativa,
+            ))
+            persistida.analysis_status = STATUS_ML_CONCLUIDA
+            db.commit()
+            return {
+                "observationId": persistida.observation_id,
+                "deviceId": persistida.device_id,
+                "quality": persistida.quality,
+                "receivedAt": persistida.received_at,
+                "values": persistida.values,
+                "units": persistida.units,
+                "complements": persistida.complements,
+                "analysisStatus": STATUS_ML_CONCLUIDA,
+                "analysis": _resposta_analise(resultado),
+            }
         except Exception:
             db.rollback()
-            raise
+            logger.exception(
+                "Falha na análise ML após persistir captura deviceId=%s observationId=%s",
+                payload.deviceId,
+                payload.observationId,
+            )
+            try:
+                persistida = db.get(Leitura, reading_id)
+                if persistida is not None:
+                    persistida.analysis_status = STATUS_ML_FALHA
+                    db.commit()
+            except SQLAlchemyError:
+                db.rollback()
+                logger.exception(
+                    "Não foi possível persistir estado de falha ML deviceId=%s observationId=%s",
+                    payload.deviceId,
+                    payload.observationId,
+                )
+            return {
+                "observationId": payload.observationId,
+                "deviceId": payload.deviceId,
+                "quality": payload.quality,
+                "receivedAt": leitura.received_at,
+                "values": valores,
+                "units": unidades,
+                "complements": complementos,
+                "analysisStatus": STATUS_ML_FALHA,
+                "analysis": {
+                    "status": STATUS_ML_FALHA,
+                    "executed": False,
+                    "message": MENSAGEM_ML_FALHA,
+                },
+            }
 
 
 @roteador_dashboard.get("/status")
@@ -184,13 +267,14 @@ def historico(
                 "units": leitura.units,
                 "complements": leitura.complements,
                 "analysisStatus": (
-                    "CONCLUIDA" if leitura.anomaly else STATUS_ML_PENDENTE
+                    STATUS_ML_CONCLUIDA if leitura.anomaly else leitura.analysis_status
                 ),
                 "analysis": (
                     {
-                        "status": "CONCLUIDA",
+                        "status": STATUS_ML_CONCLUIDA,
                         "executed": True,
                         "isAnomaly": leitura.anomaly.is_anomaly,
+                        "classification": "ANOMALIA_ESTATISTICA" if leitura.anomaly.is_anomaly else "NAO_ATIPICA_ESTIMADA",
                         "score": leitura.anomaly.score,
                         "modelVersion": leitura.anomaly.model_version,
                         "analyzedAt": leitura.anomaly.analyzed_at,
@@ -198,9 +282,9 @@ def historico(
                         "explanation": leitura.anomaly.explanation,
                     }
                     if leitura.anomaly else {
-                        "status": STATUS_ML_PENDENTE,
+                        "status": leitura.analysis_status,
                         "executed": False,
-                        "message": MENSAGEM_ML_PENDENTE,
+                        "message": MENSAGEM_ML_FALHA if leitura.analysis_status == STATUS_ML_FALHA else MENSAGEM_ML_PENDENTE,
                     }
                 ),
             }
