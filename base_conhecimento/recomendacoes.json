@@ -1,0 +1,296 @@
+{
+  "recomendacoes": [
+    {
+      "id": "REC026",
+      "tema": "Índice demonstrativo de umidade do solo baixo",
+      "culturas_aplicaveis": [
+        "milho",
+        "feijão"
+      ],
+      "condicoes_aplicacao": [
+        {
+          "indicador": "umidadeSolo",
+          "operador": "MENOR_OU_IGUAL",
+          "limite_demonstrativo": 25
+        }
+      ],
+      "dados_exigidos": [
+        "umidadeSolo"
+      ],
+      "orientacao_tecnica": "Confira a umidade do solo com uma observação direta antes de avaliar a necessidade de irrigação.",
+      "justificativa": "O índice demonstrativo sinaliza uma situação para verificação. A condição física do solo depende de observação independente.",
+      "criterio_prioridade": {
+        "nivel": "MEDIA",
+        "criterio": "Prioridade de inspeção no cenário acadêmico."
+      },
+      "referencias": [
+        {
+          "titulo": "Viabilidade e manejo da irrigação da cultura do milho",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/490417",
+          "estado_curadoria": "PENDENTE"
+        },
+        {
+          "titulo": "Solos para feijão",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/solos",
+          "estado_curadoria": "PENDENTE"
+        }
+      ],
+      "restricoes_e_ressalvas": [
+        "Limiar de demonstração, sem validação como faixa agronômica da cultura.",
+        "Referências candidatas. A correspondência com esta orientação requer revisão agronômica."
+      ],
+      "acionavel": false,
+      "estado_curadoria": "PENDENTE"
+    },
+    {
+      "id": "REC027",
+      "tema": "Índice demonstrativo de umidade do solo alto",
+      "culturas_aplicaveis": [
+        "milho",
+        "feijão",
+        "tomate"
+      ],
+      "condicoes_aplicacao": [
+        {
+          "indicador": "umidadeSolo",
+          "operador": "MAIOR_OU_IGUAL",
+          "limite_demonstrativo": 75
+        }
+      ],
+      "dados_exigidos": [
+        "umidadeSolo"
+      ],
+      "orientacao_tecnica": "Verifique a condição do solo e o histórico de irrigação antes de programar uma nova aplicação de água.",
+      "justificativa": "Um índice demonstrativo alto permite exercitar a triagem de uma situação hídrica e não confirma solo úmido ou saturado.",
+      "criterio_prioridade": {
+        "nivel": "MEDIA",
+        "criterio": "Prioridade de inspeção no cenário acadêmico."
+      },
+      "referencias": [
+        {
+          "titulo": "Viabilidade e manejo da irrigação da cultura do milho",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/490417",
+          "estado_curadoria": "PENDENTE"
+        },
+        {
+          "titulo": "Solos para feijão",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/solos",
+          "estado_curadoria": "PENDENTE"
+        },
+        {
+          "titulo": "Informações gerais de tomate de mesa",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/gerais",
+          "estado_curadoria": "PENDENTE"
+        }
+      ],
+      "restricoes_e_ressalvas": [
+        "Limiar de demonstração, sem validação como faixa agronômica da cultura.",
+        "Referências candidatas. A correspondência com esta orientação requer revisão agronômica."
+      ],
+      "acionavel": false,
+      "estado_curadoria": "PENDENTE"
+    },
+    {
+      "id": "REC028",
+      "tema": "Calor e índice demonstrativo de umidade do solo baixo",
+      "culturas_aplicaveis": [
+        "milho"
+      ],
+      "condicoes_aplicacao": [
+        {
+          "indicador": "temperaturaAr",
+          "operador": "MAIOR_OU_IGUAL",
+          "limite_demonstrativo": 32
+        },
+        {
+          "indicador": "umidadeSolo",
+          "operador": "MENOR_OU_IGUAL",
+          "limite_demonstrativo": 25
+        }
+      ],
+      "dados_exigidos": [
+        "temperaturaAr",
+        "umidadeSolo"
+      ],
+      "orientacao_tecnica": "Acompanhe os horários mais quentes e verifique a umidade do solo diretamente em pontos representativos antes de decidir sobre irrigação no milho.",
+      "justificativa": "O cenário combina temperatura ambiente e um índice demonstrativo separado. A verificação física é necessária para interpretar a disponibilidade de água.",
+      "criterio_prioridade": {
+        "nivel": "ALTA",
+        "criterio": "Prioridade de inspeção no cenário acadêmico."
+      },
+      "referencias": [
+        {
+          "titulo": "Viabilidade e manejo da irrigação da cultura do milho",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/490417",
+          "estado_curadoria": "PENDENTE"
+        }
+      ],
+      "restricoes_e_ressalvas": [
+        "Limiar de demonstração, sem validação como faixa agronômica da cultura.",
+        "Referências candidatas. A correspondência com esta orientação requer revisão agronômica."
+      ],
+      "acionavel": false,
+      "estado_curadoria": "PENDENTE"
+    },
+    {
+      "id": "REC029",
+      "tema": "Temperatura do ar elevada na demonstração",
+      "culturas_aplicaveis": [
+        "feijão"
+      ],
+      "condicoes_aplicacao": [
+        {
+          "indicador": "temperaturaAr",
+          "operador": "MAIOR_OU_IGUAL",
+          "limite_demonstrativo": 32
+        }
+      ],
+      "dados_exigidos": [
+        "temperaturaAr"
+      ],
+      "orientacao_tecnica": "Acompanhe a temperatura em horários comparáveis e inspecione o estabelecimento do feijão antes de interpretar efeitos no cultivo.",
+      "justificativa": "Uma leitura pontual indica quando observar a cultura e não estabelece duração da exposição ou efeito agronômico.",
+      "criterio_prioridade": {
+        "nivel": "MEDIA",
+        "criterio": "Prioridade de inspeção no cenário acadêmico."
+      },
+      "referencias": [
+        {
+          "titulo": "Solos para feijão",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/solos",
+          "estado_curadoria": "PENDENTE"
+        }
+      ],
+      "restricoes_e_ressalvas": [
+        "Limiar de demonstração, sem validação como faixa agronômica da cultura.",
+        "Referências candidatas. A correspondência com esta orientação requer revisão agronômica."
+      ],
+      "acionavel": false,
+      "estado_curadoria": "PENDENTE"
+    },
+    {
+      "id": "REC030",
+      "tema": "Umidade do ar elevada na demonstração",
+      "culturas_aplicaveis": [
+        "tomate"
+      ],
+      "condicoes_aplicacao": [
+        {
+          "indicador": "umidadeAr",
+          "operador": "MAIOR_OU_IGUAL",
+          "limite_demonstrativo": 80
+        }
+      ],
+      "dados_exigidos": [
+        "umidadeAr"
+      ],
+      "orientacao_tecnica": "Registre a recorrência da umidade do ar elevada. Em cultivo protegido, confira as condições de ventilação durante os mesmos horários.",
+      "justificativa": "A repetição da leitura ajuda a decidir quando inspecionar o ambiente. A umidade do ar sozinha não comprova condensação.",
+      "criterio_prioridade": {
+        "nivel": "MEDIA",
+        "criterio": "Prioridade de inspeção no cenário acadêmico."
+      },
+      "referencias": [
+        {
+          "titulo": "Cultivo protegido do tomateiro",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/765429",
+          "estado_curadoria": "PENDENTE"
+        }
+      ],
+      "restricoes_e_ressalvas": [
+        "Limiar de demonstração, sem validação como faixa agronômica da cultura.",
+        "Referências candidatas. A correspondência com esta orientação requer revisão agronômica."
+      ],
+      "acionavel": false,
+      "estado_curadoria": "PENDENTE"
+    },
+    {
+      "id": "REC031",
+      "tema": "Calor e umidade do ar elevada na demonstração",
+      "culturas_aplicaveis": [
+        "tomate"
+      ],
+      "condicoes_aplicacao": [
+        {
+          "indicador": "temperaturaAr",
+          "operador": "MAIOR_OU_IGUAL",
+          "limite_demonstrativo": 32
+        },
+        {
+          "indicador": "umidadeAr",
+          "operador": "MAIOR_OU_IGUAL",
+          "limite_demonstrativo": 80
+        }
+      ],
+      "dados_exigidos": [
+        "temperaturaAr",
+        "umidadeAr"
+      ],
+      "orientacao_tecnica": "Compare o microclima em pontos e horários equivalentes. Se o tomate estiver em cultivo protegido, inspecione também as aberturas e a ventilação.",
+      "justificativa": "A combinação serve para priorizar uma inspeção ambiental e não demonstra doença, condensação ou deficiência de ventilação.",
+      "criterio_prioridade": {
+        "nivel": "ALTA",
+        "criterio": "Prioridade de inspeção no cenário acadêmico."
+      },
+      "referencias": [
+        {
+          "titulo": "Cultivo protegido do tomateiro",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/765429",
+          "estado_curadoria": "PENDENTE"
+        }
+      ],
+      "restricoes_e_ressalvas": [
+        "Limiar de demonstração, sem validação como faixa agronômica da cultura.",
+        "Referências candidatas. A correspondência com esta orientação requer revisão agronômica."
+      ],
+      "acionavel": false,
+      "estado_curadoria": "PENDENTE"
+    },
+    {
+      "id": "REC032",
+      "tema": "Sinal baixo de luminosidade na demonstração",
+      "culturas_aplicaveis": [
+        "tomate"
+      ],
+      "condicoes_aplicacao": [
+        {
+          "indicador": "luminosidade",
+          "operador": "MENOR_OU_IGUAL",
+          "limite_demonstrativo": 800
+        }
+      ],
+      "dados_exigidos": [
+        "luminosidade"
+      ],
+      "orientacao_tecnica": "Compare o sinal do LDR em horários e posições comparáveis e verifique possíveis obstruções ou sombras antes de avaliar a exposição das plantas.",
+      "justificativa": "A leitura em ADC é um sinal relativo neste cenário. Ela não mede a dose de luz recebida pelo cultivo.",
+      "criterio_prioridade": {
+        "nivel": "BAIXA",
+        "criterio": "Prioridade de inspeção no cenário acadêmico."
+      },
+      "referencias": [
+        {
+          "titulo": "Cultivo protegido do tomateiro",
+          "instituicao": "Embrapa",
+          "localizador": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/765429",
+          "estado_curadoria": "PENDENTE"
+        }
+      ],
+      "restricoes_e_ressalvas": [
+        "Limiar de demonstração, sem validação como faixa agronômica da cultura.",
+        "Referências candidatas. A correspondência com esta orientação requer revisão agronômica."
+      ],
+      "acionavel": false,
+      "estado_curadoria": "PENDENTE"
+    }
+  ]
+}
