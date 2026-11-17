@@ -4,29 +4,15 @@ from pydantic import ValidationError
 from app.nucleo.configuracoes import Configuracoes
 
 
-@pytest.mark.parametrize(
-    ("campo", "valor"),
-    [
-        ("api_json_profundidade_maxima", 0),
-        ("api_json_profundidade_maxima", 129),
-        ("rag_orcamento_contexto_bytes", 2047),
-        ("rag_orcamento_contexto_bytes", 2_000_001),
-        ("provedor_ia_limite_tokens_resposta", 0),
-        ("provedor_ia_limite_tokens_resposta", 32769),
-        ("provedor_ia_limite_resposta_bytes", 1023),
-        ("provedor_ia_limite_resposta_bytes", 20_000_001),
-        ("provedor_ia_campo_limite_tokens", "max_output_tokens"),
-    ],
-)
-def test_limites_novos_rejeitam_valores_fora_do_intervalo(campo, valor):
+@pytest.mark.parametrize("valor", [1023, 10_000_001])
+def test_limite_global_de_corpo_http_rejeita_valores_invalidos(valor):
     with pytest.raises(ValidationError):
-        Configuracoes(**{campo: valor})
+        Configuracoes(api_limite_corpo_http_bytes=valor)
 
 
-def test_limites_novos_tem_valores_padrao_documentados():
-    configuracoes = Configuracoes()
-    assert configuracoes.api_json_profundidade_maxima == 32
-    assert configuracoes.rag_orcamento_contexto_bytes == 100_000
-    assert configuracoes.provedor_ia_limite_tokens_resposta == 2048
-    assert configuracoes.provedor_ia_campo_limite_tokens == "max_completion_tokens"
-    assert configuracoes.provedor_ia_limite_resposta_bytes == 1_000_000
+def test_configuracao_gemini_e_centralizada_e_timeout_limitado():
+    configuracoes = Configuracoes(gemini_model="modelo-config", gemini_timeout_segundos=15)
+    assert configuracoes.gemini_model == "modelo-config"
+    assert configuracoes.gemini_timeout_segundos == 15
+    with pytest.raises(ValidationError):
+        Configuracoes(gemini_timeout_segundos=0)

@@ -13,6 +13,4 @@ htmlcov/
 .tmp*/
 .env
 .env.*
-modelos_embeddings/
 modelos_treinados/*.joblib
-base_conhecimento/indice/

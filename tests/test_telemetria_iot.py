@@ -16,6 +16,7 @@ from app.telemetria.banco import BaseTelemetria
 from app.telemetria.conversoes import converter_temperatura_dht22_em_umidade_solo
 from app.telemetria.esquemas import LeituraIoT, MetadadosUmidadeSolo
 from app.telemetria.modelos import AnaliseAnomalia, Dispositivo, Leitura
+from app.inteligencia_artificial.generativa.orquestracao import ResultadoExplicacaoGenerativa
 
 BASE = {
     "deviceId": "esp32-test", "observationId": "sample-1", "source": "SIMULADOR_TESTE",
@@ -134,6 +135,13 @@ def test_adaptacao_persiste_quatro_indicadores_e_analise_ml(monkeypatch):
     factory = sessionmaker(engine, expire_on_commit=False)
     monkeypatch.setattr(rotas, "_sessao", lambda: factory())
     monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    def explicacao_mock(resultado, **kwargs):
+        with factory() as observer:
+            persistida = observer.scalar(select(AnaliseAnomalia))
+            leitura_persistida = observer.scalar(select(Leitura))
+            assert persistida is not None and leitura_persistida.analysis_status == "CONCLUIDA"
+        return ResultadoExplicacaoGenerativa("CONCLUIDA", texto="Os indicadores são leituras dos sensores.")
+    monkeypatch.setattr(rotas, "tentar_explicar_anomalia", explicacao_mock)
     received = {}
 
     class DetectorStub:
@@ -164,6 +172,8 @@ def test_adaptacao_persiste_quatro_indicadores_e_analise_ml(monkeypatch):
     assert result["analysis"]["executed"] is True
     assert result["analysis"]["isAnomaly"] is False
     assert result["analysis"]["score"] == 0.123
+    assert result["analysis"]["generativeStatus"] == "CONCLUIDA"
+    assert result["analysis"]["generativeExplanation"] == "Os indicadores são leituras dos sensores."
     assert received["persisted_before_analysis"] is True
     assert received["leitura"].valores["umidadeSolo"] == 50.0
     assert received["leitura"].unidades["umidadeSolo"] == "%"
@@ -183,10 +193,14 @@ def test_adaptacao_persiste_quatro_indicadores_e_analise_ml(monkeypatch):
         assert analysis is not None
         assert analysis.variables == ["temperaturaAr", "umidadeSolo", "umidadeAr", "luminosidade"]
         assert analysis.score == 0.123
+        assert analysis.generative_status == "CONCLUIDA"
+        assert analysis.generative_explanation == "Os indicadores são leituras dos sensores."
 
     history = rotas.historico(limit=10)[0]
     assert history["values"]["umidadeSolo"] == 50.0
     assert history["analysis"]["status"] == "CONCLUIDA"
+    assert history["analysis"]["generativeStatus"] == "CONCLUIDA"
+    assert history["analysis"]["generativeExplanation"] == "Os indicadores são leituras dos sensores."
     assert rotas.status()["devices"][0]["connected"] is True
 
 
@@ -199,6 +213,7 @@ def test_falha_ml_nao_remove_captura_persistida(monkeypatch, caplog):
     factory = sessionmaker(engine, expire_on_commit=False)
     monkeypatch.setattr(rotas, "_sessao", lambda: factory())
     monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    monkeypatch.setattr(rotas, "tentar_explicar_anomalia", lambda *args, **kwargs: pytest.fail("Gemini não deve rodar sem análise ML"))
     def modelo_indisponivel(_):
         raise FileNotFoundError("fixture: artefato indisponível")
     monkeypatch.setattr(rotas, "carregar_detector_telemetria", modelo_indisponivel)
@@ -215,6 +230,44 @@ def test_falha_ml_nao_remove_captura_persistida(monkeypatch, caplog):
         assert db.scalar(select(AnaliseAnomalia)) is None
 
 
+def test_falha_gemini_preserva_captura_e_resultado_ml(monkeypatch):
+    from app.telemetria import rotas
+
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    BaseTelemetria.metadata.create_all(engine)
+    factory = sessionmaker(engine, expire_on_commit=False)
+    monkeypatch.setattr(rotas, "_sessao", lambda: factory())
+    monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    monkeypatch.setattr(
+        rotas,
+        "tentar_explicar_anomalia",
+        lambda *args, **kwargs: ResultadoExplicacaoGenerativa("FALHA", codigo_erro="GEMINI_TIMEOUT"),
+    )
+    monkeypatch.setattr(
+        rotas,
+        "carregar_detector_telemetria",
+        lambda _: type(
+            "Detector",
+            (),
+            {"versao_modelo": "isolation-forest-v3", "predizer": staticmethod(MetadadosAnomaliaStub)},
+        )(),
+    )
+
+    resposta = rotas.receber(LeituraIoT.model_validate(BASE))
+    assert resposta["analysisStatus"] == "CONCLUIDA"
+    assert resposta["analysis"]["executed"] is True
+    assert resposta["analysis"]["classification"] == "NAO_ATIPICA_ESTIMADA"
+    assert resposta["analysis"]["generativeStatus"] == "FALHA"
+    assert resposta["analysis"]["generativeErrorCode"] == "GEMINI_TIMEOUT"
+    with factory() as db:
+        assert db.scalar(select(Leitura)).analysis_status == "CONCLUIDA"
+        analise = db.scalar(select(AnaliseAnomalia))
+        assert analise is not None
+        assert analise.is_anomaly is False
+        assert analise.generative_status == "FALHA"
+        assert analise.generative_error_code == "GEMINI_TIMEOUT"
+
+
 def test_observation_id_repetido_continua_idempotente(monkeypatch):
     from app.telemetria import rotas
 
@@ -223,6 +276,7 @@ def test_observation_id_repetido_continua_idempotente(monkeypatch):
     factory = sessionmaker(engine, expire_on_commit=False)
     monkeypatch.setattr(rotas, "_sessao", lambda: factory())
     monkeypatch.setattr(rotas, "obter_configuracoes", _config)
+    monkeypatch.setattr(rotas, "tentar_explicar_anomalia", lambda *args, **kwargs: ResultadoExplicacaoGenerativa("NAO_CONFIGURADO"))
     monkeypatch.setattr(rotas, "carregar_detector_telemetria", lambda _: type("Detector", (), {"versao_modelo":"isolation-forest-v3", "predizer":staticmethod(MetadadosAnomaliaStub)})())
     payload = LeituraIoT.model_validate(BASE)
     rotas.receber(payload)

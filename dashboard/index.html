@@ -1,14 +1,300 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AgroConnect AI · Telemetria</title><style>:root{--terracota:#C46B38;--dourado:#D9B77E;--bege:#EAD9C1;--cafe:#382719;--taupe:#A18D72}
-:root{font-family:Inter,system-ui,Segoe UI,sans-serif;color:#382719;background:#f2f6f2}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1160px;margin:auto;padding:28px 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}h1{margin:0;font-size:26px}.sub{color:#668074;margin-top:5px}.badge{border-radius:20px;padding:8px 13px;background:#e8ecea;color:#53645d;font-weight:650}.badge.on{background:#EAD9C1;color:#382719}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}.card,.panel{background:white;border:1px solid #EAD9C1;border-radius:16px;padding:20px;box-shadow:0 3px 12px #173b2408}.label{color:#A18D72;font-size:13px}.value{font-size:32px;font-weight:720;margin:12px 0 3px}.unit{font-size:15px;font-weight:500;color:#668074}.hint{font-size:12px;color:#82958b}.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}.panel h2{font-size:17px;margin:0 0 14px}.chart{width:100%;height:230px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px 8px;border-bottom:1px solid #edf1ee;text-align:left}th{color:#6d8176;font-weight:600}.normal{color:#382719}.anomaly{color:#C46B38}.empty{color:#7b8d82;padding:24px;text-align:center}.score{font-variant-numeric:tabular-nums}.footer{font-size:12px;color:#7e9186;margin:16px 2px}.error{color:#a53d2f;background:#fff0ed;padding:12px;border-radius:10px;display:none}@media(max-width:760px){.cards{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.wrap{padding:18px 13px}.value{font-size:28px}}
-</style></head><body><main class="wrap"><header class="top"><div><h1>AgroConnect AI</h1><div class="sub">Demonstração de telemetria e detecção estatística</div></div><div id="connection" class="badge">Aguardando dispositivo</div></header><div id="error" class="error"></div><section class="cards"><article class="card"><div class="label">Temperatura geral · BMP180</div><div class="value" id="temp">— <span class="unit">°C</span></div><div class="hint">Temperatura medida pelo BMP180</div></article><article class="card"><div class="label">Umidade do solo · demonstrativa</div><div class="value" id="soil">— <span class="unit">%</span></div><div class="hint">Conversão linear da temperatura DHT22; valor simulado, não é medição de solo</div></article><article class="card"><div class="label">Umidade do ar · DHT22</div><div class="value" id="humidity">— <span class="unit">%</span></div><div class="hint">Última leitura recebida</div></article><article class="card"><div class="label">Luminosidade · LDR</div><div class="value" id="light">— <span class="unit">ADC</span></div><div class="hint">Leitura bruta; não convertida para lux</div></article></section><section class="grid"><article class="panel"><h2>Evolução das variáveis</h2><svg id="chart" class="chart" viewBox="0 0 700 230" role="img" aria-label="Gráfico das leituras recentes"></svg><div class="hint"><span style="color:#C46B38">● Temperatura geral (°C)</span> &nbsp; <span style="color:#D9B77E">● Umidade do solo simulada (%)</span> &nbsp; <span style="color:#A18D72">● Umidade do ar (%)</span> &nbsp; <span style="color:#382719">● Luminosidade (ADC)</span><br>As séries são escaladas separadamente para visualização; cada uma conserva sua unidade.</div></article><article class="panel"><h2>Análise ML</h2><div id="analyses" class="empty">Aguardando resultados do Isolation Forest v3.</div></article><article class="panel" style="margin-top:16px"><h2>Feedback informativo</h2><div class="hint">Compare a série com o histórico do mesmo dispositivo e confira qualidade, calibração e horário das capturas. Uma classificação atípica apenas sinaliza diferença estatística; não indica causa nem recomenda intervenção agronômica.</div></article></section><article class="panel" style="margin-top:16px"><h2>Histórico recente</h2><div style="overflow:auto"><table><thead><tr><th>Data/hora</th><th>Dispositivo</th><th>Temperatura geral</th><th>Umidade do solo*</th><th>Umidade do ar</th><th>Luminosidade (ADC)</th><th>Análise ML</th></tr></thead><tbody id="history"><tr><td colspan="7" class="empty">Nenhuma leitura dinâmica disponível.</td></tr></tbody></table></div></article><div class="footer">Umidade do solo é um indicador demonstrativo derivado da temperatura DHT22; não representa medição física. Classificações estatísticas não representam probabilidade nem diagnóstico agronômico. Atualização a cada 5 segundos.</div></main><script>
-const $=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const keys=['temperaturaAr','umidadeSolo','umidadeAr','luminosidade'];
-const colors=['#C46B38','#D9B77E','#A18D72','#382719'];
-function fmt(v,n=1){const number=Number(v);return Number.isFinite(number)?number.toFixed(n):'—'}
-function complete(row){return keys.every(key=>Number.isFinite(Number(row.values?.[key])))}
-function draw(rows){const svg=$('chart'),valid=rows.filter(complete);if(!valid.length){svg.innerHTML='';return}let out='';for(let k=0;k<keys.length;k++){const vals=valid.map(r=>Number(r.values[keys[k]])),min=Math.min(...vals),max=Math.max(...vals),span=max-min||1;const pts=vals.map((v,i)=>`${30+i*640/Math.max(valid.length-1,1)},${200-(v-min)/span*165}`).join(' ');out+=`<polyline fill="none" stroke="${colors[k]}" stroke-width="3" points="${pts}"/>`}for(let i=0;i<4;i++){const y=25+i*55;out+=`<line x1="25" x2="680" y1="${y}" y2="${y}" stroke="#edf1ee"/>`}svg.innerHTML=out}
-function readingCell(row,key,unit,digits=1){return `${fmt(row.values?.[key],digits)} ${unit}`}
-function analysisCell(analysis){if(!analysis)return 'Análise indisponível';if(analysis.status==='FALHA')return 'Falha na análise ML';if(!analysis.executed)return 'Análise pendente';const classe=analysis.isAnomaly?'Anomalia estatística':'Não atípica estimada';return Number.isFinite(Number(analysis.score))?`${classe} · score ${Number(analysis.score).toFixed(4)}`:classe}
-async function refresh(){try{const [rr,sr]=await Promise.all([fetch('/api/v1/dashboard/readings?limit=50'),fetch('/api/v1/dashboard/status')]);if(!rr.ok||!sr.ok)throw Error('Configure o banco de telemetria e aplique as migrations.');const rows=await rr.json(),status=await sr.json();$('error').style.display='none';const connected=status.devices.some(d=>d.connected),badge=$('connection');badge.textContent=connected?'ESP32 conectado':'ESP32 sem conexão recente';badge.className='badge '+(connected?'on':'');const latest=rows.find(complete);if(latest){$('temp').innerHTML=`${fmt(latest.values.temperaturaAr)} <span class="unit">°C</span>`;$('soil').innerHTML=`${fmt(latest.values.umidadeSolo)} <span class="unit">%</span>`;$('humidity').innerHTML=`${fmt(latest.values.umidadeAr)} <span class="unit">%</span>`;$('light').innerHTML=`${fmt(latest.values.luminosidade,0)} <span class="unit">ADC</span>`}else{$('temp').innerHTML='— <span class="unit">°C</span>';$('soil').innerHTML='— <span class="unit">%</span>';$('humidity').innerHTML='— <span class="unit">%</span>';$('light').innerHTML='— <span class="unit">ADC</span>'}draw([...rows].reverse());$('history').innerHTML=rows.length?rows.slice(0,12).map(r=>`<tr><td>${new Date(r.measuredAt).toLocaleString('pt-BR')}</td><td>${esc(r.deviceId)}</td><td>${readingCell(r,'temperaturaAr','°C')}</td><td>${readingCell(r,'umidadeSolo','%')}</td><td>${readingCell(r,'umidadeAr','%')}</td><td>${readingCell(r,'luminosidade','ADC',0)}</td><td>${analysisCell(r.analysis)}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">Nenhuma leitura dinâmica disponível.</td></tr>';const analyses=rows.slice(0,5);$('analyses').innerHTML=analyses.length?analyses.map(r=>`<div style="padding:10px 0;border-bottom:1px solid #edf1ee"><b>${esc(analysisCell(r.analysis))}</b><div class="hint">${new Date(r.measuredAt).toLocaleString('pt-BR')} · captura ${esc(r.observationId)}</div><div class="hint">${esc(r.analysis?.message||r.analysis?.explanation||'')}</div></div>`).join(''):'Aguardando leituras do dispositivo.'}catch(e){$('error').textContent=e.message;$('error').style.display='block';$('connection').textContent='Dados indisponíveis';$('connection').className='badge'}}refresh();setInterval(refresh,5000);
-</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="api-base-url" content="__API_BASE_URL__">
+  <meta name="theme-color" content="#382719">
+  <title>AgroConnect AI · Painel operacional</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --terracotta: #C46B38;
+      --sand: #D9B77E;
+      --beige: #EAD9C1;
+      --coffee: #382719;
+      --taupe: #A18D72;
+      --paper: #FBF8F3;
+      --white: #FFFEFC;
+      --line: #E8DED1;
+      --muted: #766D63;
+      --danger: #A64032;
+      --success: #526D56;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--coffee);
+      background: var(--paper);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 0; }
+    button, select { font: inherit; }
+    .shell { max-width: 1280px; margin: 0 auto; padding: 0 28px 48px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-name { margin: 0; font-size: 18px; letter-spacing: -.35px; }
+    .brand-caption { margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .status-list { display: flex; gap: 9px; flex-wrap: wrap; justify-content: flex-end; }
+    .status-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 99px; padding: 8px 12px; background: var(--white); color: var(--muted); font-size: 12px; font-weight: 650; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--taupe); }
+    .status-pill.ok .dot { background: var(--success); }
+    .status-pill.bad .dot { background: var(--danger); }
+    nav { display: flex; gap: 22px; padding: 15px 0 20px; overflow-x: auto; }
+    nav a { color: var(--muted); text-decoration: none; white-space: nowrap; font-size: 13px; font-weight: 650; }
+    nav a:hover, nav a:focus-visible { color: var(--terracotta); }
+    .intro { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding: 12px 0 20px; }
+    .eyebrow { color: var(--terracotta); font-size: 11px; font-weight: 800; letter-spacing: 1.35px; text-transform: uppercase; }
+    h1 { margin: 7px 0 4px; font-size: clamp(25px, 4vw, 34px); letter-spacing: -1.1px; }
+    .intro p { margin: 0; color: var(--muted); font-size: 14px; }
+    .updated { color: var(--muted); font-size: 12px; text-align: right; }
+    .alert { display: none; margin: 0 0 18px; border: 1px solid #E9C9BE; border-radius: 12px; padding: 12px 15px; background: #FFF3EF; color: var(--danger); font-size: 13px; }
+    .section { scroll-margin-top: 15px; margin-top: 26px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin-bottom: 13px; }
+    .section-head h2 { margin: 0; font-size: 18px; letter-spacing: -.35px; }
+    .section-head p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; }
+    .card, .panel { min-width: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--white); box-shadow: 0 5px 18px #38271908; }
+    .card { padding: 17px 18px; }
+    .card-label { color: var(--muted); font-size: 12px; font-weight: 650; }
+    .card-value { margin: 11px 0 4px; font-size: 29px; font-weight: 750; letter-spacing: -.8px; font-variant-numeric: tabular-nums; }
+    .unit { color: var(--taupe); font-size: 13px; font-weight: 550; letter-spacing: 0; }
+    .card-note { color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .two-col { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(300px, .9fr); gap: 14px; }
+    .panel { padding: 19px; }
+    .panel h3 { margin: 0; font-size: 15px; }
+    .panel-sub { margin: 5px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .chart-wrap { min-height: 230px; }
+    #chart { display: block; width: 100%; height: 220px; overflow: visible; }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px 16px; color: var(--muted); font-size: 11px; }
+    .legend span { white-space: nowrap; }
+    .legend i { display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; }
+    .empty { display: grid; place-items: center; min-height: 110px; padding: 18px; color: var(--muted); text-align: center; font-size: 13px; line-height: 1.55; }
+    .latest-meta { color: var(--muted); font-size: 12px; }
+    .result-title { margin: 13px 0 6px; font-size: 20px; font-weight: 750; }
+    .result-title.anomaly { color: var(--terracotta); }
+    .score { display: inline-flex; align-items: baseline; gap: 7px; margin: 4px 0 10px; font-size: 25px; font-weight: 750; font-variant-numeric: tabular-nums; }
+    .score small { color: var(--muted); font-size: 11px; font-weight: 550; }
+    .explanation { border-left: 3px solid var(--sand); margin-top: 12px; padding: 9px 0 9px 12px; color: #55483B; font-size: 13px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .state { display: inline-flex; border-radius: 99px; padding: 5px 9px; background: #F1EBE2; color: #675B4D; font-size: 10px; font-weight: 750; letter-spacing: .3px; }
+    .state.ok { background: #EAF0E8; color: var(--success); }
+    .state.error { background: #FFF0EC; color: var(--danger); }
+    .meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 11px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }
+    label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    select { width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; background: white; color: var(--coffee); }
+    button { min-height: 42px; border: 0; border-radius: 10px; padding: 0 16px; background: var(--terracotta); color: white; cursor: pointer; font-size: 12px; font-weight: 750; transition: background .15s ease, transform .15s ease; }
+    button:hover { background: #A95328; transform: translateY(-1px); }
+    button:disabled { cursor: wait; opacity: .65; transform: none; }
+    .compat-result { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .criteria { margin: 9px 0 0; padding-left: 18px; color: #55483B; font-size: 12px; line-height: 1.6; }
+    .source-link { display: inline-block; margin-top: 9px; color: var(--terracotta); font-size: 12px; overflow-wrap: anywhere; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 11px 9px; border-bottom: 1px solid #F0EAE1; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: .45px; text-transform: uppercase; white-space: nowrap; }
+    td { color: #51463B; }
+    .footer { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; line-height: 1.6; }
+    @media (max-width: 850px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .two-col { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .shell { padding: 0 15px 32px; } .topbar { align-items: flex-start; flex-direction: column; } .status-list { justify-content: flex-start; } .intro { align-items: flex-start; flex-direction: column; } .updated { text-align: left; } .cards { gap: 9px; } .card { padding: 14px; } .card-value { font-size: 25px; } .form-grid { grid-template-columns: 1fr; } .form-grid button { width: 100%; } .panel { padding: 15px; } nav { gap: 17px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand" aria-label="AgroConnect AI">
+        <div><p class="brand-name">AgroConnect AI</p><div class="brand-caption">Inteligência para uma estufa conectada</div></div>
+      </div>
+      <div class="status-list" aria-live="polite">
+        <span id="apiStatus" class="status-pill"><i class="dot"></i>API · verificando</span>
+        <span id="dbStatus" class="status-pill"><i class="dot"></i>PostgreSQL · verificando</span>
+        <span id="deviceStatus" class="status-pill"><i class="dot"></i>Dispositivo · verificando</span>
+      </div>
+    </header>
+    <nav aria-label="Navegação do painel">
+      <a href="#overview">Visão geral</a><a href="#iot">Monitoramento IoT</a><a href="#ai">Anomalias</a><a href="#agriculture">Compatibilidade agrícola</a><a href="#history">Histórico</a>
+    </nav>
+    <main>
+      <section class="intro" id="overview">
+        <div><div class="eyebrow">Painel operacional</div><h1>Visão da estufa</h1><p>Leituras, análises e compatibilidade em um só lugar.</p></div>
+        <div id="updatedAt" class="updated">Aguardando dados da API</div>
+      </section>
+      <div id="globalError" class="alert" role="alert"></div>
+
+      <section class="section" aria-labelledby="indicatorsTitle">
+        <div class="section-head"><div><h2 id="indicatorsTitle">Indicadores atuais</h2><p id="latestCapture">Nenhuma captura consultada.</p></div></div>
+        <div class="cards">
+          <article class="card"><div class="card-label">Temperatura geral · BMP180</div><div id="temperature" class="card-value">— <span class="unit">°C</span></div><div class="card-note">Temperatura do ar capturada no sensor.</div></article>
+          <article class="card"><div class="card-label">Umidade do solo · demonstrativa</div><div id="soilMoisture" class="card-value">— <span class="unit">%</span></div><div class="card-note">Conversão da temperatura DHT22; não é medição física do solo.</div></article>
+          <article class="card"><div class="card-label">Umidade do ar · DHT22</div><div id="airMoisture" class="card-value">— <span class="unit">%</span></div><div class="card-note">Umidade relativa informada pelo sensor.</div></article>
+          <article class="card"><div class="card-label">Luminosidade · LDR</div><div id="light" class="card-value">— <span class="unit">ADC</span></div><div class="card-note">Leitura bruta; não convertida para lux.</div></article>
+        </div>
+      </section>
+
+      <section class="section" id="iot">
+        <div class="section-head"><div><h2>Monitoramento IoT</h2><p>Últimas capturas persistidas. Cada série mantém sua própria escala para facilitar a leitura.</p></div></div>
+        <div class="two-col">
+          <article class="panel"><h3>Evolução recente</h3><p class="panel-sub">Até 50 leituras mais recentes consultadas pela API.</p><div class="chart-wrap"><svg id="chart" viewBox="0 0 700 220" role="img" aria-label="Gráfico histórico dos quatro indicadores"></svg><div id="chartEmpty" class="empty" hidden>Nenhuma leitura IoT disponível para montar o gráfico.</div></div><div class="legend"><span><i style="background:#C46B38"></i>Temperatura · °C</span><span><i style="background:#D9B77E"></i>Solo simulado · %</span><span><i style="background:#A18D72"></i>Umidade do ar · %</span><span><i style="background:#382719"></i>Luminosidade · ADC</span></div></article>
+          <article class="panel"><h3>Última captura</h3><p class="panel-sub">Resumo da leitura mais recente recebida.</p><div id="captureSummary" class="empty">Aguardando uma captura IoT.</div></article>
+        </div>
+      </section>
+
+      <section class="section" id="ai">
+        <div class="section-head"><div><h2>Inteligência artificial · anomalias</h2><p>Classificação do Isolation Forest e explicação Gemini aparecem separadamente.</p></div></div>
+        <article id="anomalyPanel" class="panel"><div class="empty">Nenhuma análise de anomalia disponível.</div></article>
+      </section>
+
+      <section class="section" id="agriculture">
+        <div class="section-head"><div><h2>Compatibilidade agrícola</h2><p>A decisão vem das regras cadastradas; a IA generativa só explica os critérios existentes.</p></div></div>
+        <div class="two-col">
+          <article class="panel">
+            <h3>Consultar combinação</h3><p class="panel-sub">Selecione os itens do catálogo e solicite uma análise determinística.</p>
+            <form id="compatForm">
+              <div class="form-grid">
+                <div><label for="seedSelect">Semente</label><select id="seedSelect" required><option value="">Carregando catálogo…</option></select></div>
+                <div><label for="soilSelect">Tipo de solo</label><select id="soilSelect" required><option value="">Carregando catálogo…</option></select></div>
+                <button id="analyzeButton" type="submit">Analisar combinação</button>
+              </div>
+            </form>
+            <div id="compatResult" class="compat-result" aria-live="polite"><div class="empty">Escolha uma semente e um tipo de solo para começar.</div></div>
+          </article>
+          <article class="panel"><h3>Última análise agrícola</h3><p class="panel-sub">Resultado persistido mais recente do catálogo.</p><div id="latestCompat" class="empty">Nenhuma análise agrícola registrada.</div></article>
+        </div>
+      </section>
+
+      <section class="section" id="history">
+        <div class="section-head"><div><h2>Histórico recente</h2><p>Listas limitadas pela API, sem carregar o banco inteiro.</p></div></div>
+        <article class="panel"><h3>Capturas IoT</h3><div class="table-wrap"><table><thead><tr><th>Data/hora</th><th>Dispositivo</th><th>Temperatura</th><th>Solo*</th><th>Umidade do ar</th><th>Luminosidade</th><th>Classificação ML</th><th>Explicação Gemini</th></tr></thead><tbody id="iotHistory"><tr><td colspan="8" class="empty">Nenhuma captura registrada.</td></tr></tbody></table></div></article>
+        <article class="panel" style="margin-top:13px"><h3>Análises de compatibilidade</h3><div class="table-wrap"><table><thead><tr><th>Data/hora</th><th>Semente</th><th>Solo</th><th>Resultado</th><th>Estado Gemini</th><th>Explicação</th></tr></thead><tbody id="compatHistory"><tr><td colspan="6" class="empty">Nenhuma análise registrada.</td></tr></tbody></table></div></article>
+      </section>
+      <footer class="footer">A umidade do solo é demonstrativa e deriva da temperatura DHT22. A classificação estatística não é probabilidade nem diagnóstico agronômico. O Gemini não altera decisões do modelo ou das regras. Atualização dos dados a cada 15 segundos.</footer>
+    </main>
+  </div>
+  <script>
+    const API_BASE_URL = document.querySelector('meta[name="api-base-url"]').content.replace(/\/$/, '');
+    const COLORS = ['#C46B38', '#D9B77E', '#A18D72', '#382719'];
+    const SERIES = ['temperaturaAr', 'umidadeSolo', 'umidadeAr', 'luminosidade'];
+    const $ = (id) => document.getElementById(id);
+    const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const date = (value) => value ? new Date(value).toLocaleString('pt-BR') : 'Data indisponível';
+    const number = (value, decimals = 1) => Number.isFinite(Number(value)) ? Number(value).toLocaleString('pt-BR', {minimumFractionDigits: decimals, maximumFractionDigits: decimals}) : '—';
+    const genLabel = (state) => ({CONCLUIDA:'Explicação concluída', NAO_CONFIGURADO:'Gemini não configurado', SEM_CRITERIOS:'Sem critérios para explicar', FALHA:'Explicação indisponível', PENDENTE:'Explicação pendente', NAO_EXECUTADA:'Não executada'})[state] || 'Estado não informado';
+    const resultLabel = (result) => ({COMPATIVEL:'Compatível', INCOMPATIVEL:'Incompatível', DADOS_INSUFICIENTES:'Dados insuficientes'})[result] || result || 'Resultado indisponível';
+    function safeHttpUrl(value) { try { const parsed = new URL(value, window.location.origin); return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : ''; } catch (_) { return ''; } }
+    async function api(path, options = {}) {
+      const response = await fetch(`${API_BASE_URL}${path}`, {headers:{'Accept':'application/json', ...(options.body ? {'Content-Type':'application/json'} : {})}, ...options});
+      if (!response.ok) throw new Error(`A API respondeu com status ${response.status}.`);
+      return response.json();
+    }
+    function setStatus(id, label, state) { const node = $(id); node.className = `status-pill ${state}`; node.innerHTML = `<i class="dot"></i>${esc(label)}`; }
+    function complete(row) { return SERIES.every((key) => Number.isFinite(Number(row.values?.[key]))); }
+    function drawChart(rows) {
+      const svg = $('chart'); const empty = $('chartEmpty');
+      const valid = rows.filter(complete).slice().reverse();
+      if (!valid.length) { svg.hidden = true; empty.hidden = false; svg.replaceChildren(); return; }
+      svg.hidden = false; empty.hidden = true;
+      const ns = 'http://www.w3.org/2000/svg'; svg.replaceChildren();
+      for (let grid = 0; grid < 4; grid++) {
+        const line = document.createElementNS(ns, 'line'); const y = 20 + grid * 56;
+        line.setAttribute('x1','28'); line.setAttribute('x2','686'); line.setAttribute('y1',String(y)); line.setAttribute('y2',String(y)); line.setAttribute('stroke','#EEE7DE'); svg.appendChild(line);
+      }
+      SERIES.forEach((key, index) => {
+        const values = valid.map((row) => Number(row.values[key])); const min = Math.min(...values); const span = Math.max(...values) - min || 1;
+        const points = values.map((value, i) => `${30 + i * 650 / Math.max(values.length - 1, 1)},${198 - (value - min) / span * 164}`).join(' ');
+        const line = document.createElementNS(ns, 'polyline'); line.setAttribute('points', points); line.setAttribute('fill','none'); line.setAttribute('stroke',COLORS[index]); line.setAttribute('stroke-width','3'); line.setAttribute('stroke-linecap','round'); line.setAttribute('stroke-linejoin','round'); svg.appendChild(line);
+      });
+    }
+    function analysisMarkup(analysis, measuredAt, observationId) {
+      if (!analysis || analysis.executed !== true) return `<div class="empty">${esc(analysis?.message || 'A análise ML ainda não foi executada para esta captura.')}</div>`;
+      const anomaly = analysis.isAnomaly === true;
+      const classification = analysis.classification || (anomaly ? 'ANOMALIA_ESTATISTICA' : 'NAO_ATIPICA_ESTIMADA');
+      const explanation = analysis.generativeExplanation;
+      const status = analysis.generativeStatus || 'NAO_CONFIGURADO';
+      return `<div class="latest-meta">${esc(date(measuredAt))} · captura ${esc(observationId || '—')}</div><div class="result-title ${anomaly ? 'anomaly' : ''}">${anomaly ? 'Anomalia estatística' : 'Não atípica estimada'}</div><div class="latest-meta">Classificação determinística: <strong>${esc(classification)}</strong></div><div class="score">${esc(number(analysis.score, 6))}<small>score do modelo · não é probabilidade</small></div><div class="meta-row"><span class="state ${status === 'CONCLUIDA' ? 'ok' : status === 'FALHA' ? 'error' : ''}">${esc(genLabel(status))}</span></div><div class="explanation">${explanation ? esc(explanation) : esc(analysis.explanation || 'O modelo não forneceu uma justificativa textual.')}</div>${explanation ? `<div class="latest-meta" style="margin-top:8px">Justificativa do modelo: ${esc(analysis.explanation || '—')}</div>` : ''}`;
+    }
+    function compatibilityMarkup(item) {
+      if (!item) return '<div class="empty">Nenhuma análise agrícola registrada.</div>';
+      const insufficient = item.resultado === 'DADOS_INSUFICIENTES';
+      const criteria = Array.isArray(item.criterios) && item.criterios.length ? `<ul class="criteria">${item.criterios.map((criterion) => `<li>${esc(criterion)}</li>`).join('')}</ul>` : '<div class="latest-meta" style="margin-top:9px">Nenhum critério cadastrado para esta combinação.</div>';
+      const explanation = item.explicacaoGemini || item.explicacao_gemini;
+      const state = item.estadoExplicacao || item.estado_explicacao;
+      const source = safeHttpUrl(item.referenciaFonte || item.referencia_fonte || '');
+      return `<div class="latest-meta">${esc(item.semente?.nome || item.semente_nome || 'Semente')} · ${esc(item.solo?.nome || item.solo_nome || 'Solo')} · ${esc(date(item.analisadoEm || item.analisado_em))}</div><div class="result-title">${esc(resultLabel(item.resultado))}</div>${insufficient ? '<div class="latest-meta">Não existem informações suficientes para concluir essa combinação.</div>' : ''}${criteria}${item.justificativa ? `<div class="explanation">${esc(item.justificativa)}</div>` : ''}${source ? `<a class="source-link" href="${esc(source)}" target="_blank" rel="noopener noreferrer">Consultar fonte técnica</a>` : ''}<div class="meta-row"><span class="state ${(state === 'CONCLUIDA') ? 'ok' : (state === 'FALHA') ? 'error' : ''}">${esc(genLabel(state))}</span></div><div class="explanation">${explanation ? esc(explanation) : 'Nenhuma explicação Gemini disponível.'}</div>`;
+    }
+    function renderIoT(rows) {
+      $('iotHistory').innerHTML = rows.length ? rows.slice(0, 12).map((row) => {
+        const analysis = row.analysis;
+        const status = analysis?.executed ? (analysis.isAnomaly ? 'Anomalia' : 'Não atípica') : (analysis?.status || row.analysisStatus || 'Pendente');
+        const gen = analysis?.generativeStatus ? `${genLabel(analysis.generativeStatus)}${analysis.generativeExplanation ? ` · ${analysis.generativeExplanation}` : ''}` : '—';
+        return `<tr><td>${esc(date(row.measuredAt))}</td><td>${esc(row.deviceId)}</td><td>${esc(number(row.values?.temperaturaAr))} °C</td><td>${esc(number(row.values?.umidadeSolo))} %</td><td>${esc(number(row.values?.umidadeAr))} %</td><td>${esc(number(row.values?.luminosidade,0))} ADC</td><td>${esc(status)}${analysis?.executed ? ` · ${esc(number(analysis.score,4))}` : ''}</td><td>${esc(gen)}</td></tr>`;
+      }).join('') : '<tr><td colspan="8" class="empty">Nenhuma captura IoT registrada.</td></tr>';
+    }
+    function renderCompatHistory(items) {
+      $('compatHistory').innerHTML = items.length ? items.slice(0, 10).map((item) => `<tr><td>${esc(date(item.analisadoEm))}</td><td>${esc(item.semente?.nome)}</td><td>${esc(item.solo?.nome)}</td><td>${esc(resultLabel(item.resultado))}</td><td>${esc(genLabel(item.estadoExplicacao))}</td><td>${esc(item.explicacaoGemini || '—')}</td></tr>`).join('') : '<tr><td colspan="6" class="empty">Nenhuma análise agrícola registrada.</td></tr>';
+    }
+    function renderCapture(row) {
+      $('captureSummary').innerHTML = `<div class="latest-meta">${esc(date(row.measuredAt))} · ${esc(row.deviceId)}</div><div class="meta-row"><span class="state">Qualidade ${esc(row.quality || 'não informada')}</span></div><ul class="criteria"><li>Temperatura geral: ${esc(number(row.values.temperaturaAr))} °C</li><li>Umidade do solo: ${esc(number(row.values.umidadeSolo))}% (demonstrativa)</li><li>Umidade do ar: ${esc(number(row.values.umidadeAr))}%</li><li>Luminosidade: ${esc(number(row.values.luminosidade,0))} ADC</li></ul>`;
+    }
+    async function refresh() {
+      const [health, ready, status, readings, compat] = await Promise.allSettled([
+        api('/health'), api('/health/ready'), api('/api/v1/dashboard/status'), api('/api/v1/dashboard/readings?limit=50'), api('/api/v1/agricultura/analises?limit=10')
+      ]);
+      const apiOk = health.status === 'fulfilled';
+      setStatus('apiStatus', `API · ${apiOk ? 'online' : 'indisponível'}`, apiOk ? 'ok' : 'bad');
+      setStatus('dbStatus', `PostgreSQL · ${ready.status === 'fulfilled' ? 'conectado' : 'indisponível'}`, ready.status === 'fulfilled' ? 'ok' : 'bad');
+      if (status.status === 'fulfilled') {
+        const devices = status.value.devices || []; const connected = devices.some((device) => device.connected);
+        setStatus('deviceStatus', `Dispositivo · ${connected ? 'conectado' : 'sem conexão recente'}`, connected ? 'ok' : '');
+      } else setStatus('deviceStatus', 'Dispositivo · indisponível', 'bad');
+      const failed = [health, ready, status, readings, compat].some((result) => result.status === 'rejected');
+      $('globalError').style.display = failed ? 'block' : 'none';
+      $('globalError').textContent = failed ? 'Não foi possível atualizar todos os dados. Verifique a API e a conexão com o PostgreSQL; áreas sem resposta preservam uma mensagem de estado.' : '';
+      if (readings.status === 'fulfilled') {
+        const rows = readings.value || []; const latest = rows.find(complete);
+        if (latest) {
+          $('temperature').innerHTML = `${esc(number(latest.values.temperaturaAr))} <span class="unit">°C</span>`;
+          $('soilMoisture').innerHTML = `${esc(number(latest.values.umidadeSolo))} <span class="unit">%</span>`;
+          $('airMoisture').innerHTML = `${esc(number(latest.values.umidadeAr))} <span class="unit">%</span>`;
+          $('light').innerHTML = `${esc(number(latest.values.luminosidade,0))} <span class="unit">ADC</span>`;
+          $('latestCapture').textContent = `Última captura · ${date(latest.measuredAt)} · ${latest.deviceId}`;
+          renderCapture(latest);
+        } else {
+          $('temperature').innerHTML = '— <span class="unit">°C</span>'; $('soilMoisture').innerHTML = '— <span class="unit">%</span>'; $('airMoisture').innerHTML = '— <span class="unit">%</span>'; $('light').innerHTML = '— <span class="unit">ADC</span>';
+          $('latestCapture').textContent = 'Nenhuma captura IoT disponível.'; $('captureSummary').innerHTML = '<div class="empty">Nenhuma captura IoT registrada.</div>';
+        }
+        drawChart(rows); renderIoT(rows);
+        const lastAnalyzed = rows.find((row) => row.analysis?.executed === true);
+        $('anomalyPanel').innerHTML = lastAnalyzed ? analysisMarkup(lastAnalyzed.analysis, lastAnalyzed.measuredAt, lastAnalyzed.observationId) : '<div class="empty">Ainda não há análise de anomalia persistida.</div>';
+      } else {
+        $('iotHistory').innerHTML = '<tr><td colspan="8" class="empty">Histórico indisponível no momento.</td></tr>';
+        $('anomalyPanel').innerHTML = '<div class="empty">Não foi possível consultar as análises ML.</div>';
+      }
+      if (compat.status === 'fulfilled') {
+        const items = compat.value || []; $('latestCompat').innerHTML = compatibilityMarkup(items[0] || null); renderCompatHistory(items);
+      } else {
+        $('latestCompat').innerHTML = '<div class="empty">Histórico de compatibilidade indisponível.</div>';
+        $('compatHistory').innerHTML = '<tr><td colspan="6" class="empty">Histórico indisponível no momento.</td></tr>';
+      }
+      $('updatedAt').textContent = `Atualizado às ${new Date().toLocaleTimeString('pt-BR')}`;
+    }
+    async function loadCatalog() {
+      try {
+        const [seeds, soils] = await Promise.all([api('/api/v1/agricultura/sementes'), api('/api/v1/agricultura/solos')]);
+        $('seedSelect').innerHTML = '<option value="">Selecione a semente</option>' + seeds.map((item) => `<option value="${esc(item.id)}">${esc(item.nome)}</option>`).join('');
+        $('soilSelect').innerHTML = '<option value="">Selecione o solo</option>' + soils.map((item) => `<option value="${esc(item.id)}">${esc(item.nome)}</option>`).join('');
+        if (!seeds.length || !soils.length) $('compatResult').innerHTML = '<div class="empty">O catálogo ainda não possui sementes e tipos de solo ativos.</div>';
+      } catch (_) {
+        $('seedSelect').innerHTML = '<option value="">Catálogo indisponível</option>'; $('soilSelect').innerHTML = '<option value="">Catálogo indisponível</option>';
+        $('compatResult').innerHTML = '<div class="empty">Não foi possível carregar o catálogo agrícola. Tente novamente quando a API estiver disponível.</div>';
+      }
+    }
+    $('compatForm').addEventListener('submit', async (event) => {
+      event.preventDefault(); const button = $('analyzeButton'); button.disabled = true; button.textContent = 'Consultando…';
+      try {
+        const result = await api('/api/v1/agricultura/analises', {method:'POST', body:JSON.stringify({sementeId:$('seedSelect').value, soloId:$('soilSelect').value})});
+        $('compatResult').innerHTML = compatibilityMarkup(result); await refresh();
+      } catch (_) {
+        $('compatResult').innerHTML = '<div class="empty">Não foi possível solicitar a análise. Confira a conexão e tente novamente.</div>';
+      } finally { button.disabled = false; button.textContent = 'Analisar combinação'; }
+    });
+    loadCatalog(); refresh(); window.setInterval(refresh, 15000);
+  </script>
+</body>
+</html>

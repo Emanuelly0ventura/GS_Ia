@@ -1,1 +1,1 @@
-"""Contratos desacoplados para provedores generativos."""
+"""Explicações generativas complementares via Google Gemini."""

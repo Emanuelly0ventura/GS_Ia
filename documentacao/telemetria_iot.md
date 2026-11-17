@@ -64,7 +64,7 @@ Registro persistido (para o exemplo acima):
 }
 ```
 
-Após o commit da captura, a API relê do PostgreSQL os quatro valores canônicos e executa o Isolation Forest v3. Em sucesso, retorna `analysisStatus=CONCLUIDA`, classificação e score, e grava o resultado em `iot_anomaly_analyses`. Se o artefato ou a inferência falhar, a captura permanece salva, o estado fica `FALHA` e `analysis.executed=false`; a exceção é registrada nos logs. Capturas repetidas com o mesmo `deviceId` e `observationId` retornam HTTP 409. O dashboard usa `/api/v1/dashboard/readings` para mostrar classificação, score e estado ML; o snapshot mobile continua predefinido.
+Após o commit da captura, a API relê do PostgreSQL os quatro valores canônicos e executa o Isolation Forest v3. Em sucesso, retorna `analysisStatus=CONCLUIDA`, classificação e score, e grava o resultado em `iot_anomaly_analyses`. Depois desse commit, tenta obter uma explicação Gemini complementar. O texto, `generativeStatus` e `generativeErrorCode` são persistidos em colunas separadas; a explicação não altera classificação, score ou justificativa do modelo. Sem configuração a chamada é ignorada (`NAO_CONFIGURADO`). Timeout, limite, indisponibilidade ou resposta rejeitada ficam como `FALHA`, sem perder captura ou resultado ML. Se o artefato ou a inferência falhar, a captura permanece salva, o estado fica `FALHA` e `analysis.executed=false`, e Gemini não é chamado. Capturas repetidas com o mesmo `deviceId` e `observationId` retornam HTTP 409. O dashboard usa `/api/v1/dashboard/readings` para mostrar classificação, score e estado ML; o snapshot mobile continua predefinido.
 
 ### Agrupamento Node-RED
 

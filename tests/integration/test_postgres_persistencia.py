@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session, joinedload, sessionmaker
 from app.inteligencia_artificial.aprendizado_maquina.detector_anomalias import DetectorAnomalias
 from app.inteligencia_artificial.aprendizado_maquina.esquemas import LeituraParaModelo
 from app.telemetria.modelos import AnaliseAnomalia, Dispositivo, Leitura
+from app.inteligencia_artificial.generativa.orquestracao import ResultadoExplicacaoGenerativa
 
 DATABASE_URL = os.getenv("TEST_TELEMETRY_DATABASE_URL")
 pytestmark = pytest.mark.integration
@@ -56,6 +57,7 @@ def configurar_rota(rotas, monkeypatch, factory, detector):
     monkeypatch.setattr(rotas, "_sessao", lambda: factory())
     monkeypatch.setattr(rotas, "obter_configuracoes", lambda: configuracoes)
     monkeypatch.setattr(rotas, "carregar_detector_telemetria", lambda _: detector)
+    monkeypatch.setattr(rotas, "tentar_explicar_anomalia", lambda *args, **kwargs: ResultadoExplicacaoGenerativa("CONCLUIDA", texto="Descrição complementar simulada por mock."))
 
 
 def criar_payload(device_id, observation_id, values):
@@ -79,7 +81,7 @@ def test_postgres_persiste_captura_e_inferencia_de_quatro_features(postgres_engi
     expected_columns = {
         "iot_devices": {"id", "device_id", "source", "last_seen_at", "created_at", "updated_at"},
         "iot_readings": {"id", "device_id", "observation_id", "measured_at", "received_at", "source", "quality", "analysis_status", "sensor_values", "units", "complements"},
-        "iot_anomaly_analyses": {"id", "reading_id", "model_version", "is_anomaly", "score", "analyzed_at", "variables", "explanation"},
+        "iot_anomaly_analyses": {"id", "reading_id", "model_version", "is_anomaly", "score", "analyzed_at", "variables", "explanation", "generative_explanation", "generative_status", "generative_error_code"},
     }
     for table, expected in expected_columns.items():
         assert {column["name"] for column in inspector.get_columns(table)} == expected
@@ -128,6 +130,9 @@ def test_postgres_persiste_captura_e_inferencia_de_quatro_features(postgres_engi
             assert normal.anomaly is not None and normal.anomaly.is_anomaly is False
             assert normal.anomaly.variables == ["temperaturaAr", "umidadeSolo", "umidadeAr", "luminosidade"]
             assert normal.anomaly.model_version == "isolation-forest-v3"
+            assert normal.anomaly.generative_status == "CONCLUIDA"
+            assert normal.anomaly.generative_explanation == "Descrição complementar simulada por mock."
+            assert normal_response["analysis"]["generativeExplanation"] == normal.anomaly.generative_explanation
             assert normal.anomaly.score == pytest.approx(normal_response["analysis"]["score"])
             anomaly = by_id[anomaly_id]
             assert anomaly.analysis_status == "CONCLUIDA"

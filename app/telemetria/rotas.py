@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.inteligencia_artificial.aprendizado_maquina.detector_anomalias import DetectorAnomalias
 from app.inteligencia_artificial.aprendizado_maquina.esquemas import LeituraParaModelo
+from app.inteligencia_artificial.generativa.orquestracao import ResultadoExplicacaoGenerativa, tentar_explicar_anomalia
 from app.nucleo.configuracoes import obter_configuracoes
 from app.telemetria.banco import obter_fabrica_sessoes
 from app.telemetria.conversoes import converter_temperatura_dht22_em_umidade_solo
@@ -30,7 +31,7 @@ def carregar_detector_telemetria(caminho: str) -> DetectorAnomalias:
     return DetectorAnomalias.carregar(caminho)
 
 
-def _resposta_analise(resultado) -> dict[str, object]:
+def _resposta_analise(resultado, explicacao: ResultadoExplicacaoGenerativa | None = None) -> dict[str, object]:
     return {
         "status": STATUS_ML_CONCLUIDA,
         "executed": True,
@@ -41,6 +42,9 @@ def _resposta_analise(resultado) -> dict[str, object]:
         "analyzedAt": resultado.data_analise,
         "modelVersion": resultado.versao_modelo,
         "explanation": resultado.justificativa,
+        "generativeExplanation": explicacao.texto if explicacao else None,
+        "generativeStatus": explicacao.estado if explicacao else "NAO_CONFIGURADO",
+        "generativeErrorCode": explicacao.codigo_erro if explicacao else None,
     }
 
 def _sessao():
@@ -85,7 +89,7 @@ def _violacao_unicidade_observacao(erro: IntegrityError) -> bool:
 
 @roteador_telemetria.post(
     "/readings", status_code=201,
-    summary="Persiste uma captura IoT e tenta analisá-la com Isolation Forest",
+    summary="Persiste captura IoT, analisa com Isolation Forest e tenta explicação Gemini",
 )
 def receber(payload: LeituraIoT):
     configuracoes = obter_configuracoes()
@@ -100,9 +104,7 @@ def receber(payload: LeituraIoT):
 
     with _sessao() as db:
         try:
-            dispositivo = db.scalar(
-                select(Dispositivo).where(Dispositivo.device_id == payload.deviceId)
-            )
+            dispositivo = db.scalar(select(Dispositivo).where(Dispositivo.device_id == payload.deviceId))
             if dispositivo is None:
                 dispositivo = Dispositivo(device_id=payload.deviceId, source=payload.source)
                 db.add(dispositivo)
@@ -125,23 +127,14 @@ def receber(payload: LeituraIoT):
         except IntegrityError as erro:
             db.rollback()
             if _violacao_unicidade_observacao(erro):
-                raise HTTPException(
-                    status_code=409,
-                    detail="observationId já recebido para este dispositivo.",
-                ) from erro
-            raise HTTPException(
-                status_code=503,
-                detail="Falha de integridade ao persistir a telemetria.",
-            ) from erro
+                raise HTTPException(status_code=409, detail="observationId já recebido para este dispositivo.") from erro
+            raise HTTPException(status_code=503, detail="Falha de integridade ao persistir a telemetria.") from erro
         except SQLAlchemyError as erro:
             db.rollback()
-            raise HTTPException(
-                status_code=503,
-                detail="Banco de telemetria indisponível.",
-            ) from erro
+            raise HTTPException(status_code=503, detail="Banco de telemetria indisponível.") from erro
 
-        # A captura já foi commitada. A inferência lê novamente os valores canônicos
-        # persistidos e acontece numa transação separada, para uma falha ML não apagá-la.
+        # A captura é commitada antes da inferência. O resultado ML também é commitado
+        # antes da explicação, que nunca altera a classificação oficial.
         try:
             persistida = db.scalar(select(Leitura).where(Leitura.id == reading_id))
             if persistida is None:
@@ -159,7 +152,7 @@ def receber(payload: LeituraIoT):
                 origem=persistida.source,
             )
             resultado = detector.predizer(leitura_modelo)
-            db.add(AnaliseAnomalia(
+            analise = AnaliseAnomalia(
                 reading_id=persistida.id,
                 model_version=resultado.versao_modelo,
                 is_anomaly=resultado.classificada_como_anomalia,
@@ -167,19 +160,21 @@ def receber(payload: LeituraIoT):
                 analyzed_at=resultado.data_analise,
                 variables=resultado.variaveis_utilizadas,
                 explanation=resultado.justificativa,
-            ))
+                generative_status="PENDENTE",
+            )
+            db.add(analise)
             persistida.analysis_status = STATUS_ML_CONCLUIDA
             db.commit()
-            return {
+            analise_id = analise.id
+            captura_resposta = {
                 "observationId": persistida.observation_id,
                 "deviceId": persistida.device_id,
                 "quality": persistida.quality,
                 "receivedAt": persistida.received_at,
-                "values": persistida.values,
-                "units": persistida.units,
-                "complements": persistida.complements,
+                "values": dict(persistida.values),
+                "units": dict(persistida.units),
+                "complements": dict(persistida.complements),
                 "analysisStatus": STATUS_ML_CONCLUIDA,
-                "analysis": _resposta_analise(resultado),
             }
         except Exception:
             db.rollback()
@@ -213,9 +208,41 @@ def receber(payload: LeituraIoT):
                     "status": STATUS_ML_FALHA,
                     "executed": False,
                     "message": MENSAGEM_ML_FALHA,
+                    "generativeExplanation": None,
+                    "generativeStatus": "NAO_EXECUTADA",
+                    "generativeErrorCode": None,
                 },
             }
 
+        try:
+            explicacao = tentar_explicar_anomalia(
+                resultado,
+                indicadores=persistida.values,
+                unidades=persistida.units,
+                dados_complementares=persistida.complements,
+                configuracoes=configuracoes,
+            )
+        except Exception as erro:
+            logger.error("Falha inesperada na integração explicativa (%s)", type(erro).__name__)
+            explicacao = ResultadoExplicacaoGenerativa("FALHA", codigo_erro="GENERATION_INTERNAL_ERROR")
+
+        try:
+            analise_persistida = db.get(AnaliseAnomalia, analise_id)
+            if analise_persistida is None:
+                raise RuntimeError("registro de análise ausente")
+            analise_persistida.generative_status = explicacao.estado
+            analise_persistida.generative_explanation = explicacao.texto
+            analise_persistida.generative_error_code = explicacao.codigo_erro
+            db.commit()
+        except Exception as erro:
+            db.rollback()
+            logger.error("Falha ao persistir explicação Gemini (%s)", type(erro).__name__)
+            explicacao = ResultadoExplicacaoGenerativa("FALHA", codigo_erro="EXPLANATION_PERSISTENCE_FAILED")
+
+        return {
+            **captura_resposta,
+            "analysis": _resposta_analise(resultado, explicacao),
+        }
 
 @roteador_dashboard.get("/status")
 def status():
@@ -280,6 +307,9 @@ def historico(
                         "analyzedAt": leitura.anomaly.analyzed_at,
                         "variables": leitura.anomaly.variables,
                         "explanation": leitura.anomaly.explanation,
+                        "generativeExplanation": leitura.anomaly.generative_explanation,
+                        "generativeStatus": leitura.anomaly.generative_status,
+                        "generativeErrorCode": leitura.anomaly.generative_error_code,
                     }
                     if leitura.anomaly else {
                         "status": leitura.analysis_status,

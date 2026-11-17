@@ -10,6 +10,7 @@ from sqlalchemy import (
     Integer,
     JSON,
     String,
+    Text,
     text,
     UniqueConstraint,
     func,
@@ -83,8 +84,11 @@ class AnaliseAnomalia(BaseTelemetria):
             "jsonb_array_length(variables) = 4",
             name="ck_iot_anomaly_variables_four",
         ).ddl_if(dialect="postgresql"),
+        CheckConstraint(
+            "generative_status IN ('PENDENTE', 'NAO_CONFIGURADO', 'CONCLUIDA', 'FALHA')",
+            name="ck_iot_anomaly_generative_status",
+        ),
     )
-
     id: Mapped[int] = mapped_column(ID_COMPAT, primary_key=True)
     reading_id: Mapped[int] = mapped_column(
         BigInteger().with_variant(Integer, "sqlite"),
@@ -97,4 +101,7 @@ class AnaliseAnomalia(BaseTelemetria):
     analyzed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     variables: Mapped[list] = mapped_column(JSON_COMPAT, nullable=False)
     explanation: Mapped[str] = mapped_column(String(500))
+    generative_explanation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    generative_status: Mapped[str] = mapped_column(String(30), nullable=False, default="PENDENTE", server_default="NAO_CONFIGURADO")
+    generative_error_code: Mapped[str | None] = mapped_column(String(60), nullable=True)
     reading: Mapped[Leitura] = relationship(back_populates="anomaly")
