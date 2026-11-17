@@ -3,13 +3,22 @@
 import asyncio
 import json
 import socket
+from types import SimpleNamespace
 
 import pytest
+from pydantic import ValidationError
 
 from app.inteligencia_artificial.generativa.cliente_gemini import ProvedorGemini
-from app.inteligencia_artificial.recomendacoes.esquemas import ContextoRecuperacao, Indicador
+from app.inteligencia_artificial.recomendacoes import orquestracao
+from app.inteligencia_artificial.recomendacoes.esquemas import (
+    AVISO_UMIDADE_SOLO,
+    CapturaDemonstrativa,
+    ContextoRecuperacao,
+    Indicador,
+)
 from app.inteligencia_artificial.recomendacoes.orquestracao import ContextoGeracao, orquestrar
-from app.inteligencia_artificial.recomendacoes.recuperacao import recuperar
+from app.inteligencia_artificial.recomendacoes.recuperacao import carregar_catalogo, recuperar
+from tests.test_generativa_gemini import FakeClient, FakeHttpError, FakeModels
 from tests.test_recomendacoes import catalogo, evidencias_artificiais, observacao_declarada
 
 
@@ -213,3 +222,162 @@ def test_simulador_independe_de_rede_credenciais_e_cliente_real(
             assert len(gerador.chamadas) == 1
 
     asyncio.run(executar())
+
+
+@pytest.fixture
+def consulta_wokwi():
+    return ContextoRecuperacao(
+        cultura="tomate",
+        captura_wokwi=CapturaDemonstrativa(
+            source="WOKWI_HIVEMQ_NODE_RED",
+            values={"umidadeSolo": 100, "umidadeAr": 80},
+            units={"umidadeSolo": "%", "umidadeAr": "%"},
+            metadados_umidade_solo={
+                "origem": "DHT22_TEMPERATURA",
+                "metodo": "CONVERSAO_LINEAR_DEMONSTRATIVA",
+                "simulado": True,
+                "temperaturaFonteC": 35,
+            },
+        ),
+    )
+
+
+def test_fluxo_padrao_envia_cultura_e_preserva_selecao(consulta_wokwi, monkeypatch):
+    catalogo_ativo = carregar_catalogo()
+    anteriores = recuperar(catalogo_ativo, consulta_wokwi).recomendacoes
+    resposta = json.dumps({
+        "estado": "COMPOR",
+        "recomendacoes": [
+            {"id_recomendacao": item.recomendacao.id, "ordem": "ORIENTACAO_PRIMEIRO",
+             "indices_referencias": [0]}
+            for item in reversed(anteriores)
+        ],
+    })
+    sdk = FakeModels(SimpleNamespace(text=resposta))
+    chamadas_fabrica = []
+
+    def criar_provedor_falso():
+        chamadas_fabrica.append(True)
+        return ProvedorGemini("chave-ficticia", "modelo-teste", cliente=FakeClient(sdk))
+
+    monkeypatch.setattr(orquestracao, "criar_provedor_gemini", criar_provedor_falso)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    resultado = asyncio.run(orquestrar(catalogo_ativo, consulta_wokwi))
+
+    assert chamadas_fabrica == [True]
+    chamada, = sdk.calls
+    dados = json.loads(chamada["contents"])
+    assert dados["cultura_selecionada"] == "tomate"
+    assert resultado.estado == "CONCLUIDA"
+    assert resultado.codigo_erro is None
+    assert [item.id_recomendacao for item in resultado.orientacoes] == ["REC027", "REC030"]
+    assert [item.id_recomendacao for item in resultado.recuperadas] == ["REC027", "REC030"]
+    for item, anterior, enviado in zip(resultado.recuperadas, anteriores, dados["recomendacoes"], strict=True):
+        assert item.prioridade == anterior.recomendacao.criterio_prioridade.nivel == enviado["prioridade"]
+        assert item.indicadores == anterior.evidencias_utilizadas
+        assert enviado["indicadores"] == [
+            sinal.model_dump(mode="json", exclude_none=True) for sinal in item.indicadores
+        ]
+        assert item.estado_apresentacao == "PRELIMINAR"
+        assert item.estado_curadoria == "PENDENTE"
+        assert enviado["estado_apresentacao"] == "PRELIMINAR"
+        assert enviado["estado_curadoria"] == "PENDENTE"
+        assert len(item.referencias) == len(anterior.recomendacao.referencias)
+        for fonte, original in zip(item.referencias, anterior.recomendacao.referencias, strict=True):
+            assert fonte.localizador == original.localizador
+            assert fonte.estado_curadoria == original.estado_curadoria == "PENDENTE"
+        assert enviado["referencias"] == [fonte.model_dump(mode="json") for fonte in item.referencias]
+        assert list(item.ressalvas) == enviado["ressalvas"]
+    assert AVISO_UMIDADE_SOLO in resultado.recuperadas[0].ressalvas
+    assert resultado.orientacoes[0].texto.startswith("Orientação preliminar. ")
+
+
+@pytest.mark.parametrize("caso", ["sem_captura", "faltam_indicadores", "cultura_incompativel"])
+def test_fluxo_padrao_bloqueia_fabrica_sem_selecao(consulta_wokwi, monkeypatch, caso):
+    monkeypatch.setattr(
+        orquestracao, "criar_provedor_gemini",
+        lambda: pytest.fail("A recuperação vazia não deve construir o provedor."),
+    )
+    if caso == "sem_captura":
+        consulta = ContextoRecuperacao(cultura="tomate")
+    elif caso == "faltam_indicadores":
+        consulta = ContextoRecuperacao(
+            cultura="tomate", captura_wokwi=CapturaDemonstrativa(
+                source="WOKWI_HIVEMQ_NODE_RED", values={"temperaturaAr": 32},
+                units={"temperaturaAr": "°C"},
+            ),
+        )
+    else:
+        consulta = consulta_wokwi.model_copy(update={"cultura": "alface"})
+
+    resultado = asyncio.run(orquestrar(carregar_catalogo(), consulta))
+    assert resultado.estado == "SEM_EVIDENCIA_SUFICIENTE"
+    assert resultado.codigo_erro is None
+    assert resultado.recuperadas == resultado.orientacoes == ()
+    assert resultado.exclusoes
+
+
+@pytest.mark.parametrize("campo", ["values", "units"])
+def test_captura_invalida_na_recuperacao_nao_chega_ao_provedor(consulta_wokwi, monkeypatch, campo):
+    monkeypatch.setattr(
+        orquestracao, "criar_provedor_gemini",
+        lambda: pytest.fail("A captura inválida não deve construir o provedor."),
+    )
+    captura = consulta_wokwi.captura_wokwi
+    if campo == "values":
+        captura.values["umidadeSolo"] = 25
+    else:
+        captura.units["umidadeSolo"] = "°C"
+    gerador = GeradorSimulado()
+    with pytest.raises(ValidationError):
+        asyncio.run(orquestrar(carregar_catalogo(), consulta_wokwi))
+    with pytest.raises(ValidationError):
+        asyncio.run(orquestrar(carregar_catalogo(), consulta_wokwi, gerador))
+    assert not gerador.chamadas
+
+
+@pytest.mark.parametrize(("caso", "estado", "codigo", "chamadas"), [
+    ("sem_chave", "FALHA_GERADOR", "GEMINI_NOT_CONFIGURED", 0),
+    ("timeout", "FALHA_GERADOR", "GEMINI_TIMEOUT", 1),
+    ("429", "FALHA_GERADOR", "GEMINI_RATE_LIMITED", 1),
+    ("503", "FALHA_GERADOR", "GEMINI_UNAVAILABLE", 1),
+    ("invalida", "RESPOSTA_INVALIDA", "GEMINI_INVALID_RESPONSE", 1),
+    ("insuficiencia", "SEM_CONTEUDO_SUFICIENTE", None, 1),
+    ("inesperado", "FALHA_GERADOR", "GENERATION_INTERNAL_ERROR", 1),
+])
+def test_fluxo_padrao_controla_falhas_sem_expor_detalhes(
+    consulta_wokwi, monkeypatch, caso, estado, codigo, chamadas
+):
+    segredo = "detalhe-interno-confidencial"
+
+    class ProvedorInesperado:
+        async def gerar(self, **kwargs):
+            sdk.calls.append(kwargs)
+            raise RuntimeError(segredo)
+
+    erro = FakeHttpError(int(caso), segredo) if caso in {"429", "503"} else None
+    texto = '{"estado":"SEM_CONTEUDO_SUFICIENTE","recomendacoes":[]}' if caso == "insuficiencia" else segredo
+    sdk = FakeModels(
+        response=SimpleNamespace(text=texto), error=erro,
+        delay=0.1 if caso == "timeout" else 0,
+    )
+    provedor = (
+        ProvedorInesperado() if caso == "inesperado" else ProvedorGemini(
+            None if caso == "sem_chave" else "chave-ficticia", "modelo-teste",
+            timeout_segundos=0.01, cliente=FakeClient(sdk),
+        )
+    )
+    monkeypatch.setattr(orquestracao, "criar_provedor_gemini", lambda: provedor)
+    catalogo_ativo = carregar_catalogo()
+    antes = recuperar(catalogo_ativo, consulta_wokwi)
+    resultado = asyncio.run(orquestrar(catalogo_ativo, consulta_wokwi))
+
+    assert resultado.estado == estado
+    assert resultado.codigo_erro == codigo
+    assert len(sdk.calls) == chamadas
+    assert resultado.orientacoes == ()
+    assert [item.id_recomendacao for item in resultado.recuperadas] == ["REC027", "REC030"]
+    assert resultado.exclusoes == antes.exclusoes
+    assert recuperar(catalogo_ativo, consulta_wokwi) == antes
+    assert segredo not in repr(resultado)
+    assert "chave-ficticia" not in repr(resultado)

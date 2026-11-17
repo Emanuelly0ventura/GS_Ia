@@ -1,8 +1,11 @@
-"""Orquestração local da prova de conceito, com um gerador injetado."""
+"""Recuperação e geração de recomendações com um gerador substituível."""
 from dataclasses import dataclass
 from typing import Literal, Protocol
 
 from pydantic import ValidationError
+
+from app.inteligencia_artificial.generativa.cliente_gemini import ErroGemini, GeminiRespostaInvalida
+from app.inteligencia_artificial.generativa.fabrica import criar_provedor_gemini
 
 from app.inteligencia_artificial.recomendacoes.esquemas import (
     CatalogoRecomendacoes,
@@ -73,12 +76,17 @@ class RespostaGerador(Esquema):
 @dataclass(frozen=True)
 class ResultadoGeracao:
     estado: Literal[
-        "SEM_EVIDENCIA_SUFICIENTE", "CONCLUIDA", "FALHA_GERADOR", "RESPOSTA_INVALIDA"
+        "SEM_EVIDENCIA_SUFICIENTE",
+        "SEM_CONTEUDO_SUFICIENTE",
+        "CONCLUIDA",
+        "FALHA_GERADOR",
+        "RESPOSTA_INVALIDA",
     ]
     mensagem: str
     recuperadas: tuple[ItemContextoGeracao, ...] = ()
     orientacoes: tuple[TextoGerado, ...] = ()
     exclusoes: tuple[Exclusao, ...] = ()
+    codigo_erro: str | None = None
 
 
 def _projetar(resultado: RecomendacaoRecuperada) -> ItemContextoGeracao:
@@ -145,7 +153,7 @@ def _validar_resposta(
 async def orquestrar(
     catalogo: CatalogoRecomendacoes,
     contexto: ContextoRecuperacao,
-    gerador: GeradorRecomendacoes,
+    gerador: GeradorRecomendacoes | None = None,
 ) -> ResultadoGeracao:
     recuperacao = recuperar(catalogo, contexto)
     if not recuperacao.recomendacoes:
@@ -159,13 +167,38 @@ async def orquestrar(
             exclusoes=recuperacao.exclusoes,
         )
 
+    # O adaptador usa os schemas deste módulo. Componha-o somente após a seleção.
+    from app.inteligencia_artificial.recomendacoes.gerador_gemini import (
+        ConteudoInsuficienteParaComposicao,
+        GeradorGeminiRecomendacoes,
+    )
+
     itens = tuple(_projetar(item) for item in recuperacao.recomendacoes)
     try:
+        if gerador is None:
+            gerador = GeradorGeminiRecomendacoes(
+                criar_provedor_gemini(), cultura_selecionada=contexto.cultura or "",
+            )
         resposta = await gerador.gerar(ContextoGeracao(recomendacoes=itens))
+    except ConteudoInsuficienteParaComposicao:
+        return ResultadoGeracao(
+            "SEM_CONTEUDO_SUFICIENTE", "O gerador não compôs uma orientação com o contexto recebido.",
+            recuperadas=itens, exclusoes=recuperacao.exclusoes,
+        )
+    except GeminiRespostaInvalida as erro:
+        return ResultadoGeracao(
+            "RESPOSTA_INVALIDA", "O Gemini retornou uma resposta inválida.",
+            recuperadas=itens, exclusoes=recuperacao.exclusoes, codigo_erro=erro.codigo,
+        )
+    except ErroGemini as erro:
+        return ResultadoGeracao(
+            "FALHA_GERADOR", "A geração com Gemini não pôde ser concluída.",
+            recuperadas=itens, exclusoes=recuperacao.exclusoes, codigo_erro=erro.codigo,
+        )
     except Exception:
         return ResultadoGeracao(
             "FALHA_GERADOR", "O gerador falhou.", recuperadas=itens,
-            exclusoes=recuperacao.exclusoes,
+            exclusoes=recuperacao.exclusoes, codigo_erro="GENERATION_INTERNAL_ERROR",
         )
 
     try:
