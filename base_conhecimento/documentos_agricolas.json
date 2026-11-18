@@ -1,0 +1,86 @@
+[
+  {
+    "id": "embrapa-milho-textura",
+    "titulo": "Milho — Relações com o solo",
+    "instituicao": "Embrapa",
+    "localizador": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/milho/pre-producao/caracteristicas-da-especie-e-relacoes-com-o-ambiente/relacoes-com-o-solo",
+    "trecho": "Solos de textura média ou argilosos bem estruturados podem oferecer drenagem e retenção de água e nutrientes adequadas ao milho. Solos arenosos geralmente retêm menos água e nutrientes.",
+    "curadoria": "FONTE_CONFERIDA",
+    "culturas": [
+      "MILHO"
+    ],
+    "solos": [
+      "ARENOSO",
+      "ARGILOSO",
+      "FRANCO",
+      "SILTOSO",
+      "HUMOSO"
+    ],
+    "assunto": "SOLO"
+  },
+  {
+    "id": "embrapa-agua-solo-arenoso",
+    "titulo": "Alterações da água disponível em solos arenosos em função do manejo",
+    "instituicao": "Embrapa Milho e Sorgo",
+    "localizador": "https://www.embrapa.br/en/busca-de-publicacoes/-/publicacao/1117185/alteracoes-da-agua-disponivel-em-solos-arenosos-em-funcao-do-manejo",
+    "trecho": "Solos arenosos tendem a reter menos água e nutrientes; a disponibilidade hídrica também depende do manejo adotado.",
+    "curadoria": "FONTE_CONFERIDA",
+    "culturas": [],
+    "solos": [
+      "ARENOSO"
+    ],
+    "assunto": "SOLO"
+  },
+  {
+    "id": "incaper-alface-solo",
+    "titulo": "Cultura da alface — Preparo do solo e transplantio",
+    "instituicao": "Incaper",
+    "localizador": "https://biblioteca.incaper.es.gov.br/digital/bitstream/item/4194/1/CulturaDaAlface-Cap3.pdf",
+    "trecho": "Solos de textura média favorecem a alface. Em solos muito argilosos, deve-se verificar se o canteiro fica encharcado, pois a saturação favorece doenças como a podridão-mole.",
+    "curadoria": "FONTE_CONFERIDA",
+    "culturas": [
+      "ALFACE"
+    ],
+    "solos": [],
+    "assunto": "SOLO"
+  },
+  {
+    "id": "embrapa-tomate-solo",
+    "titulo": "Tomate de Mesa — Preparo do solo e plantio",
+    "instituicao": "Embrapa",
+    "localizador": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/preparo-do-solo-e-plantio",
+    "trecho": "O tomateiro se beneficia de solo bem estruturado, com drenagem fácil, matéria orgânica e baixa acidez. Avaliar a fertilidade ajuda a dimensionar as necessidades de correção.",
+    "curadoria": "FONTE_CONFERIDA",
+    "culturas": [
+      "TOMATE"
+    ],
+    "solos": [],
+    "assunto": "SOLO"
+  },
+  {
+    "id": "embrapa-feijao-solo",
+    "titulo": "Solos — Feijão",
+    "instituicao": "Embrapa Arroz e Feijão",
+    "localizador": "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/solos",
+    "trecho": "O feijão-comum é sensível ao encharcamento. A análise do solo ajuda a confirmar a textura, o pH e a disponibilidade de nutrientes antes de avaliar o local.",
+    "curadoria": "FONTE_CONFERIDA",
+    "culturas": [
+      "FEIJAO"
+    ],
+    "solos": [],
+    "assunto": "SOLO"
+  },
+  {
+    "id": "embrapa-cenoura-solo",
+    "titulo": "Cenoura — Sistema de produção",
+    "instituicao": "Embrapa",
+    "localizador": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/227451/1/sistema-producao-cenoura-8out20211.pdf",
+    "trecho": "A cenoura se adapta melhor a solos de textura média, profundos, bem drenados e com matéria orgânica. Essas características precisam ser verificadas no perfil onde as raízes vão se desenvolver.",
+    "curadoria": "FONTE_CONFERIDA",
+    "culturas": [
+      "CENOURA"
+    ],
+    "solos": [],
+    "assunto": "SOLO"
+  }
+]

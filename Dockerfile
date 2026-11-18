@@ -13,6 +13,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-install-project
 COPY app ./app
 COPY dashboard ./dashboard
+COPY base_conhecimento ./base_conhecimento
 COPY migrations ./migrations
 ENV PATH="/opt/venv/bin:$PATH"
 

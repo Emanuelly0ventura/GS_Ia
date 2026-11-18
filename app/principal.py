@@ -12,11 +12,13 @@ from app.nucleo.configuracoes import obter_configuracoes
 from app.nucleo.limites_http import LimiteCorpoHttpMiddleware
 from app.nucleo.logging import configurar_logging, obter_logger
 from app.nucleo.excecoes import ErroAplicacao
+from app.rotas.recomendacoes import roteador as roteador_recomendacoes
 from app.rotas.saude import roteador as roteador_saude
 from app.rotas.anomalias import roteador as roteador_anomalias
 from app.telemetria.rotas import roteador_telemetria, roteador_dashboard
 from app.rotas.mobile_demo import roteador as roteador_mobile_demo
 from app.compatibilidade.rotas import roteador as roteador_agricultura
+from app.compatibilidade import analise_unificada
 
 configurar_logging()
 logger = obter_logger(__name__)
@@ -51,6 +53,7 @@ app.include_router(roteador_telemetria)
 app.include_router(roteador_dashboard)
 app.include_router(roteador_mobile_demo)
 app.include_router(roteador_agricultura)
+app.include_router(roteador_recomendacoes)
 
 @app.exception_handler(ErroAplicacao)
 async def tratar_erro_aplicacao(_: Request, erro: ErroAplicacao) -> JSONResponse:

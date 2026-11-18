@@ -24,6 +24,12 @@ class ServicoCatalogoAgricola:
 
 class ServicoAnaliseCompatibilidade:
     def analisar(self, sessao: Session, semente_id: str, solo_id: str) -> AnaliseCompatibilidade:
+        analise = self.avaliar(sessao, semente_id, solo_id)
+        sessao.add(analise)
+        sessao.flush()
+        return analise
+
+    def avaliar(self, sessao: Session, semente_id: str, solo_id: str) -> AnaliseCompatibilidade:
         semente = sessao.get(TipoSemente, str(semente_id))
         solo = sessao.get(TipoSolo, str(solo_id))
         if semente is None:
@@ -42,7 +48,7 @@ class ServicoAnaliseCompatibilidade:
                 Compatibilidade.ativo.is_(True),
             )
         )
-        analise = AnaliseCompatibilidade(
+        return AnaliseCompatibilidade(
             id=str(uuid4()),
             semente_id=semente.id,
             solo_id=solo.id,
@@ -56,6 +62,3 @@ class ServicoAnaliseCompatibilidade:
             justificativa=regra.justificativa if regra else None,
             referencia_fonte=regra.referencia_fonte if regra else None,
         )
-        sessao.add(analise)
-        sessao.flush()
-        return analise
