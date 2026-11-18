@@ -106,7 +106,7 @@ class ProvedorGemini:
                     contents=conteudo,
                     config={
                         "system_instruction": instrucao,
-                        "temperature": 0,
+                        **({} if self._modelo == "gemini-3.8-flash" else {"temperature": 0}),
                         "response_mime_type": "application/json",
                         "response_json_schema": esquema.model_json_schema(),
                     },
