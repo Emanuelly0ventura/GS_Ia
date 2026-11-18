@@ -1,13 +1,34 @@
 # Arquitetura
 
-O AgroConnect AI é uma aplicação independente em Python/FastAPI. Configurações e logging ficam em `app/nucleo`; persistência própria fica em `app/telemetria`; catálogo e regras determinísticas de compatibilidade ficam em `app/compatibilidade`. O PostgreSQL local é executado pelo Docker Compose e seu schema é controlado por migrations SQL manuais. O projeto não depende do Backend C# ou do aplicativo mobile.
+O AgroConnect AI concentra a ingestão, o processamento e o dashboard em um serviço Python/FastAPI. O PostgreSQL do módulo é provisionado pelo Docker Compose com schema versionado pelas migrations SQL. O navegador consulta as rotas HTTP do FastAPI.
 
-O fluxo IoT é Wokwi → MQTT/HiveMQ → Node-RED → API FastAPI → PostgreSQL. A API valida BMP180 (`temperaturaAr`), temperatura DHT22 recebida no campo de entrada `umidadeSolo`, umidade DHT22 (`umidadeAr`) e LDR (`luminosidade`). Converte a temperatura DHT22 em percentual demonstrativo de umidade do solo e preserva origem, método, temperatura fonte e marcação de simulação em `complements`. Os quatro indicadores são persistidos em JSONB.
+## Telemetria
 
-Após persistir a captura, o Isolation Forest v3 analisa as quatro features canônicas e grava classificação e score em `iot_anomaly_analyses`. O score é uma medida do modelo, não probabilidade. A falha de inferência não remove a captura persistida.
+1. O ESP32 no Wokwi publica as leituras do BMP180, DHT22 e LDR no HiveMQ via MQTT.
+2. O Node-RED agrupa os quatro indicadores e envia a captura para `POST /api/v1/iot/readings`.
+3. A API valida valores e unidades, calcula o índice demonstrativo de solo a partir da temperatura DHT22 e persiste a captura em `iot_readings`.
+4. O Isolation Forest v3 usa os quatro indicadores persistidos e grava a classificação em `iot_anomaly_analyses`. O Gemini recebe o resultado calculado e acrescenta sua explicação ao registro.
 
-O módulo agrícola consulta regras ativas cadastradas no PostgreSQL e decide `COMPATIVEL`, `INCOMPATIVEL` ou `DADOS_INSUFICIENTES`. A carga inicial fornece catálogo de sementes e solos, mas não inventa regras. Cada análise salva snapshots de códigos, nomes, critérios, justificativa e referência disponíveis naquele momento.
+## Análise agrícola
 
-A camada generativa usa o SDK oficial `google-genai`, configurado por `GEMINI_API_KEY`, `GEMINI_MODEL` e timeout. A orquestração em `app/inteligencia_artificial/generativa` reutiliza os serviços de explicação existentes depois da decisão determinística. Para anomalias, explica a classificação/score e indicadores já calculados; para compatibilidade, explica somente critérios de uma regra ativa. O Gemini não altera resultados oficiais. Texto, estado e código de falha são persistidos em campos próprios; indisponibilidade generativa não descarta análise ou captura. Sem chave não há chamada; sem regra/critérios a explicação agrícola é ignorada. As chamadas de API generativa são cobertas com mocks nos testes.
+1. O dashboard lista culturas e solos ativos e envia seus IDs a `POST /api/v1/agricultura/analise-unificada`.
+2. O serviço consulta a regra em `compatibilidades`, seleciona a captura Wokwi válida mais recente e recupera a análise de anomalias associada.
+3. O recuperador local seleciona referências técnicas aplicáveis à cultura e ao solo.
+4. A API grava a decisão e os critérios em `analises_compatibilidade`. O Gemini explica o contexto, e o serviço valida e grava a explicação no mesmo registro.
+5. O dashboard exibe as etapas do resultado e atualiza a lista a partir de `GET /api/v1/agricultura/analises`.
 
-O dashboard é servido por `GET /dashboard` e usa os endpoints FastAPI de saúde, telemetria, catálogo e histórico agrícola; o formulário solicita compatibilidade pela rota existente. A página não acessa PostgreSQL diretamente e não executa inferências ao abrir. O snapshot mobile continua predefinido e independente do banco de telemetria. Consulte `documentacao/postgresql_local.md`, `documentacao/telemetria_iot.md`, `documentacao/compatibilidade_agricola.md`, `documentacao/fase4_3_integracao_gemini.md` e `documentacao/dashboard.md` para contratos e operação.
+## Responsabilidades no código
+
+| Caminho | Responsabilidade |
+| --- | --- |
+| `app/nucleo` | Configuração e logging |
+| `app/telemetria` | Ingestão, conversão, consulta de capturas e fábrica de sessões SQLAlchemy |
+| `app/compatibilidade` | Catálogos, regras e orquestração da análise agrícola |
+| `app/inteligencia_artificial/aprendizado_maquina` | Preparação, treinamento e inferência do Isolation Forest |
+| `app/inteligencia_artificial/recomendacoes/documentos.py` | Recuperação e ranking das referências da análise agrícola |
+| `app/inteligencia_artificial/generativa` | Cliente Gemini e validação das explicações |
+| `dashboard/index.html` | Interface, gráfico, formulários e histórico |
+
+A ingestão, o dashboard e o módulo agrícola usam o PostgreSQL dedicado da IA. A seleção de referências lê `base_conhecimento/documentos_agricolas.json`. Os contratos genéricos de leitura ficam em `app/repositorios`, com cobertura unitária.
+
+Consulte [os contratos de telemetria](telemetria_iot.md), [o fluxo agrícola](analise_agricola.md) e [as evidências de execução](validacao.md).
