@@ -94,6 +94,263 @@
     .footer { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; line-height: 1.6; }
     @media (max-width: 850px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .two-col { grid-template-columns: 1fr; } }
     @media (max-width: 560px) { .shell { padding: 0 15px 32px; } .topbar { align-items: flex-start; flex-direction: column; } .status-list { justify-content: flex-start; } .intro { align-items: flex-start; flex-direction: column; } .updated { text-align: left; } .cards { gap: 9px; } .card { padding: 14px; } .card-value { font-size: 25px; } .form-grid { grid-template-columns: 1fr; } .form-grid button { width: 100%; } .panel { padding: 15px; } nav { gap: 17px; } }
+
+    :root {
+      --paper: #f4ede2;
+      --white: #fdfaf3;
+      --coffee: #2d2015;
+      --muted: #655748;
+      --line: #daccb6;
+      --terracotta: #a44f27;
+      --sand: #d9ba87;
+      --success: #446932;
+      --surface-warm: #eee2d0;
+      --hero: #2a1e13;
+      --hero-text: #fff6e8;
+      --hero-muted: #dfcdb5;
+    }
+
+    .shell { max-width: 1260px; padding: 0 36px 44px; }
+    .topbar { padding: 24px 0 17px; border: 0; }
+    .brand::before {
+      content: "";
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      border-radius: 13px;
+      background: #ae572e;
+      box-shadow: inset 0 0 0 1px #8d4228;
+    }
+    .brand { position: relative; }
+    .brand::after {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: calc(50% - 10px);
+      width: 11px;
+      height: 17px;
+      border: 2px solid var(--hero-text);
+      border-radius: 13px 0 13px 0;
+      transform: rotate(-21deg);
+      pointer-events: none;
+    }
+    .brand-name { font-size: 19px; font-weight: 820; }
+    .brand-caption { font-size: 12px; }
+    .status-pill { background: var(--surface-warm); color: var(--coffee); }
+    .dot { flex: 0 0 8px; }
+
+    nav {
+      width: fit-content;
+      max-width: 100%;
+      gap: 3px;
+      margin-bottom: 20px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--white);
+      box-shadow: 0 5px 14px #2a1e1308;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line) transparent;
+    }
+    nav a { border-radius: 24px; padding: 10px 14px; }
+    nav a:first-child { background: var(--terracotta); color: var(--hero-text); }
+    nav a:hover { background: var(--surface-warm); color: var(--terracotta); }
+    :focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+
+    .intro {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      min-height: 220px;
+      padding: 36px 38px;
+      border-radius: 32px;
+      background: var(--hero);
+      color: var(--hero-text);
+    }
+    .intro::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: repeating-radial-gradient(
+        ellipse at 73% -44%, transparent 0 24px, #dfc39a13 25px 26px, transparent 27px 42px
+      );
+      pointer-events: none;
+    }
+    .eyebrow { color: var(--sand); letter-spacing: .14em; }
+    h1 { margin: 9px 0 8px; font-size: clamp(34px, 5.4vw, 61px); letter-spacing: -.065em; line-height: 1.02; }
+    .intro p { color: var(--hero-muted); font-size: clamp(14px, 2.1vw, 17px); line-height: 1.5; }
+    .updated {
+      flex-shrink: 0;
+      max-width: 100%;
+      border: 1px solid #eac89936;
+      border-radius: 24px;
+      padding: 8px 12px;
+      background: #493623;
+      color: var(--hero-muted);
+    }
+    .alert { margin-top: 14px; }
+
+    .section { margin-top: 34px; }
+    .section-head { margin-bottom: 16px; }
+    .section-head h2 { font-size: clamp(21px, 2.8vw, 28px); letter-spacing: -.045em; }
+    .section-head p { margin-top: 6px; font-size: 13px; line-height: 1.5; }
+    .cards, .two-col { gap: 15px; }
+    .card, .panel { border-radius: 24px; box-shadow: 0 4px 12px #38271906; }
+    .card {
+      padding: 20px;
+    }
+    .card-label { display: flex; align-items: center; gap: 10px; min-height: 38px; font-size: 13px; line-height: 1.3; }
+    .card-label::before {
+      content: "";
+      flex: 0 0 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: radial-gradient(circle, var(--sensor-accent) 0 4px, transparent 4.5px), var(--sensor-tint);
+    }
+    .card-value { margin: 14px 0 6px; font-size: clamp(25px, 3vw, 36px); font-weight: 820; letter-spacing: -.045em; overflow-wrap: anywhere; }
+    .unit { color: var(--sensor-accent); font-size: 14px; font-weight: 700; }
+    .card-note { font-size: 12px; }
+    .panel { padding: 23px; }
+    .panel h3 { font-size: 17px; letter-spacing: -.02em; }
+    .panel-sub, .latest-meta { font-size: 13px; }
+    .chart-wrap { border-radius: 16px; background: #f7efe3; padding-inline: 8px; }
+    .empty { font-size: 14px; }
+    .empty[hidden] { display: none; }
+    .legend { margin-top: 12px; }
+    .form-grid { gap: 14px; }
+    label { font-size: 13px; }
+    select { min-width: 0; min-height: 46px; border-radius: 14px; background: #fffdf7; }
+    button { min-height: 46px; border-radius: 24px; padding-inline: 22px; font-size: 13px; }
+    button:hover { background: #853b1a; }
+    .compat-result { overflow-wrap: anywhere; }
+    .compat-result h3 { margin-top: 20px; }
+    .compat-result p { line-height: 1.55; }
+    .criteria { font-size: 13px; }
+    .compat-result a { color: var(--terracotta); text-underline-offset: 3px; }
+    .table-wrap { margin-top: 13px; border-radius: 14px; }
+    th { background: var(--surface-warm); }
+    th, td { padding: 12px; }
+    tbody tr:nth-child(even) { background: #f7f0e5; }
+
+    @media (max-width: 850px) {
+      .shell { padding-inline: 24px; }
+    }
+    @media (max-width: 560px) {
+      .shell { padding-inline: 15px; }
+      .topbar { gap: 12px; padding-top: 17px; }
+      nav { margin-bottom: 14px; }
+      nav a { padding: 9px 11px; font-size: 12px; }
+      .intro { min-height: 0; gap: 17px; border-radius: 25px; padding: 26px 22px; }
+      .section { margin-top: 27px; }
+      .cards, .two-col { gap: 10px; }
+      .card, .panel { border-radius: 19px; padding: 14px; }
+      .card-label { gap: 7px; font-size: 12px; }
+      .card-label::before { flex-basis: 28px; height: 28px; border-radius: 9px; }
+      .card-value { margin-top: 10px; }
+      .unit { font-size: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      button { transition: none; }
+      button:hover { transform: none; }
+    }
+
+    .analysis-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+    .analysis-card { min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 17px; background: #fffcf6; }
+    .analysis-card--wide { grid-column: 1 / -1; }
+    .analysis-card--summary { background: #f4e7d5; border-color: #d8bf9e; }
+    .analysis-card--notes { background: #f8f0e3; }
+    .compat-result .analysis-card h3 { margin: 0 0 8px; }
+    .analysis-card h4 { margin: 14px 0 6px; font-size: 14px; }
+    .analysis-card p { margin: 7px 0 0; color: var(--muted); font-size: 14px; }
+    .analysis-card .analysis-status { display: inline-block; margin: 0; padding: 5px 10px; border-radius: 20px; background: #fff8eb; color: var(--coffee); font-weight: 700; }
+    .analysis-card .criteria { margin-top: 9px; }
+    .analysis-card .criteria li + li { margin-top: 6px; }
+    @media (max-width: 620px) {
+      .analysis-grid { grid-template-columns: 1fr; gap: 10px; }
+      .analysis-card { padding: 14px; }
+    }
+
+    .anomaly-capture { margin: 0 0 14px; line-height: 1.5; overflow-wrap: anywhere; }
+    .anomaly-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+    .anomaly-block { min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 17px; background: #fffcf6; overflow-wrap: anywhere; }
+    .anomaly-block--typical { background: #edf3e7; border-color: #c5d5b8; color: #30542a; }
+    .anomaly-block--atypical { background: #fae9de; border-color: #e6beaa; color: #813e26; }
+    .anomaly-block .result-title { margin: 9px 0 6px; }
+    .anomaly-block .score { display: flex; flex-wrap: wrap; margin: 10px 0 0; }
+    .anomaly-block .state { margin-top: 9px; font-size: 11px; }
+    .anomaly-justification { margin-top: 14px; background: #f6eee1; }
+    .anomaly-copy { margin: 9px 0 0; color: var(--muted); font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+    @media (max-width: 620px) {
+      .anomaly-grid { grid-template-columns: 1fr; gap: 10px; }
+      .anomaly-block { padding: 14px; }
+    }
+    .analysis-reason {
+      margin-top: 14px;
+      padding: 13px 15px;
+      border: 1px solid #dcc19d;
+      border-left: 4px solid var(--terracotta);
+      border-radius: 12px;
+      background: var(--white);
+    }
+    .analysis-reason h4 { margin: 0; color: var(--coffee); font-size: 15px; }
+    .analysis-card .analysis-reason p { margin-top: 4px; color: var(--coffee); font-size: 15px; }
+
+    .analysis-criteria {
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      background: #fff8eb;
+      color: var(--coffee);
+    }
+    .analysis-criteria h4 { margin: 0; font-size: 15px; }
+    .analysis-card .analysis-criteria .criteria {
+      margin-top: 5px;
+      color: inherit;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .analysis-card .analysis-status--typical { background: #edf3e7; color: #30542a; }
+    .analysis-card .analysis-status--atypical { background: #fae9de; color: #813e26; }
+    :root {
+      --series-temperature: #C46B38;
+      --series-soil: #D9B77E;
+      --series-air: #A18D72;
+      --series-light: #382719;
+    }
+    .card:nth-child(1), .capture-temperature { --sensor-accent: var(--series-temperature); --sensor-tint: #f3dbcb; }
+    .card:nth-child(2), .capture-soil { --sensor-accent: var(--series-soil); --sensor-tint: #f5ead4; }
+    .card:nth-child(3), .capture-air { --sensor-accent: var(--series-air); --sensor-tint: #eee6da; }
+    .card:nth-child(4), .capture-light { --sensor-accent: var(--series-light); --sensor-tint: #eae0d6; }
+    .card .unit { color: var(--muted); }
+    .capture-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px 12px;
+      padding: 13px 14px;
+      border-radius: 13px;
+      background: var(--surface-warm);
+    }
+    .capture-header time { display: block; font-weight: 750; }
+    .capture-device { margin-top: 4px; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+    .capture-values { margin: 12px 0 0; }
+    .capture-values > div {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 3px 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .capture-values > div:last-child { border: 0; }
+    .capture-values dt { display: flex; align-items: baseline; gap: 8px; font-size: 13px; }
+    .capture-values dt::before { content: ""; flex: 0 0 8px; height: 8px; border-radius: 50%; background: var(--sensor-accent); }
+    .capture-values dd { margin: 0 0 0 auto; font-size: 15px; font-weight: 750; font-variant-numeric: tabular-nums; }
+    .capture-values small { color: var(--muted); font-weight: 500; }
+
   </style>
 </head>
 <body>
@@ -109,7 +366,7 @@
       </div>
     </header>
     <nav aria-label="Navegação do painel">
-      <a href="#overview">Visão geral</a><a href="#iot">Monitoramento IoT</a><a href="#ai">Anomalias</a><a href="#agriculture">Compatibilidade agrícola</a><a href="#history">Histórico</a>
+      <a href="#overview">Visão geral</a><a href="#iot">Monitoramento IoT</a><a href="#ai">Anomalias</a><a href="#agriculture">Análise agrícola personalizada</a><a href="#history">Histórico</a>
     </nav>
     <main>
       <section class="intro" id="overview">
@@ -131,8 +388,8 @@
       <section class="section" id="iot">
         <div class="section-head"><div><h2>Monitoramento IoT</h2><p>Últimas capturas persistidas. Cada série mantém sua própria escala para facilitar a leitura.</p></div></div>
         <div class="two-col">
-          <article class="panel"><h3>Evolução recente</h3><p class="panel-sub">Até 50 leituras mais recentes consultadas pela API.</p><div class="chart-wrap"><svg id="chart" viewBox="0 0 700 220" role="img" aria-label="Gráfico histórico dos quatro indicadores"></svg><div id="chartEmpty" class="empty" hidden>Nenhuma leitura IoT disponível para montar o gráfico.</div></div><div class="legend"><span><i style="background:#C46B38"></i>Temperatura · °C</span><span><i style="background:#D9B77E"></i>Solo simulado · %</span><span><i style="background:#A18D72"></i>Umidade do ar · %</span><span><i style="background:#382719"></i>Luminosidade · ADC</span></div></article>
-          <article class="panel"><h3>Última captura</h3><p class="panel-sub">Resumo da leitura mais recente recebida.</p><div id="captureSummary" class="empty">Aguardando uma captura IoT.</div></article>
+          <article class="panel"><h3>Evolução recente</h3><p class="panel-sub">Até 50 leituras mais recentes consultadas pela API.</p><div class="chart-wrap"><svg id="chart" viewBox="0 0 700 220" role="img" aria-label="Gráfico histórico dos quatro indicadores"></svg><div id="chartEmpty" class="empty" hidden>Nenhuma leitura IoT disponível para montar o gráfico.</div></div><div class="legend"><span><i style="background:var(--series-temperature)"></i>Temperatura · °C</span><span><i style="background:var(--series-soil)"></i>Solo simulado · %</span><span><i style="background:var(--series-air)"></i>Umidade do ar · %</span><span><i style="background:var(--series-light)"></i>Luminosidade · ADC</span></div></article>
+          <article class="panel"><h3>Última captura</h3><p class="panel-sub">Resumo da leitura mais recente recebida.</p><div id="captureSummary"><div class="empty">Aguardando uma captura IoT.</div></div></article>
         </div>
       </section>
 
@@ -142,10 +399,9 @@
       </section>
 
       <section class="section" id="agriculture">
-        <div class="section-head"><div><h2>Compatibilidade agrícola</h2><p>A decisão vem das regras cadastradas; a IA generativa só explica os critérios existentes.</p></div></div>
-        <div class="two-col">
+        <div class="section-head"><div><h2>Análise agrícola personalizada</h2><p>Escolha uma semente e um solo. A análise consulta automaticamente a captura válida mais recente.</p></div></div>
+        <div>
           <article class="panel">
-            <h3>Consultar combinação</h3><p class="panel-sub">Selecione os itens do catálogo e solicite uma análise determinística.</p>
             <form id="compatForm">
               <div class="form-grid">
                 <div><label for="seedSelect">Semente</label><select id="seedSelect" required><option value="">Carregando catálogo…</option></select></div>
@@ -155,7 +411,6 @@
             </form>
             <div id="compatResult" class="compat-result" aria-live="polite"><div class="empty">Escolha uma semente e um tipo de solo para começar.</div></div>
           </article>
-          <article class="panel"><h3>Última análise agrícola</h3><p class="panel-sub">Resultado persistido mais recente do catálogo.</p><div id="latestCompat" class="empty">Nenhuma análise agrícola registrada.</div></article>
         </div>
       </section>
 
@@ -169,18 +424,22 @@
   </div>
   <script>
     const API_BASE_URL = document.querySelector('meta[name="api-base-url"]').content.replace(/\/$/, '');
-    const COLORS = ['#C46B38', '#D9B77E', '#A18D72', '#382719'];
+    const COLORS = ['temperature', 'soil', 'air', 'light'].map((sensor) => 'var(--series-' + sensor + ')');
     const SERIES = ['temperaturaAr', 'umidadeSolo', 'umidadeAr', 'luminosidade'];
     const $ = (id) => document.getElementById(id);
     const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
     const date = (value) => value ? new Date(value).toLocaleString('pt-BR') : 'Data indisponível';
     const number = (value, decimals = 1) => Number.isFinite(Number(value)) ? Number(value).toLocaleString('pt-BR', {minimumFractionDigits: decimals, maximumFractionDigits: decimals}) : '—';
     const genLabel = (state) => ({CONCLUIDA:'Explicação concluída', NAO_CONFIGURADO:'Gemini não configurado', SEM_CRITERIOS:'Sem critérios para explicar', FALHA:'Explicação indisponível', PENDENTE:'Explicação pendente', NAO_EXECUTADA:'Não executada'})[state] || 'Estado não informado';
-    const resultLabel = (result) => ({COMPATIVEL:'Compatível', INCOMPATIVEL:'Incompatível', DADOS_INSUFICIENTES:'Dados insuficientes'})[result] || result || 'Resultado indisponível';
+    const resultLabel = (result) => ({COMPATIVEL:'Compatível', INCOMPATIVEL:'Incompatível', DADOS_INSUFICIENTES:'Desconhecido'})[result] || result || 'Resultado indisponível';
     function safeHttpUrl(value) { try { const parsed = new URL(value, window.location.origin); return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : ''; } catch (_) { return ''; } }
     async function api(path, options = {}) {
       const response = await fetch(`${API_BASE_URL}${path}`, {headers:{'Accept':'application/json', ...(options.body ? {'Content-Type':'application/json'} : {})}, ...options});
-      if (!response.ok) throw new Error(`A API respondeu com status ${response.status}.`);
+      if (!response.ok) {
+        const error = new Error(`A API respondeu com status ${response.status}.`);
+        error.status = response.status;
+        throw error;
+      }
       return response.json();
     }
     function setStatus(id, label, state) { const node = $(id); node.className = `status-pill ${state}`; node.innerHTML = `<i class="dot"></i>${esc(label)}`; }
@@ -207,16 +466,24 @@
       const classification = analysis.classification || (anomaly ? 'ANOMALIA_ESTATISTICA' : 'NAO_ATIPICA_ESTIMADA');
       const explanation = analysis.generativeExplanation;
       const status = analysis.generativeStatus || 'NAO_CONFIGURADO';
-      return `<div class="latest-meta">${esc(date(measuredAt))} · captura ${esc(observationId || '—')}</div><div class="result-title ${anomaly ? 'anomaly' : ''}">${anomaly ? 'Anomalia estatística' : 'Não atípica estimada'}</div><div class="latest-meta">Classificação determinística: <strong>${esc(classification)}</strong></div><div class="score">${esc(number(analysis.score, 6))}<small>score do modelo · não é probabilidade</small></div><div class="meta-row"><span class="state ${status === 'CONCLUIDA' ? 'ok' : status === 'FALHA' ? 'error' : ''}">${esc(genLabel(status))}</span></div><div class="explanation">${explanation ? esc(explanation) : esc(analysis.explanation || 'O modelo não forneceu uma justificativa textual.')}</div>${explanation ? `<div class="latest-meta" style="margin-top:8px">Justificativa do modelo: ${esc(analysis.explanation || '—')}</div>` : ''}`;
-    }
-    function compatibilityMarkup(item) {
-      if (!item) return '<div class="empty">Nenhuma análise agrícola registrada.</div>';
-      const insufficient = item.resultado === 'DADOS_INSUFICIENTES';
-      const criteria = Array.isArray(item.criterios) && item.criterios.length ? `<ul class="criteria">${item.criterios.map((criterion) => `<li>${esc(criterion)}</li>`).join('')}</ul>` : '<div class="latest-meta" style="margin-top:9px">Nenhum critério cadastrado para esta combinação.</div>';
-      const explanation = item.explicacaoGemini || item.explicacao_gemini;
-      const state = item.estadoExplicacao || item.estado_explicacao;
-      const source = safeHttpUrl(item.referenciaFonte || item.referencia_fonte || '');
-      return `<div class="latest-meta">${esc(item.semente?.nome || item.semente_nome || 'Semente')} · ${esc(item.solo?.nome || item.solo_nome || 'Solo')} · ${esc(date(item.analisadoEm || item.analisado_em))}</div><div class="result-title">${esc(resultLabel(item.resultado))}</div>${insufficient ? '<div class="latest-meta">Não existem informações suficientes para concluir essa combinação.</div>' : ''}${criteria}${item.justificativa ? `<div class="explanation">${esc(item.justificativa)}</div>` : ''}${source ? `<a class="source-link" href="${esc(source)}" target="_blank" rel="noopener noreferrer">Consultar fonte técnica</a>` : ''}<div class="meta-row"><span class="state ${(state === 'CONCLUIDA') ? 'ok' : (state === 'FALHA') ? 'error' : ''}">${esc(genLabel(state))}</span></div><div class="explanation">${explanation ? esc(explanation) : 'Nenhuma explicação Gemini disponível.'}</div>`;
+      return `<p class="latest-meta anomaly-capture">${esc(date(measuredAt))} · captura ${esc(observationId || '—')}</p>
+        <div class="anomaly-grid">
+          <section class="anomaly-block ${anomaly ? 'anomaly-block--atypical' : 'anomaly-block--typical'}">
+            <h3>Isolation Forest</h3>
+            <div class="result-title">${anomaly ? 'Anomalia estatística' : 'Não atípica estimada'}</div>
+            <div class="latest-meta">Classificação determinística: <strong>${esc(classification)}</strong></div>
+            <div class="score">${esc(number(analysis.score, 6))}<small>score do modelo · não é probabilidade</small></div>
+          </section>
+          <section class="anomaly-block">
+            <h3>Explicação Gemini</h3>
+            <span class="state ${status === 'CONCLUIDA' ? 'ok' : status === 'FALHA' ? 'error' : ''}">${esc(genLabel(status))}</span>
+            ${explanation ? `<p class="anomaly-copy">${esc(explanation)}</p>` : ''}
+          </section>
+        </div>
+        <section class="anomaly-block anomaly-justification">
+          <h3>Justificativa do modelo</h3>
+          <p class="anomaly-copy">${esc(analysis.explanation || 'O modelo não forneceu uma justificativa textual.')}</p>
+        </section>`;
     }
     function renderIoT(rows) {
       $('iotHistory').innerHTML = rows.length ? rows.slice(0, 12).map((row) => {
@@ -230,8 +497,91 @@
       $('compatHistory').innerHTML = items.length ? items.slice(0, 10).map((item) => `<tr><td>${esc(date(item.analisadoEm))}</td><td>${esc(item.semente?.nome)}</td><td>${esc(item.solo?.nome)}</td><td>${esc(resultLabel(item.resultado))}</td><td>${esc(genLabel(item.estadoExplicacao))}</td><td>${esc(item.explicacaoGemini || '—')}</td></tr>`).join('') : '<tr><td colspan="6" class="empty">Nenhuma análise agrícola registrada.</td></tr>';
     }
     function renderCapture(row) {
-      $('captureSummary').innerHTML = `<div class="latest-meta">${esc(date(row.measuredAt))} · ${esc(row.deviceId)}</div><div class="meta-row"><span class="state">Qualidade ${esc(row.quality || 'não informada')}</span></div><ul class="criteria"><li>Temperatura geral: ${esc(number(row.values.temperaturaAr))} °C</li><li>Umidade do solo: ${esc(number(row.values.umidadeSolo))}% (demonstrativa)</li><li>Umidade do ar: ${esc(number(row.values.umidadeAr))}%</li><li>Luminosidade: ${esc(number(row.values.luminosidade,0))} ADC</li></ul>`;
+      $('captureSummary').innerHTML = `<div class="capture-header">
+        <div><time datetime="${esc(row.measuredAt)}">${esc(date(row.measuredAt))}</time>
+          <div class="capture-device">${esc(row.deviceId)}</div></div>
+        <span class="state ${row.quality === 'VALID' ? 'ok' : ''}">Qualidade ${esc(row.quality || 'não informada')}</span>
+      </div>
+      <dl class="capture-values">
+        <div class="capture-temperature"><dt>Temperatura do ar</dt><dd>${esc(number(row.values.temperaturaAr))} °C</dd></div>
+        <div class="capture-soil"><dt>Umidade do solo <small>(demonstrativa)</small></dt><dd>${esc(number(row.values.umidadeSolo))}%</dd></div>
+        <div class="capture-air"><dt>Umidade do ar</dt><dd>${esc(number(row.values.umidadeAr))}%</dd></div>
+        <div class="capture-light"><dt>Luminosidade</dt><dd>${esc(number(row.values.luminosidade, 0))} ADC</dd></div>
+      </dl>`;
     }
+    function analysisResult(result) {
+      const rule = result.compatibilidade;
+      const reading = result.leitura;
+      const generated = result.geracao;
+      const list = (items) => items.length ? `<ul class="criteria">${items.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>` : '';
+      const link = (url, title) => safeHttpUrl(url) && /^https?:\/\//i.test(url)
+        ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(title)}</a>` : esc(title);
+      const labels = {temperaturaAr: 'Temperatura do ar', umidadeAr: 'Umidade do ar', umidadeSolo: 'Índice demonstrativo do solo', luminosidade: 'Luminosidade'};
+      const documentMarkup = result.documentos.map((doc) =>
+        `<li>${link(doc.localizador, doc.titulo)} · ${esc(doc.instituicao)}${doc.publicacao ? ' · ' + esc(doc.publicacao) : ''}
+        · ${esc(doc.curadoria === 'FONTE_CONFERIDA' ? 'Fonte conferida' : 'Curadoria pendente')}
+        ${generated?.referencias.includes(doc.id) ? ' · citada pelo Gemini' : ''}<p>${esc(doc.trecho)}</p></li>`
+      ).join('');
+      const ml = result.anomalia;
+      const anomalyUnavailable = result.estadoLeitura === 'FALHA_CONSULTA'
+        || ['FALHA', 'SEM_RESULTADO_VALIDO'].includes(result.estadoAnomalia);
+      const anomalyMessage = ml
+        ? (ml.isAnomaly
+          ? 'Foi identificada uma observação estatisticamente atípica.'
+          : 'Não foi identificada anomalia estatística.')
+        : (anomalyUnavailable
+          ? 'Não foi possível consultar a análise de anomalias.'
+          : 'Não existe análise do Isolation Forest associada a esta captura.');
+      const states = {
+        VALIDA: 'Captura válida', SEM_LEITURA_VALIDA: 'Sem captura válida recente',
+        FALHA_CONSULTA: 'Consulta de telemetria indisponível', CONCLUIDA: 'Concluída',
+        SEM_INFORMACOES: 'Sem documentos pertinentes', FALHA_RECUPERACAO: 'Recuperação indisponível',
+        FALHA_GEMINI: 'Explicação indisponível', RESPOSTA_INVALIDA: 'Resposta rejeitada',
+
+      };
+      return `<div class="result-title">${esc(result.semente.nome)} · ${esc(result.solo.nome)}</div>
+        <div class="analysis-grid">
+          <section class="analysis-card analysis-card--wide analysis-card--summary">
+            <h3>Compatibilidade</h3>
+            <p class="analysis-status">${esc(resultLabel(rule.resultado))}</p>
+            ${(rule.justificativa || rule.resultado === 'DADOS_INSUFICIENTES') ? `<div class="analysis-reason">
+              <h4>${rule.resultado === 'DADOS_INSUFICIENTES' ? 'Por que o resultado é desconhecido?' : 'Justificativa'}</h4>
+              <p>${esc(rule.justificativa || 'Não há critérios cadastrados suficientes para avaliar esta combinação de cultura e solo.')}</p>
+            </div>` : ''}
+            ${rule.criterios.length ? `<div class="analysis-criteria">
+              <h4>Critérios demonstrativos</h4>
+              ${list(rule.criterios)}
+            </div>` : ''}
+            ${rule.referencia ? `<p>${link(rule.referencia, 'Fonte do critério cadastrado')}</p>` : ''}
+          </section>
+          <section class="analysis-card">
+            <h3>Condições ambientais</h3>
+            ${reading ? `<p>${esc(date(reading.measuredAt))} · ${esc(reading.deviceId)} · ${esc(reading.observationId)}</p>
+              ${list(Object.entries(reading.values).map(([key, value]) => `${labels[key]} · ${number(value)} ${reading.units[key]}`))}`
+              : `<p>${esc(states[result.estadoLeitura])}</p>`}
+          </section>
+          <section class="analysis-card">
+            <h3>Isolation Forest</h3>
+            <p class="analysis-status ${ml ? (ml.isAnomaly ? 'analysis-status--atypical' : 'analysis-status--typical') : ''}">${esc(anomalyMessage)}</p>
+            ${ml ? `<p>Score do modelo · ${esc(number(ml.score, 6))} · ${esc(ml.modelVersion)}</p>
+              <p>${esc(ml.explanation)}</p>` : ''}
+          </section>
+          <section class="analysis-card analysis-card--wide">
+            <h3>Explicação Gemini</h3>
+            ${generated ? `<p>${esc(generated.mensagem)}</p><h4>Orientações acadêmicas</h4>${list(generated.orientacoes)}`
+              : `<p>${esc(states[result.estadoGemini])}${result.codigoErroGemini ? ' · ' + esc(result.codigoErroGemini) : ''}</p>`}
+          </section>
+          <section class="analysis-card">
+            <h3>Referências técnicas recuperadas</h3>
+            ${documentMarkup ? `<ul class="criteria">${documentMarkup}</ul>` : `<p>${esc(states[result.estadoRag])}</p>`}
+          </section>
+          <section class="analysis-card analysis-card--notes">
+            <h3>Ressalvas</h3>
+            ${list([...new Set([...result.ressalvas, ...(generated?.ressalvas || [])])])}
+          </section>
+        </div>`;
+    }
+
     async function refresh() {
       const [health, ready, status, readings, compat] = await Promise.allSettled([
         api('/health'), api('/health/ready'), api('/api/v1/dashboard/status'), api('/api/v1/dashboard/readings?limit=50'), api('/api/v1/agricultura/analises?limit=10')
@@ -246,6 +596,11 @@
       const failed = [health, ready, status, readings, compat].some((result) => result.status === 'rejected');
       $('globalError').style.display = failed ? 'block' : 'none';
       $('globalError').textContent = failed ? 'Não foi possível atualizar todos os dados. Verifique a API e a conexão com o PostgreSQL; áreas sem resposta preservam uma mensagem de estado.' : '';
+      if (compat.status === 'fulfilled') {
+        renderCompatHistory(compat.value);
+      } else {
+        $('compatHistory').innerHTML = '<tr><td colspan="6" class="empty">Histórico indisponível no momento.</td></tr>';
+      }
       if (readings.status === 'fulfilled') {
         const rows = readings.value || []; const latest = rows.find(complete);
         if (latest) {
@@ -266,12 +621,6 @@
         $('iotHistory').innerHTML = '<tr><td colspan="8" class="empty">Histórico indisponível no momento.</td></tr>';
         $('anomalyPanel').innerHTML = '<div class="empty">Não foi possível consultar as análises ML.</div>';
       }
-      if (compat.status === 'fulfilled') {
-        const items = compat.value || []; $('latestCompat').innerHTML = compatibilityMarkup(items[0] || null); renderCompatHistory(items);
-      } else {
-        $('latestCompat').innerHTML = '<div class="empty">Histórico de compatibilidade indisponível.</div>';
-        $('compatHistory').innerHTML = '<tr><td colspan="6" class="empty">Histórico indisponível no momento.</td></tr>';
-      }
       $('updatedAt').textContent = `Atualizado às ${new Date().toLocaleTimeString('pt-BR')}`;
     }
     async function loadCatalog() {
@@ -288,8 +637,12 @@
     $('compatForm').addEventListener('submit', async (event) => {
       event.preventDefault(); const button = $('analyzeButton'); button.disabled = true; button.textContent = 'Consultando…';
       try {
-        const result = await api('/api/v1/agricultura/analises', {method:'POST', body:JSON.stringify({sementeId:$('seedSelect').value, soloId:$('soilSelect').value})});
-        $('compatResult').innerHTML = compatibilityMarkup(result); await refresh();
+        const result = await api('/api/v1/agricultura/analise-unificada', {method:'POST', body:JSON.stringify({sementeId:$('seedSelect').value, soloId:$('soilSelect').value})});
+        $('compatResult').innerHTML = analysisResult(result);
+        if (result.historicoAtualizado === false) {
+          $('compatResult').insertAdjacentHTML('beforeend', '<p>O resultado foi salvo. O estado da explicação no histórico não pôde ser atualizado.</p>');
+        }
+        await refresh();
       } catch (_) {
         $('compatResult').innerHTML = '<div class="empty">Não foi possível solicitar a análise. Confira a conexão e tente novamente.</div>';
       } finally { button.disabled = false; button.textContent = 'Analisar combinação'; }
