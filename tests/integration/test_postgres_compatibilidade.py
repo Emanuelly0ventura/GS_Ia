@@ -40,7 +40,26 @@ def postgres_catalogo():
     engine.dispose()
 
 
-def test_postgres_catalogos_e_analise_sem_regra_persistida(postgres_catalogo, monkeypatch):
+@pytest.fixture
+def criar_solo_teste(postgres_catalogo):
+    _, fabrica = postgres_catalogo
+    identidade = str(uuid4())
+
+    def criar():
+        with fabrica() as sessao:
+            sessao.add(TipoSolo(id=identidade, codigo=identidade, nome="Solo temporário"))
+            sessao.commit()
+        return identidade
+
+    yield criar
+    with fabrica() as sessao:
+        solo = sessao.get(TipoSolo, identidade)
+        if solo is not None:
+            sessao.delete(solo)
+            sessao.commit()
+
+
+def test_postgres_catalogos_e_analise_sem_regra_persistida(postgres_catalogo, monkeypatch, criar_solo_teste):
     cliente, fabrica = postgres_catalogo
     monkeypatch.setattr(
         rotas_compatibilidade,
@@ -54,7 +73,7 @@ def test_postgres_catalogos_e_analise_sem_regra_persistida(postgres_catalogo, mo
 
     with fabrica() as sessao:
         semente = sessao.scalar(select(TipoSemente).where(TipoSemente.codigo == "ALFACE"))
-        solo = sessao.scalar(select(TipoSolo).where(TipoSolo.codigo == "FRANCO"))
+        solo = sessao.get(TipoSolo, criar_solo_teste())
         assert semente is not None and solo is not None
         assert sessao.scalar(select(Compatibilidade).where(
             Compatibilidade.semente_id == semente.id,
@@ -76,7 +95,7 @@ def test_postgres_catalogos_e_analise_sem_regra_persistida(postgres_catalogo, mo
         sessao.commit()
 
 
-def test_postgres_analise_aplica_regra_ativa_e_limpa_fixture(postgres_catalogo, monkeypatch):
+def test_postgres_analise_aplica_regra_ativa_e_limpa_fixture(postgres_catalogo, monkeypatch, criar_solo_teste):
     cliente, fabrica = postgres_catalogo
     def explicar_por_mock(**kwargs):
         with fabrica() as observadora:
@@ -88,7 +107,7 @@ def test_postgres_analise_aplica_regra_ativa_e_limpa_fixture(postgres_catalogo, 
     monkeypatch.setattr(rotas_compatibilidade, "tentar_explicar_compatibilidade", explicar_por_mock)
     with fabrica() as sessao:
         semente = sessao.scalar(select(TipoSemente).where(TipoSemente.codigo == "TOMATE"))
-        solo = sessao.scalar(select(TipoSolo).where(TipoSolo.codigo == "SILTOSO"))
+        solo = sessao.get(TipoSolo, criar_solo_teste())
         assert semente is not None and solo is not None
         regra_id = str(uuid4())
         sessao.add(Compatibilidade(
