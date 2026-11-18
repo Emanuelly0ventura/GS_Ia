@@ -52,6 +52,8 @@ foreach ($migration in Get-ChildItem migrations/telemetria/*.sql | Sort-Object N
 
 A migration 004 cria as tabelas agrícolas, a 005 insere os catálogos e a 006 acrescenta os campos do Gemini. As migrations 007 e 008 carregam as regras de compatibilidade.
 
+A migration [006_explicacoes_gemini.sql](../migrations/telemetria/006_explicacoes_gemini.sql) utiliza blocos PL/pgSQL `DO $$ ... $$` com `IF NOT EXISTS`. Esses blocos consultam o catálogo `pg_constraint` antes de criar as restrições dos estados das explicações Gemini, permitindo reaplicar a atualização e preservar as restrições existentes.
+
 ## Testes de integração PostgreSQL
 
 Os testes de `tests/integration/` são separados e usam somente `TEST_TELEMETRY_DATABASE_URL`. Aponte essa variável para um banco descartável cujo nome termine em `_test`, por exemplo `agroconnect_ai_test`, e aplique nele as migrations 001 a 008 antes de executar:

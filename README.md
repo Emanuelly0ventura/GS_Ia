@@ -80,7 +80,7 @@ Veja os guias de [telemetria](documentacao/telemetria_iot.md), [modelo](document
 | **Isolation Forest v3 com scikit-learn** | Detecta padrões atípicos nas quatro leituras usando treinamento não supervisionado. A classificação e o score ficam no PostgreSQL e podem ser reutilizados em novas análises agrícolas. |
 | **RAG básico com documentos locais** | Os filtros por cultura, classe de solo e assunto são adequados ao tamanho da base e permitem rastrear quais trechos fundamentam a explicação. |
 | **Google Gemini via API** | Organiza a regra agrícola, a telemetria e as referências em uma explicação em português. A API solicita JSON estruturado e valida os campos e as referências antes de exibir o resultado. A validação local usou `gemini-3.5-flash-lite`. |
-| **FastAPI, PostgreSQL e Docker Compose** | O FastAPI centraliza a ingestão e a consulta. O PostgreSQL mantém capturas, regras e histórico. O Docker Compose provisiona o banco local. |
+| **FastAPI, PostgreSQL e Docker Compose** | O FastAPI centraliza a ingestão e a consulta. O PostgreSQL mantém capturas, regras e histórico. O Docker Compose provisiona o banco local. As migrations usam SQL e blocos PL/pgSQL para verificar e criar restrições de estado no banco. |
 
 ---
 
