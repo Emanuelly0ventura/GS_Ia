@@ -116,6 +116,12 @@ python -m uvicorn app.principal:app --reload
 
 No dashboard, confira **Última captura**, selecione uma cultura e um solo e clique em **Analisar combinação**. O resultado aparece ao lado dos critérios e das referências. A tabela de histórico exibe as análises persistidas.
 
+### 4. Importar o fluxo Node-RED
+
+No Node-RED, abra **Menu → Importar** e selecione o [fluxo de ingestão do AgroConnect](iot/node_red/fluxo_agroconnect.json). Abra a configuração compartilhada **HiveMQ Cloud**, troque o host de exemplo pelo endereço do seu cluster e informe usuário e senha no próprio Node-RED. O fluxo usa MQTT com TLS na porta `8883`.
+
+No nó HTTP, confira a URL `http://127.0.0.1:8000/api/v1/iot/readings`. Quando a API estiver em outro host ou contêiner, informe um endereço alcançável pelo processo do Node-RED. Clique em **Deploy**, inicie o Wokwi e acompanhe a resposta da API no nó de depuração. O [guia de telemetria](documentacao/telemetria_iot.md#importar-o-fluxo-node-red) detalha a configuração e os tópicos.
+
 ## Avaliação e evidências
 
 O [registro de validação](documentacao/validacao.md) reúne consultas reproduzíveis, resultados locais e métricas. Na verificação de 17/11/2026:

@@ -91,11 +91,20 @@ A Function de ingestão espera os quatro tópicos. Após completar a captura, en
 
 O quadro identifica a origem de cada campo. No payload HTTP, `values` contém os quatro valores numéricos, como no exemplo de entrada.
 
+## Importar o fluxo Node-RED
+
+1. No editor do Node-RED, use **Menu → Importar** e selecione [fluxo_agroconnect.json](../iot/node_red/fluxo_agroconnect.json).
+2. Edite a conexão compartilhada pelos quatro nós MQTT. Substitua `hivemq.example.com` pelo host do seu cluster HiveMQ Cloud, mantenha TLS e a porta `8883` e preencha as credenciais no Node-RED.
+3. No nó HTTP, ajuste o endereço para a API acessível pelo Node-RED. A configuração local usa `POST http://127.0.0.1:8000/api/v1/iot/readings`.
+4. Clique em **Deploy** e inicie o ESP32 no Wokwi. A função reúne os sensores e envia a captura ao FastAPI. Use a aba de depuração para conferir a resposta HTTP e compare o identificador ou o horário com o dashboard.
+
+O export usa os nós padrão do Node-RED e inclui a ingestão e a depuração. O dashboard do AgroConnect é servido pelo FastAPI.
+
 ## Execução e conferência
 
 1. Aplique as migrations 001 a 008 seguindo o [guia PostgreSQL](postgresql_local.md) e gere o artefato conforme o [guia do Isolation Forest](aprendizado_maquina.md).
 2. Inicie a API e abra `/dashboard`.
-3. Use o ESP32 no Wokwi conectado ao HiveMQ. No Node-RED, conecte os quatro nós MQTT de sensor à função de agrupamento e ligue sua saída ao nó HTTP. Configure o POST com a URL da API alcançável pelo processo do Node-RED.
+3. [Importe e configure o fluxo](#importar-o-fluxo-node-red) e inicie o ESP32 no Wokwi.
 4. No dashboard, confira o horário e o dispositivo em **Última captura** e a classificação em **Inteligência artificial · anomalias**.
 5. Em **Análise agrícola personalizada**, escolha uma cultura e um solo para consultar a regra e o contexto da captura selecionada pela API.
 

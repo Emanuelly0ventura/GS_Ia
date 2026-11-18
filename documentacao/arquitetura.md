@@ -5,7 +5,7 @@ O AgroConnect AI concentra a ingestão, o processamento e o dashboard em um serv
 ## Telemetria
 
 1. O ESP32 no Wokwi publica as leituras do BMP180, DHT22 e LDR no HiveMQ via MQTT.
-2. O Node-RED agrupa os quatro indicadores e envia a captura para `POST /api/v1/iot/readings`.
+2. O [fluxo Node-RED](../iot/node_red/fluxo_agroconnect.json) agrupa os quatro indicadores e envia a captura para `POST /api/v1/iot/readings`.
 3. A API valida valores e unidades, calcula o índice demonstrativo de solo a partir da temperatura DHT22 e persiste a captura em `iot_readings`.
 4. O Isolation Forest v3 usa os quatro indicadores persistidos e grava a classificação em `iot_anomaly_analyses`. O Gemini recebe o resultado calculado e acrescenta sua explicação ao registro.
 

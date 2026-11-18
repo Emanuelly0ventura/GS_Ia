@@ -1,0 +1,187 @@
+[
+  {
+    "id": "12df2b9b6d81f7f7",
+    "type": "tab",
+    "label": "AgroConnect — Ingestão IoT",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "74ef83a947b1a3a6",
+    "type": "mqtt in",
+    "z": "12df2b9b6d81f7f7",
+    "name": "",
+    "topic": "estufa/ldr/luminosidade",
+    "qos": "2",
+    "datatype": "auto-detect",
+    "broker": "a0d7c8f8cf3264a2",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 680,
+    "y": 160,
+    "wires": [
+      [
+        "b152d32a43161c7b"
+      ]
+    ]
+  },
+  {
+    "id": "411ee21b01dc5e75",
+    "type": "mqtt in",
+    "z": "12df2b9b6d81f7f7",
+    "name": "",
+    "topic": "estufa/dht22/temperatura",
+    "qos": "2",
+    "datatype": "auto-detect",
+    "broker": "a0d7c8f8cf3264a2",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 690,
+    "y": 220,
+    "wires": [
+      [
+        "b152d32a43161c7b"
+      ]
+    ]
+  },
+  {
+    "id": "3998fb37eb7dda42",
+    "type": "mqtt in",
+    "z": "12df2b9b6d81f7f7",
+    "name": "",
+    "topic": "estufa/dht22/umidade",
+    "qos": "2",
+    "datatype": "auto-detect",
+    "broker": "a0d7c8f8cf3264a2",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 680,
+    "y": 100,
+    "wires": [
+      [
+        "b152d32a43161c7b"
+      ]
+    ]
+  },
+  {
+    "id": "b152d32a43161c7b",
+    "type": "function",
+    "z": "12df2b9b6d81f7f7",
+    "name": "function 1",
+    "func": "const mapa = {\n    \"estufa/bmp180/temperatura\": \"temperaturaAr\",\n    \"estufa/dht22/temperatura\": \"umidadeSolo\",\n    \"estufa/dht22/umidade\": \"umidadeAr\",\n    \"estufa/ldr/luminosidade\": \"luminosidade\"\n};\nconst topico = msg.topic;\nconst campo = mapa[topico];\nif (!campo) return null;\nconst valor = Number(msg.payload);\nconst agora = Date.now();\nconst janelaMs = 2000;\nlet leituras = context.get(\"leituras\") || {};\n\nif (!Number.isFinite(valor)) {\n    delete leituras[campo];\n    context.set(\"leituras\", leituras);\n    return null;\n}\n\n// Expira agrupamentos incompletos. Se o mesmo sensor publicar novamente,\n// descarta o agrupamento antigo para não combinar ciclos distintos.\nconst temposExistentes = Object.values(leituras).map(leitura => leitura.recebidoEm);\nif (temposExistentes.some(t => agora - t > janelaMs) || leituras[campo]) {\n    leituras = {};\n}\nleituras[campo] = { valor: valor, recebidoEm: agora };\ncontext.set(\"leituras\", leituras);\n\nconst obrigatorias = [\"temperaturaAr\", \"umidadeSolo\", \"umidadeAr\", \"luminosidade\"];\nif (!obrigatorias.every(nome => leituras[nome])) return null;\nconst tempos = obrigatorias.map(nome => leituras[nome].recebidoEm);\nif (Math.max(...tempos) - Math.min(...tempos) > janelaMs) {\n    context.set(\"leituras\", {});\n    node.warn(\"Captura descartada: leituras fora da janela temporal de 2 s.\");\n    return null;\n}\n\nconst captura = leituras;\ncontext.set(\"leituras\", {});\nconst capturado = Math.max(...tempos);\nconst seq = (flow.get(\"telemetrySeq\") || 0) + 1;\nflow.set(\"telemetrySeq\", seq);\nmsg.headers = { \"Content-Type\": \"application/json\" };\nmsg.payload = {\n    deviceId: \"esp32-estufa-01\",\n    observationId: `esp32-estufa-01-${capturado}-${seq}`,\n    source: \"WOKWI_HIVEMQ_NODE_RED\",\n    measuredAt: new Date(capturado).toISOString(),\n    quality: \"VALID\",\n    values: {\n        temperaturaAr: captura.temperaturaAr.valor,\n        umidadeSolo: captura.umidadeSolo.valor,\n        umidadeAr: captura.umidadeAr.valor,\n        luminosidade: captura.luminosidade.valor\n    },\n    units: {\n        temperaturaAr: \"°C\",\n        umidadeSolo: \"°C\",\n        umidadeAr: \"%\",\n        luminosidade: \"ADC\"\n    }\n};\nnode.warn(\"Enviando captura completa à API: \" + JSON.stringify(msg.payload));\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1040,
+    "y": 520,
+    "wires": [
+      [
+        "ddfd31fb06f82486"
+      ]
+    ]
+  },
+  {
+    "id": "619cc2e26db6e233",
+    "type": "debug",
+    "z": "12df2b9b6d81f7f7",
+    "name": "debug 5",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1360,
+    "y": 520,
+    "wires": []
+  },
+  {
+    "id": "ddfd31fb06f82486",
+    "type": "http request",
+    "z": "12df2b9b6d81f7f7",
+    "name": "",
+    "method": "POST",
+    "ret": "obj",
+    "paytoqs": "ignore",
+    "url": "http://127.0.0.1:8000/api/v1/iot/readings",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 1200,
+    "y": 520,
+    "wires": [
+      [
+        "619cc2e26db6e233"
+      ]
+    ]
+  },
+  {
+    "id": "1aee33cd59a6d45a",
+    "type": "mqtt in",
+    "z": "12df2b9b6d81f7f7",
+    "name": "",
+    "topic": "estufa/bmp180/temperatura",
+    "qos": "2",
+    "datatype": "auto-detect",
+    "broker": "a0d7c8f8cf3264a2",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 700,
+    "y": 280,
+    "wires": [
+      [
+        "b152d32a43161c7b"
+      ]
+    ]
+  },
+  {
+    "id": "a0d7c8f8cf3264a2",
+    "type": "mqtt-broker",
+    "name": "HiveMQ Cloud — configurar localmente",
+    "broker": "hivemq.example.com",
+    "port": "8883",
+    "tls": "",
+    "clientid": "",
+    "autoConnect": true,
+    "usetls": true,
+    "protocolVersion": 4,
+    "keepalive": 60,
+    "cleansession": true,
+    "autoUnsubscribe": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthRetain": "false",
+    "birthPayload": "",
+    "birthMsg": {},
+    "closeTopic": "",
+    "closeQos": "0",
+    "closeRetain": "false",
+    "closePayload": "",
+    "closeMsg": {},
+    "willTopic": "",
+    "willQos": "0",
+    "willRetain": "false",
+    "willPayload": "",
+    "willMsg": {},
+    "userProps": "",
+    "sessionExpiry": ""
+  }
+]
