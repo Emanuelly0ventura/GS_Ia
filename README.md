@@ -1,9 +1,9 @@
-# AgroConnect AI
+# 🌱 AgroConnect AI
+## FIAP · Global Solution 2026/2 · Disruptive Architectures: IoT, IoB & Generative IA
 
-**FIAP · Global Solution 2026/2 · Disruptive Architectures: IoT, IoB & Generative IA**
+---
 
-## Integrantes
-
+## 👥 Integrantes
 
 #### NOME: Rafael Pascotte Mercadante
 
@@ -25,14 +25,15 @@ RM562339 - 2TDSPI
 
 RM564555 - 2TDSPI
 
+---
 
-## Problema e público
+## 📌 Problema e público
 
 O projeto aborda o tema 07 da CitizenTech, **Pequenos produtores sem informação para decidir**. O AgroConnect AI ajuda pequenos produtores rurais a interpretar as condições de uma estufa, identificar leituras que merecem atenção e consultar critérios de compatibilidade entre uma cultura e um tipo de solo. O painel reúne as leituras, a classificação estatística, os critérios agrícolas e as respectivas fontes.
 
 Por exemplo, ao consultar **Feijão + Argiloso**, o painel apresenta o resultado **Desconhecido** e explica o que precisa ser verificado no solo, como a compactação e o encharcamento. Essa orientação ajuda a definir o próximo passo da avaliação. O projeto contribui para o **ODS 2 — Fome Zero e Agricultura Sustentável** ao apoiar decisões de cultivo com informações rastreáveis.
 
-## Arquitetura
+### Arquitetura
 
 ```mermaid
 flowchart TB
@@ -58,7 +59,9 @@ flowchart TB
 
 Na ingestão, o FastAPI salva a captura antes de executar o detector. Na análise agrícola, a API seleciona a captura válida mais recente dentro da janela configurada e consulta a classificação já persistida. A compatibilidade é determinada pela matriz de **25 combinações de culturas e solos**. A decisão é gravada antes da geração, e o Gemini acrescenta a explicação ao mesmo registro de histórico.
 
-## Dados e preparação
+---
+
+## 📊 Dados e preparação
 
 | Fonte | Preparação e uso |
 | --- | --- |
@@ -68,7 +71,9 @@ Na ingestão, o FastAPI salva a captura antes de executar o detector. Na anális
 
 Veja os guias de [telemetria](documentacao/telemetria_iot.md), [modelo](documentacao/aprendizado_maquina.md) e [matriz de compatibilidade](documentacao/compatibilidade_agricola.md).
 
-## Escolhas técnicas
+---
+
+## 🛠️ Escolhas técnicas
 
 | Tecnologia | Por que foi escolhida |
 | --- | --- |
@@ -77,7 +82,9 @@ Veja os guias de [telemetria](documentacao/telemetria_iot.md), [modelo](document
 | **Google Gemini via API** | Organiza a regra agrícola, a telemetria e as referências em uma explicação em português. A API solicita JSON estruturado e valida os campos e as referências antes de exibir o resultado. A validação local usou `gemini-3.5-flash-lite`. |
 | **FastAPI, PostgreSQL e Docker Compose** | O FastAPI centraliza a ingestão e a consulta. O PostgreSQL mantém capturas, regras e histórico. O Docker Compose provisiona o banco local. |
 
-## Executar localmente
+---
+
+## 🚀 Executar localmente
 
 **Requisitos:** Python x64 3.12 ou 3.13, Docker com contêineres Linux e `uv` 0.13.7. Para transmitir novas capturas, prepare também o Wokwi, o HiveMQ e o Node-RED conforme o [guia de telemetria](documentacao/telemetria_iot.md).
 
@@ -122,7 +129,9 @@ No Node-RED, abra **Menu → Importar** e selecione o [fluxo de ingestão do Agr
 
 No nó HTTP, confira a URL `http://127.0.0.1:8000/api/v1/iot/readings`. Quando a API estiver em outro host ou contêiner, informe um endereço alcançável pelo processo do Node-RED. Clique em **Deploy**, inicie o Wokwi e acompanhe a resposta da API no nó de depuração. O [guia de telemetria](documentacao/telemetria_iot.md#importar-o-fluxo-node-red) detalha a configuração e os tópicos.
 
-## Avaliação e evidências
+---
+
+## 🧪 Avaliação e evidências
 
 O [registro de validação](documentacao/validacao.md) reúne consultas reproduzíveis, resultados locais e métricas. Na verificação de 17/11/2026:
 
@@ -137,18 +146,27 @@ python scripts/avaliar_modelo.py
 python -m pytest -q
 ```
 
-## Interpretação e uso responsável
+---
+
+## ⚠️ Interpretação e uso responsável
 
 - O **score do Isolation Forest** indica atipicidade em relação ao conjunto de treino. Serve para priorizar leituras que merecem conferência.
 - O **índice demonstrativo de umidade do solo** é calculado com a temperatura do DHT22. Para decisões sobre a umidade real, é necessária uma medição no solo.
 - A **explicação Gemini** serve como apoio informativo e cita as referências recuperadas. A classificação vem do Isolation Forest, e o resultado de compatibilidade vem das regras cadastradas. As condições do terreno, como drenagem e compactação, devem ser confirmadas antes de uma decisão de cultivo.
 - A chave Gemini e as credenciais do banco ficam no `.env` local. O contexto enviado ao Gemini reúne dados técnicos da captura e da análise agrícola.
 
-## Uso de IA no desenvolvimento
+---
+
+## 🤖 Uso de IA no desenvolvimento
 
 O Codex auxiliou na revisão do README e dos guias, na organização das evidências e no apoio ao desenvolvimento e à verificação do projeto. O Google Gemini é o modelo generativo utilizado pela aplicação.
 
-## Guias da entrega
+
+## Link do video da demonstração
+
+[https://youtu.be/oQxdT7qftBk](https://www.youtube.com/watch?v=oQxdT7qftBk)
+
+## 📚 Guias da entrega
 
 - [Arquitetura](documentacao/arquitetura.md)
 - [Análise agrícola](documentacao/analise_agricola.md)
