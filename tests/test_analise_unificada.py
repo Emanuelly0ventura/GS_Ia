@@ -146,3 +146,20 @@ def test_fluxo_postgresql_com_fallback_e_anomalia():
                                     json={**sementes, "soloId": str(uuid4())}).status_code == 404
     finally:
         engine.dispose()
+
+
+def test_prompt_agricola_explica_criterios_e_restricoes_do_texto():
+    import asyncio
+
+    class CapturarPrompt(GeminiTeste):
+        async def gerar(self, **kwargs):
+            self.instrucao = kwargs["instrucao"]
+            return await super().gerar(**kwargs)
+
+    gerador = CapturarPrompt()
+    contexto = {"documentos": [], "compatibilidade": {"resultado": "DADOS_INSUFICIENTES"}}
+    estado, _, _ = asyncio.run(unificada.gerar_mensagem(contexto, gerador))
+    assert estado == "CONCLUIDA"
+    assert "Só diga que faltam regras se a lista criterios estiver vazia" in gerador.instrucao
+    assert "Evite em todos os campos textuais" in gerador.instrucao
+    assert "aprovação oficial" in gerador.instrucao
