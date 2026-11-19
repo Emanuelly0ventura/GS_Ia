@@ -1,6 +1,6 @@
 # Evidências de execução
 
-Verificação realizada em **17/11/2026** com a API local, o PostgreSQL do AgroConnect e o fluxo Node-RED da estufa Wokwi. Horários desta página usam o fuso de São Paulo.
+Verificação realizada em **17/11/2026** com a API local, o PostgreSQL do AgroConnect e o fluxo Node-RED da estufa Wokwi. Horários desta página usam o fuso de São Paulo. As contagens registram o estado do ambiente nessa data. Ao repetir as consultas, os totais dependem dos dados do banco consultado.
 
 ## Telemetria persistida e consumo pela API
 
@@ -49,3 +49,10 @@ O script `python scripts/avaliar_modelo.py` ajustou o detector com 120 exemplos 
 ## Suíte automatizada
 
 `python -m pytest -q` com `TEST_TELEMETRY_DATABASE_URL` apontando para um PostgreSQL dedicado com migrations 001 a 008 apresentou **299 aprovados**. A suíte cobre ingestão, persistência, compatibilidade, seleção da captura, reaproveitamento da classificação, cobertura das 25 combinações no RAG e histórico com diferentes estados do Gemini. Os testes automatizados do provedor usam dublês. As explicações concluídas na tabela acima são registros da execução local com a API Gemini.
+
+## Como interpretar as evidências
+
+- **Ingestão e classificação.** A junção por `reading_id` acompanha a captura persistida até a análise atribuída a ela. Os contadores usam o conjunto de capturas da origem Wokwi e distinguem capturas processadas pelo detector de explicações efetivamente concluídas. [Rota de ingestão](../app/telemetria/rotas.py)
+- **Histórico agrícola.** A consulta conta os registros gravados e exige estado concluído e texto presente para contar uma explicação. Esses mesmos registros alimentam a consulta de histórico do painel. [Rota de histórico](../app/compatibilidade/rotas.py)
+- **Avaliação do modelo.** O script compara as classes previstas com os rótulos da fixture. A matriz dá os acertos e os erros em cada classe. A precisão mede a proporção de alertas que eram anomalias rotuladas e a revocação mede a proporção das anomalias rotuladas que foram detectadas. O F1 combina as duas métricas. [Script de avaliação](../scripts/avaliar_modelo.py)
+- **Suíte.** Os testes de integração usam PostgreSQL dedicado para verificar o contrato entre a API e o banco. Os dublês do provedor exercitam a validação e os estados de geração. Os registros datados acima documentam a execução local com o serviço Gemini. [Testes](../tests)

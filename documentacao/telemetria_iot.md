@@ -1,6 +1,8 @@
 # Telemetria Wokwi e dashboard
 
-O endpoint `POST /api/v1/iot/readings` recebe as quatro leituras do Node-RED. O contrato oficial é:
+Para preparar a simulação, siga o [guia do ESP32 no Wokwi](../README.md#esp32-da-estufa-no-wokwi).
+
+O endpoint `POST /api/v1/iot/readings` recebe as quatro leituras do Node-RED. O contrato de entrada e a representação persistida são:
 
 | Sensor | Campo recebido em `values` | Unidade de entrada | Indicador persistido | Unidade persistida |
 |---|---|---:|---|---:|
@@ -70,7 +72,7 @@ Após persistir a captura, a API relê os quatro indicadores no PostgreSQL, exec
 
 O fluxo agrupa os tópicos `estufa/bmp180/temperatura`, `estufa/dht22/temperatura`, `estufa/dht22/umidade` e `estufa/ldr/luminosidade`. BMP180 também permanece conectado ao nó de exibição já existente. O agrupador guarda no máximo uma leitura pendente por tópico, descarta o conjunto quando um sensor se repete antes de completar a captura ou quando a diferença temporal ultrapassa 2 segundos, e limpa o estado antes de emitir o POST. Cada captura reúne mensagens distintas recebidas dentro dessa janela.
 
-A Function de ingestão espera os quatro tópicos. Após completar a captura, envia este contrato para `/api/v1/iot/readings`:
+Depois que a função de agrupamento reúne os quatro tópicos, o nó de requisição HTTP envia a captura para `/api/v1/iot/readings`. O quadro abaixo descreve a origem e a unidade dos campos.
 
 ```json
 {
@@ -109,3 +111,10 @@ O export usa os nós padrão do Node-RED e inclui a ingestão e a depuração. O
 5. Em **Análise agrícola personalizada**, escolha uma cultura e um solo para consultar a regra e o contexto da captura selecionada pela API.
 
 A coluna física dos valores é `iot_readings.sensor_values`, acompanhada por `units` e `complements`. A [validação local](validacao.md) inclui consultas para conferir capturas, classificações e explicações persistidas.
+
+## Acompanhar uma captura no código
+
+1. No [firmware](../iot/wokwi/sketch.ino), `setup()` inicia sensores, I²C, OLED, Wi-Fi e MQTT. `loop()` tenta restabelecer a conexão quando necessário e chama `lerSensoresEEnviar()` a cada cinco segundos. Uma leitura inválida do DHT22 sinaliza erro e interrompe aquele envio.
+2. No [fluxo do Node-RED](../iot/node_red/fluxo_agroconnect.json), quatro nós MQTT recebem os valores publicados. A função de agrupamento exige um valor de cada tópico dentro da janela de dois segundos para montar uma observação completa. O nó HTTP envia identificadores, horário, origem, qualidade, valores e unidades.
+3. Na [rota de ingestão](../app/telemetria/rotas.py), `receber()` usa o contrato `LeituraIoT` para validar a entrada. `adaptar_para_indicadores()` entrega valores, unidades e complementos canônicos, chamando a [conversão de temperatura em índice de solo](../app/telemetria/conversoes.py). A rota grava a captura antes de chamar o detector.
+4. A mesma rota grava a classificação e depois chama `tentar_explicar_anomalia()`. O leitor do dashboard consulta `GET /api/v1/dashboard/readings` para recuperar a captura e o resultado associado. Uma observação repetida para o mesmo dispositivo recebe HTTP 409. Consulte o [fluxo de explicação](integracao_gemini.md) para os estados da geração.

@@ -21,3 +21,15 @@ O gráfico busca até 50 registros por `GET /api/v1/dashboard/readings`. O hist�
 ## Endereço da API
 
 Por padrão, o painel usa a mesma origem do FastAPI. Para configurar outra origem, defina `DASHBOARD_API_BASE_URL` como a origem HTTP(S) da API e configure o servidor para aceitar as requisições dessa origem.
+
+## Origem dos dados de cada área
+
+| Função do navegador | Entrada e destino |
+| --- | --- |
+| `refresh()` | Consulta `/health` e `/health/ready` para mostrar disponibilidade do serviço e do banco. Também lê `/api/v1/dashboard/status` para o estado do dispositivo. |
+| `renderCapture()`, `renderIoT()` e `drawChart()` | Consomem os registros de `/api/v1/dashboard/readings` para preencher a última captura, o histórico IoT e as séries. O gráfico normaliza as escalas para exibir indicadores com unidades diferentes na mesma área. |
+| `analysisMarkup()` | Renderiza o objeto de análise associado à leitura para mostrar classe, score, justificativa e estado ou texto do Gemini. |
+| `loadCatalog()` e `analysisResult()` | Os catálogos fornecem os IDs selecionados. O envio do formulário usa os IDs para obter o resultado unificado e renderizar regra, captura, anomalia, mensagem e referências. |
+| `renderCompatHistory()` | Recebe até dez análises de `/api/v1/agricultura/analises` para mostrar o que foi registrado em cada consulta anterior. |
+
+A função `api()` centraliza as chamadas HTTP do navegador e trata respostas com erro antes de tentar renderizar os dados. [JavaScript do painel](../dashboard/index.html) · [Rotas de leitura](../app/telemetria/rotas.py)

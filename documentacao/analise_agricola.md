@@ -1,6 +1,6 @@
 # Análise agrícola personalizada
 
-Abra o [dashboard](http://127.0.0.1:8000/dashboard), selecione uma cultura e um tipo de solo e clique em **Analisar combinação**. O formulário envia os IDs `sementeId` e `soloId` para `POST /api/v1/agricultura/analise-unificada`.
+Com a API local em execução, abra o [dashboard](http://127.0.0.1:8000/dashboard), selecione uma cultura e um tipo de solo e clique em **Analisar combinação**. O formulário envia os IDs `sementeId` e `soloId` para `POST /api/v1/agricultura/analise-unificada`.
 
 ## Etapas da análise
 
@@ -15,3 +15,12 @@ Abra o [dashboard](http://127.0.0.1:8000/dashboard), selecione uma cultura e um 
 O dashboard separa a decisão de compatibilidade, os indicadores ambientais, a classificação do Isolation Forest e a explicação do Gemini. A API grava a decisão, os critérios e a fonte em `analises_compatibilidade` antes de gerar a explicação. Depois, atualiza a mensagem principal e o estado do Gemini no mesmo registro. A tabela exibe as dez análises agrícolas mais recentes.
 
 Consulte a [matriz de compatibilidade](compatibilidade_agricola.md), a [integração Gemini](integracao_gemini.md) e as [evidências de execução](validacao.md). As instruções de instalação e testes estão no [README](../README.md).
+
+## Da escolha no formulário ao histórico
+
+| Etapa no código | Por que existe | Entrada, processamento e destino |
+| --- | --- | --- |
+| `analisar_agricultura()` e `preparar_contexto()` | Aplicar a regra do catálogo e reunir os dados da explicação. | Os IDs do formulário alimentam o serviço de compatibilidade. O resultado, os critérios e a fonte entram no contexto. Na análise unificada, uma regra sem critérios retorna `DADOS_INSUFICIENTES`. [Orquestração](../app/compatibilidade/analise_unificada.py) · [Consulta da regra](../app/compatibilidade/servicos.py) |
+| `ultima_captura()` | Usar telemetria recente e aproveitar a classificação calculada na ingestão. | A consulta filtra origem, janela e validade. Sem captura, o contexto sinaliza `SEM_LEITURA_VALIDA`. Se a análise consta como concluída mas o resultado associado é inválido, usa `SEM_RESULTADO_VALIDO` e deixa o campo de anomalia vazio. [Seleção](../app/compatibilidade/analise_unificada.py) |
+| `recuperar_documentos()` | Dar ao Gemini trechos técnicos pertinentes ao contexto. | Valida o JSON local, filtra cultura e solo e exige captura para trechos de ambiente. Prioriza trechos com tags específicas e desempata pelo ID. Até quatro itens seguem no campo `documentos`. Uma busca vazia sinaliza `SEM_INFORMACOES` e um erro de leitura ou validação sinaliza `FALHA_RECUPERACAO`. [Recuperador](../app/inteligencia_artificial/recomendacoes/documentos.py) |
+| `registrar_analise()`, `gerar_mensagem()` e `registrar_explicacao()` | Preservar a análise mesmo quando a geração falha. | O backend grava o resultado da regra, solicita o JSON ao Gemini e valida o texto e os IDs citados. Depois atualiza a mensagem principal e o estado no mesmo registro. A resposta alimenta o cartão e a consulta ao histórico alimenta a tabela. [Geração e persistência](../app/compatibilidade/analise_unificada.py) |

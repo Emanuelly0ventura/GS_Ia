@@ -31,7 +31,9 @@ RM564555 - 2TDSPI
 
 O projeto aborda o tema 07 da CitizenTech, **Pequenos produtores sem informação para decidir**. O AgroConnect AI ajuda pequenos produtores rurais a interpretar as condições de uma estufa, identificar leituras que merecem atenção e consultar critérios de compatibilidade entre uma cultura e um tipo de solo. O painel reúne as leituras, a classificação estatística, os critérios agrícolas e as respectivas fontes.
 
-Por exemplo, ao consultar **Feijão + Argiloso**, o painel apresenta o resultado **Desconhecido** e explica o que precisa ser verificado no solo, como a compactação e o encharcamento. Essa orientação ajuda a definir o próximo passo da avaliação. O projeto contribui para o **ODS 2 — Fome Zero e Agricultura Sustentável** ao apoiar decisões de cultivo com informações rastreáveis.
+Por exemplo, na análise de **feijão em solo argiloso**, o painel exibe **Desconhecido** porque a classe do solo, por si só, é insuficiente para concluir a compatibilidade. A regra indica o que verificar no terreno, como compactação e risco de encharcamento, e apresenta a fonte do critério.
+
+O AgroConnect se alinha ao **ODS 2 — Fome Zero e Agricultura Sustentável** ao organizar informações e referências que ajudam pequenos produtores a avaliar condições de cultivo.
 
 ### Arquitetura
 
@@ -42,10 +44,13 @@ flowchart TB
         M --> N["Node-RED · agrupa quatro indicadores"]
         N --> I["FastAPI · POST /api/v1/iot/readings"]
         I -->|"Valida, converte e salva a captura"| P[("PostgreSQL")]
-        P -->|"Indicadores persistidos"| F["Isolation Forest v3"]
-        F -->|"Grava classificação e score"| P
-        F -->|"Contexto da explicação"| G["Google Gemini"]
-        G -->|"FastAPI valida e salva a explicação"| P
+        P -->|"Captura persistida"| T["FastAPI · processa a captura"]
+        T -->|"Envia os quatro indicadores"| F["Isolation Forest v3"]
+        F -->|"Retorna classificação e score"| T
+        T -->|"Grava classificação e score"| P
+        T -->|"Envia o contexto após gravar a classificação"| G["Google Gemini"]
+        G -->|"Retorna a explicação"| T
+        T -->|"Valida e grava a explicação"| P
     end
 
     subgraph consulta["2. Análise agrícola"]
@@ -90,19 +95,24 @@ Veja os guias de [telemetria](documentacao/telemetria_iot.md), [modelo](document
 
 ### 1. Instalar as dependências
 
-Na raiz do repositório, execute no PowerShell:
+Na raiz do repositório, execute no PowerShell. Ajuste `$pythonX64` se o executável de 64 bits estiver instalado em outro caminho.
 
 ```powershell
-py -3.13 -m venv .venv
-.\.venv\Scripts\Activate.ps1
+$pythonX64 = "$env:LOCALAPPDATA\Programs\Python\Python313\python.exe"
+& $pythonX64 -c "import struct; assert struct.calcsize('P') == 8, 'Use Python de 64 bits'"
+if ($LASTEXITCODE -ne 0) { throw 'Não foi possível validar o Python de 64 bits.' }
+& $pythonX64 -m venv .venv-313-x64
+.\.venv-313-x64\Scripts\Activate.ps1
 python -m pip install uv==0.13.7
-$env:UV_PROJECT_ENVIRONMENT = ".venv"
-uv sync --locked --python .\.venv\Scripts\python.exe
+$env:UV_PROJECT_ENVIRONMENT = ".venv-313-x64"
+python -m uv sync --locked --python .\.venv-313-x64\Scripts\python.exe
 ```
+
+Se você já instalou as dependências na `.venv-313-x64`, basta ativá-la em cada novo terminal. Para usar Python 3.12, aponte `$pythonX64` para o executável dessa versão e use o nome correspondente nas referências à pasta do ambiente.
 
 ### 2. Configurar o banco e o Gemini
 
-Crie o `.env` local a partir de [`.env.example`](.env.example) e preencha os valores do PostgreSQL, a URL `TELEMETRY_DATABASE_URL` e a chave `GEMINI_API_KEY`. Para reproduzir o modelo usado na validação local, defina `GEMINI_MODEL=gemini-3.5-flash-lite`.
+Na primeira configuração, crie o `.env` local a partir de [`.env.example`](.env.example) e preencha os valores do PostgreSQL, a URL `TELEMETRY_DATABASE_URL` e a chave `GEMINI_API_KEY`. Para reproduzir o modelo usado na validação local, defina `GEMINI_MODEL=gemini-3.5-flash-lite`.
 
 ```powershell
 docker compose up -d postgres
@@ -117,6 +127,8 @@ python scripts/treinar_modelo.py
 python -m uvicorn app.principal:app --reload
 ```
 
+Execute o treino quando precisar gerar ou atualizar o artefato. No uso diário, com o banco já migrado e o artefato pronto, ative o ambiente de 64 bits, suba o PostgreSQL e inicie o Uvicorn. Depois que aparecer `Application startup complete`, estes endereços locais ficam disponíveis:
+
 - [Dashboard do AgroConnect](http://127.0.0.1:8000/dashboard)
 - [Swagger UI](http://127.0.0.1:8000/docs)
 - [Prontidão do PostgreSQL](http://127.0.0.1:8000/health/ready)
@@ -125,11 +137,59 @@ No dashboard, confira **Última captura**, selecione uma cultura e um solo e cli
 
 ### 4. Importar o fluxo Node-RED
 
+Veja a seção [ESP32 da estufa no Wokwi](#esp32-da-estufa-no-wokwi).
+
 No Node-RED, abra **Menu → Importar** e selecione o [fluxo de ingestão do AgroConnect](iot/node_red/fluxo_agroconnect.json). Abra a configuração compartilhada **HiveMQ Cloud**, troque o host de exemplo pelo endereço do seu cluster e informe usuário e senha no próprio Node-RED. O fluxo usa MQTT com TLS na porta `8883`.
 
 No nó HTTP, confira a URL `http://127.0.0.1:8000/api/v1/iot/readings`. Quando a API estiver em outro host ou contêiner, informe um endereço alcançável pelo processo do Node-RED. Clique em **Deploy**, inicie o Wokwi e acompanhe a resposta da API no nó de depuração. O [guia de telemetria](documentacao/telemetria_iot.md#importar-o-fluxo-node-red) detalha a configuração e os tópicos.
 
 ---
+
+### ESP32 da estufa no Wokwi
+
+O ESP32 lê o DHT22, o BMP180 e o LDR. A cada 5 segundos, publica as leituras no HiveMQ Cloud via MQTT. O Node-RED reúne quatro tópicos e envia uma captura para `POST /api/v1/iot/readings`. Consulte o [guia de telemetria](documentacao/telemetria_iot.md) para importar o fluxo e conferir a captura na API.
+
+#### Ligações do circuito
+
+| Componente | Sinal no ESP32 |
+| --- | --- |
+| DHT22 | DATA no GPIO 4 |
+| LDR | Saída analógica no GPIO 34 |
+| BMP180 e OLED SSD1306 | SDA no GPIO 21 e SCL no GPIO 22 (barramento I²C compartilhado) |
+| LED verde | GPIO 25 |
+| LED vermelho | GPIO 26 |
+
+O OLED é configurado como 128 × 64, no endereço I²C `0x3C`. Ele mostra o estado do sistema, Wi-Fi, MQTT, horário (UTC−3 via NTP) e o último erro. O LED verde indica operação online e o vermelho indica falha.
+
+#### Executar e conferir
+
+1. Abra o projeto original da estufa no Wokwi. O [sketch](iot/wokwi/sketch.ino) e a [lista de bibliotecas](iot/wokwi/libraries.txt) estão aqui. O circuito (`diagram.json`), incluindo o componente usado para simular o BMP180, deve vir do projeto original. Para instalar as dependências, use o Library Manager do Wokwi ou copie o `libraries.txt` para o projeto. Veja a [documentação de bibliotecas do Wokwi](https://docs.wokwi.com/guides/libraries).
+2. Na sua cópia do sketch, preencha `MQTT_SERVER`, `MQTT_USER` e `MQTT_PASSWORD` com os dados do broker usado pelo Node-RED. A porta é `8883`. A rede [Wokwi-GUEST](https://docs.wokwi.com/guides/esp32-wifi) usa senha vazia. Mantenha as credenciais fora do Git e de projetos compartilhados.
+3. No Node-RED, use as instruções de [importação e configuração](documentacao/telemetria_iot.md#importar-o-fluxo-node-red). Inicie a simulação e abra o monitor serial a 115200 baud. Confira as mensagens de conexão ao Wi-Fi e ao MQTT e, em seguida, os blocos `Dados enviados:`.
+4. Para validar a integração, confira a resposta HTTP na aba de depuração do Node-RED e procure a nova captura em **Última captura** no dashboard.
+
+O sketch de demonstração usa TLS com `setInsecure()`, que desativa a validação da identidade do broker. Para uso em produção, configure a CA do broker no cliente e habilite a validação do certificado.
+
+#### Mensagens MQTT
+
+| Tópico | Payload | Uso no fluxo de ingestão |
+| --- | --- | --- |
+| `estufa/dht22/temperatura` | Temperatura em °C | Fonte do índice demonstrativo de umidade do solo, calculado pela API |
+| `estufa/dht22/umidade` | Umidade relativa em % | Umidade do ar |
+| `estufa/ldr/luminosidade` | Leitura ADC bruta | Luminosidade |
+| `estufa/bmp180/temperatura` | Temperatura em °C | Temperatura do ar |
+| `estufa/bmp180/pressao` | Pressão em hPa | Fora do agrupamento |
+| `estufa/bmp180/altitude` | Altitude estimada em metros | Fora do agrupamento |
+| `estufa/status` | `online` ou `erro` | Fora do agrupamento |
+| `estufa/erro` | Descrição do erro ou `nenhum` | Fora do agrupamento |
+
+Os valores são publicados como texto numérico em tópicos individuais. O sketch tenta reconectar quando perde o Wi-Fi ou o MQTT. A publicação de status e erro exige conexão com o broker. O índice de umidade do solo é calculado no backend a partir da temperatura do DHT22 e é usado apenas na demonstração.
+
+### Onde acompanhar o fluxo no código
+
+- **Captura da estufa.** O `loop()` do ESP32 chama `lerSensoresEEnviar()` a cada cinco segundos para publicar os sensores em tópicos MQTT. O Node-RED reúne as quatro mensagens necessárias em uma captura HTTP. O FastAPI valida e persiste essa captura para que o dashboard e o modelo usem os mesmos dados. [Sketch](iot/wokwi/sketch.ino) · [Telemetria](documentacao/telemetria_iot.md)
+- **Classificação e explicação.** A rota de ingestão lê a captura salva, chama `DetectorAnomalias.predizer()` e grava o score e a classificação. O cliente Gemini recebe esse resultado para gerar o texto exibido no painel. [Modelo](documentacao/aprendizado_maquina.md) · [Gemini](documentacao/integracao_gemini.md)
+- **Análise agrícola.** O formulário envia os IDs de cultura e solo. A API consulta a regra cadastrada, recupera a captura recente e as referências técnicas e grava a análise para consulta no histórico. [Análise agrícola](documentacao/analise_agricola.md)
 
 ## 🧪 Avaliação e evidências
 
@@ -162,9 +222,9 @@ python -m pytest -q
 O Codex auxiliou na revisão do README e dos guias, na organização das evidências e no apoio ao desenvolvimento e à verificação do projeto. O Google Gemini é o modelo generativo utilizado pela aplicação.
 
 
-## Link do video da demonstração
+## Vídeo da demonstração
 
-[https://youtu.be/oQxdT7qftBk](https://www.youtube.com/watch?v=oQxdT7qftBk)
+[AgroConnect AI — demonstração no YouTube](https://youtu.be/05tSDLXzBJY)
 
 ## 📚 Guias da entrega
 
@@ -174,3 +234,8 @@ O Codex auxiliou na revisão do README e dos guias, na organização das evidên
 - [Integração Gemini](documentacao/integracao_gemini.md)
 - [Dashboard](documentacao/dashboard.md)
 - [Contrato HTTP](documentacao/contrato_http.md)
+- [Telemetria IoT e Node-RED](documentacao/telemetria_iot.md)
+- [Aprendizado de máquina](documentacao/aprendizado_maquina.md)
+- [Matriz de compatibilidade](documentacao/compatibilidade_agricola.md)
+- [Recomendações por captura](documentacao/recomendacoes_wokwi.md)
+- [PostgreSQL local](documentacao/postgresql_local.md)

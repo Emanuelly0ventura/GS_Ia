@@ -17,7 +17,7 @@ O treinamento usa a fixture `tests/fixtures/isolation_forest_rotulado.json`, com
 
 ## Preparação e modelo
 
-`preparar_leituras` seleciona linhas com qualidade válida, valores finitos e unidades canônicas. A função ordena os indicadores por nome e monta uma matriz NumPy `float64` na sequência da tabela. Para cada inferência, o detector recebe uma linha com os quatro indicadores nas unidades persistidas.
+`preparar_leituras` seleciona linhas com qualidade válida, valores finitos e unidades canônicas. A função lê os indicadores na ordem fixa de `VARIAVEIS_MODELO` e monta uma matriz NumPy `float64` na sequência da tabela. Para cada inferência, o detector recebe uma linha com os quatro indicadores nas unidades persistidas.
 
 O pipeline é `StandardScaler(with_mean=True, with_std=True)` seguido de `IsolationForest`. O scaler calcula média e escala das quatro colunas com o conjunto de treino, e o mesmo pipeline aplica a padronização na inferência. O scaler e o detector ficam no mesmo objeto `Pipeline`.
 
@@ -49,3 +49,11 @@ A migration aditiva `migrations/telemetria/003_anomaly_four_features.sql` adicio
 ## Avaliação do detector
 
 Execute `python scripts/avaliar_modelo.py` para obter precisão, revocação, F1 e a matriz de confusão. O [registro de validação](validacao.md) reúne a avaliação sintética e exemplos de classificação das capturas Wokwi no PostgreSQL.
+
+## Por que o modelo e onde ele atua
+
+O Isolation Forest permite procurar combinações atípicas com treinamento não supervisionado. Suas árvores dividem as observações por cortes nos valores das variáveis. Uma combinação que costuma se separar das demais em poucos cortes tende a ter um score maior de atipicidade. No AgroConnect, essa comparação usa a distribuição do conjunto sintético de treino.
+
+- **Treino.** [`treinar_modelo.py`](../scripts/treinar_modelo.py) lê a fixture, confere seu contrato e ajusta o pipeline. O scaler e o detector seguem juntos no artefato para que a inferência aplique a mesma transformação usada no treino.
+- **Inferência.** [`preparar_leituras()`](../app/inteligencia_artificial/aprendizado_maquina/preparacao.py) valida qualidade, valores e unidades e monta a matriz. [`predizer()`](../app/inteligencia_artificial/aprendizado_maquina/detector_anomalias.py) usa `predict()` para a classe e `-score_samples()` para a pontuação. Se os dados ou o score forem inválidos, a inferência interrompe o processamento.
+- **Destino.** A [rota de telemetria](../app/telemetria/rotas.py) grava a classificação, o score, a versão e a justificativa, e só então solicita a explicação. O dashboard consulta o registro persistido. A análise agrícola pode reutilizar a mesma classificação.

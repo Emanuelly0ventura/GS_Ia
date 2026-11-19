@@ -75,3 +75,14 @@ docker compose down
 ```
 
 Os três comandos acima preservam o volume `agroconnect_ai_postgres_data`.
+
+## Quem grava e quem consulta
+
+| Registro | Origem e motivo da gravação | Consumidor |
+| --- | --- | --- |
+| `iot_devices` e `iot_readings` | `receber()` registra o dispositivo, a comunicação e a captura normalizada. O par dispositivo e observação identifica a captura. | O detector usa a captura persistida. O dashboard consulta status e histórico. |
+| `iot_anomaly_analyses` | `receber()` grava o resultado devolvido por `predizer()`. Em uma atualização posterior, grava o estado e o texto da explicação. | O dashboard e a análise agrícola consultam a classificação associada à captura. |
+| `tipos_semente`, `tipos_solo` e `compatibilidades` | As migrations criam e populam os catálogos e a matriz. | As rotas preenchem o formulário e o serviço consulta o resultado e os critérios do par. |
+| `analises_compatibilidade` | O serviço registra a análise e guarda a mensagem principal em uma atualização após a geração. | `GET /api/v1/agricultura/analises` fornece o histórico ao navegador. |
+
+[`banco.py`](../app/telemetria/banco.py) cria as sessões a partir de `TELEMETRY_DATABASE_URL`. As rotas usam essas sessões para confirmar cada etapa com `commit()`. Falhas de gravação são tratadas com `rollback()` e um erro ou estado correspondente. [Ingestão](../app/telemetria/rotas.py) · [Análise agrícola](../app/compatibilidade/analise_unificada.py)

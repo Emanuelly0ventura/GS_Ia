@@ -1,0 +1,7 @@
+PubSubClient
+DHT sensor library
+Adafruit Unified Sensor
+Adafruit BMP085 Library
+Adafruit GFX Library
+Adafruit BusIO
+Adafruit SSD1306
