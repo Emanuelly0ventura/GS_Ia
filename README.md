@@ -164,7 +164,7 @@ O Codex auxiliou na revisão do README e dos guias, na organização das evidên
 
 ## Link do video da demonstração
 
-https://youtu.be/D7-hBGTLgUw
+https://youtu.be/05tSDLXzBJY
 
 ## 📚 Guias da entrega
 
